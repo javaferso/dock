@@ -1,0 +1,36 @@
+#!/usr/bin/expect
+
+set password "geocom"
+set timeout 20
+set ruta /opt/tomcat/webapps/dockpos;
+set ip [lindex $argv 0];
+set pedido [lindex $argv 1];
+
+
+spawn $ruta/buscaLogEcommerce.sh -T $ip -P $pedido
+
+expect {
+  "*re you sure want to continue connecting" {
+    send "yes\r"
+    exp_continue
+  }
+
+  "*re you sure you want to continue connecting" {
+    send "yes\r"
+    exp_continue
+  }
+
+  "*assword*" {
+   send "$password\r"
+   exp_continue
+  }
+
+  "*assword*" {
+   send "$password\r"
+   interact
+  }
+
+  timeout {
+    exp_continue
+  }
+}

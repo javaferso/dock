@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/Vision">
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="VisorBoletasPU" password="" type="javax.sql.DataSource" url="jdbc:postgresql://10.48.142.48:5432/visor_boletas" username="postgres"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="New Postgres" password="w8j5vsh65D" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/dock_pos" username="userdock"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="Nagios" password="w8j5vsh65D" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/dock_pos" username="userdock"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="Monitor" password="Smu.2023!!" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/ti_operaciones" username="postgres"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="Monitor Procesos TI" password="w8j5vsh65D" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/monitor_procesos_ti" username="userdock"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="ServiciosDock" password="w8j5vsh65D" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/dock_pos" username="userdock"/>
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="Servicios" password="w8j5vsh65D" type="javax.sql.DataSource" url="jdbc:postgresql://10.36.94.163:5432/dock_pos" username="userdock"/>
+</Context>

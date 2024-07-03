@@ -1,0 +1,90 @@
+html {
+  height: -webkit-fill-available !important;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
+  height: 100vh !important;
+  height: -webkit-fill-available !important;
+  max-height: 100vh !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+.navbar, .sidebar {
+  background-color: #B2291F;
+}
+
+.sidebar {
+  height: 100%;
+  width: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: width 0.3s;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px; /* Adjust the padding to center icons better */
+}
+
+.sidebar.expanded {
+  width: 200px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.sidebar a:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.sidebar-icon {
+  font-size: 24px;
+}
+
+.sidebar .sidebar-text {
+  display: none;
+  margin-left: 10px;
+}
+
+.sidebar.expanded .sidebar-text {
+  display: inline;
+}
+
+#sidebarToggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+#sidebarToggle.expanded {
+  left: 180px;
+}
+
+.scrollarea {
+  overflow-y: auto;
+}
+

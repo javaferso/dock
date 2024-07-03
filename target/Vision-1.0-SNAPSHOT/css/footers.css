@@ -1,0 +1,47 @@
+.footer {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.6)
+        ), url('/images/grayscale.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+    padding: 10px 0;
+    width: 100%;
+    height: auto;
+    z-index: 300;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.footer a,
+.footer span,
+.footer .navbar-brand,
+.footer .navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.footer-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 50px;
+}
+
+.small li {
+    font-size: 0.8rem; /* Ajusta este valor según el tamaño de letra deseado */
+}
+
+.footer .col-md-4 {
+    padding: 10px; /* Ajustar padding */
+}
+
+.card-footer {
+    background-color: #F5F5F5;
+}

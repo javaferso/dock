@@ -1,0 +1,16 @@
+.duration-date {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+.duration-date li {
+  margin: 11px -5px;
+}
+
+.duration-date a {
+  background: #fff;
+  color: #BA9139;
+  padding: 7px 15px;
+  border-radius: 50px;
+}

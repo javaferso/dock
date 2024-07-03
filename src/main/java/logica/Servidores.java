@@ -1,0 +1,268 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package logica;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Persistence;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author JFerreira
+ */
+@Entity
+@Table(name = "servidores", schema = "supervision")
+@NamedQueries({
+    @NamedQuery(name = "Servidores.findAll", query = "SELECT s FROM Servidores s"),
+    @NamedQuery(name = "Servidores.findByLocal", query = "SELECT s FROM Servidores s WHERE s.local = :local"),
+    @NamedQuery(name = "Servidores.findByNombreTienda", query = "SELECT s FROM Servidores s WHERE s.nombreTienda = :nombreTienda"),
+    @NamedQuery(name = "Servidores.findByIpAddress", query = "SELECT s FROM Servidores s WHERE s.ipAddress = :ipAddress"),
+    @NamedQuery(name = "Servidores.findByIpEnlace", query = "SELECT s FROM Servidores s WHERE s.ipEnlace = :ipEnlace"),
+    @NamedQuery(name = "Servidores.findByDireccion", query = "SELECT s FROM Servidores s WHERE s.direccion = :direccion"),
+    @NamedQuery(name = "Servidores.findByCiudad", query = "SELECT s FROM Servidores s WHERE s.ciudad = :ciudad"),
+    @NamedQuery(name = "Servidores.findByCreatedAt", query = "SELECT s FROM Servidores s WHERE s.createdAt = :createdAt"),
+    @NamedQuery(name = "Servidores.findByModified", query = "SELECT s FROM Servidores s WHERE s.modified = :modified"),
+    @NamedQuery(name = "Servidores.findByFormato", query = "SELECT s FROM Servidores s WHERE s.formato = :formato"),
+    @NamedQuery(name = "Servidores.findByIpVirtual", query = "SELECT s FROM Servidores s WHERE s.ipVirtual = :ipVirtual"),
+    @NamedQuery(name = "Servidores.findById", query = "SELECT s FROM Servidores s WHERE s.id = :id"),
+    @NamedQuery(name = "Servidores.findServidoresPorCriterio", query = "SELECT s FROM Servidores s WHERE s.local LIKE :query OR LOWER(s.nombreTienda) LIKE LOWER(:query)")})
+
+
+public class Servidores implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
+    @Id
+    @GeneratedValue (strategy=GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+    
+    @Column(name = "nombre_tienda")
+    private String nombreTienda;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "ip_address")
+    private String ipAddress;
+    @Size(max = 15)
+    @Column(name = "ip_enlace")
+    private String ipEnlace;
+    @Size(max = 255)
+    @Column(name = "direccion")
+    private String direccion;
+    @Size(max = 100)
+    @Column(name = "ciudad")
+    private String ciudad;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @Column(name = "modified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
+    @Size(max = 15)
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+    @Column(name = "formato")
+    private String formato;
+    @Size(max = 255)
+    @Column(name = "ip_virtual")
+    private String ipVirtual;
+    @Column(name = "local", unique = true)
+    private String local;
+    @Size(max = 255)
+    @Column(name = "estado_ip")
+    private String estadoIp;
+    @Size(max=50)
+    @Column(name = "estado_enlace")
+    private String estadoEnlace;
+    @Size(max=50)
+    
+
+    public Servidores() {
+    }
+
+    public Servidores(Integer id) {
+        this.id = id;
+    }
+
+    public Servidores(Integer id, String nombreTienda, String ipAddress, String ipEnlace, String direccion, String ciudad, Date createdAt, Date modified, Date updatedAt, String formato, String ipVirtual, String local, String estadoIp, String estadoEnlace) {
+        this.id = id;
+        this.nombreTienda = nombreTienda;
+        this.ipAddress = ipAddress;
+        this.ipEnlace = ipEnlace;
+        this.direccion = direccion;
+        this.ciudad = ciudad;
+        this.createdAt = createdAt;
+        this.modified = modified;
+        this.updatedAt = updatedAt;
+        this.formato = formato;
+        this.ipVirtual = ipVirtual;
+        this.local = local;
+        this.estadoIp = estadoIp;
+        this.estadoEnlace = estadoEnlace;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getEstadoIp() {
+        return estadoIp;
+    }
+
+    public void setEstadoIp(String estadoIp) {
+        this.estadoIp = estadoIp;
+    }
+
+    public String getEstadoEnlace() {
+        return estadoEnlace;
+    }
+
+    public void setEstadoEnlace(String estadoEnlace) {
+        this.estadoEnlace = estadoEnlace;
+    }
+
+    
+   
+    public String getNombreTienda() {
+        return nombreTienda;
+    }
+
+    public void setNombreTienda(String nombreTienda) {
+        this.nombreTienda = nombreTienda;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getIpEnlace() {
+        return ipEnlace;
+    }
+
+    public void setIpEnlace(String ipEnlace) {
+        this.ipEnlace = ipEnlace;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
+    public String getFormato() {
+        return formato;
+    }
+
+    public void setFormato(String formato) {
+        this.formato = formato;
+    }
+
+    public String getIpVirtual() {
+        return ipVirtual;
+    }
+
+    public void setIpVirtual(String ipVirtual) {
+        this.ipVirtual = ipVirtual;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Servidores)) {
+            return false;
+        }
+        Servidores other = (Servidores) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "persistencia.Servidores[ id=" + id + " ]";
+    }
+
+  
+    
+}
