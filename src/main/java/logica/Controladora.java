@@ -5,6 +5,8 @@
 package logica;
 
 import static java.lang.System.out;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -113,6 +115,11 @@ public class Controladora {
     public List<Incidentes> listarIncidentes() {
         return controlPersis.obtenerIncidentes();
     }
+
+    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws Exception {
+    controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo);
+}
+ 
    
 
    

@@ -22,7 +22,8 @@
     <link href="css/brands.css" rel="stylesheet" />
     <link href="css/solid.css" rel="stylesheet" />
     <link href="css/footers.css" rel="stylesheet" type="text/css"/>
-    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="@{/webjars/jquery/3.6.3/jquery.min.js}"></script>
+    <script src="@{/webjars/bootstrap/5.3.1/js/bootstrap.min.js}"></script>
     <script src="@{/webjars/popper.js/1.16.1/umd/popper.min.js}"></script>
     <script src="js/script.js"></script>
     <script src="js/toastify.js"></script>

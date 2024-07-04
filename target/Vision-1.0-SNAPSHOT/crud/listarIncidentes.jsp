@@ -4,6 +4,8 @@
     Author     : JFerreira
 --%>
 
+<%@page import="logica.Incidentes"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <table class="table table-bordered">
     <thead>
@@ -27,38 +29,38 @@
             <th>Texto Breve</th>
             <th>Cotización</th>
             <th>Activo</th>
-            <th>Fecha Creación</th>
-            <th>Fecha Actualización</th>
             <th>Fecha Cierre</th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="incidente" items="${incidentes}">
+        <%
+            List<Incidentes> listaIncidentes = (List<Incidentes>) request.getAttribute("incidentes");
+            for (Incidentes incidente : listaIncidentes) {
+            %>
+       
             <tr>
-                <td>${incidente.id}</td>
-                <td>${incidente.tipo.nombre}</td>
-                <td>${incidente.mes}</td>
-                <td>${incidente.formato.nombre}</td>
-                <td>${incidente.in}</td>
-                <td>${incidente.tienda.nombre}</td>
-                <td>${incidente.detalle}</td>
-                <td>${incidente.monto}</td>
-                <td>${incidente.moneda.codigo}</td>
-                <td>${incidente.proveedor.nombre}</td>
-                <td>${incidente.fAutorizar}</td>
-                <td>${incidente.oc}</td>
-                <td>${incidente.fEnvioProv}</td>
-                <td>${incidente.hes}</td>
-                <td>${incidente.sociedad.nombre}</td>
-                <td>${incidente.ordenEstadistica}</td>
-                <td>${incidente.textoBreve}</td>
-                <td>${incidente.cotizacion}</td>
-                <td>${incidente.activo}</td>
-                <td>${incidente.fechaCreacion}</td>
-                <td>${incidente.fechaActualizacion}</td>
-                <td>${incidente.fechaCierre}</td>
+                <td><%= incidente.getId() %></td>
+                <td><%= incidente.getTipo() %></td>
+                <td><%= incidente.getMes() %></td>
+                <td><%= incidente.getFormato() %></td>
+                <td><%= incidente.getTienda() %></td>
+                <td><%= incidente.getInc() %></td>
+                <td><%= incidente.getDetalle() %></td>
+                <td><%= incidente.getMonto() %></td>
+                <td><%= incidente.getMoneda() %></td>
+                <td><%= incidente.getProveedor() %></td>
+                <td><%= incidente.getFAutorizar() %></td>
+                <td><%= incidente.getOc() %></td>
+                <td><%= incidente.getFEnvioProv() %></td>
+                <td><%= incidente.getHes() %></td>
+                <td><%= incidente.getSociedad() %></td>
+                <td><%= incidente.getOrdenEstadistica() %></td>
+                <td><%= incidente.getTextoBreve() %></td>
+                <td><%= incidente.getCotizacion() %></td>
+                <td><%= incidente.getActivo() %></td>
+                <td><%= incidente.getFechaCierre() %></td>
             </tr>
-        </c:forEach>
+            <%}%>
     </tbody>
 </table>
 
