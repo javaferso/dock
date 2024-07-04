@@ -47,4 +47,14 @@
       <property name="eclipselink.default_schema" value="monitor"/>
     </properties>
   </persistence-unit>
+  <persistence-unit name="ServiciosPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>ServiciosDock</jta-data-source>
+    <class>logica.Incidentes</class>
+    <class>logica.Moneda</class>
+    <class>logica.Proveedores</class>
+    <class>logica.Sociedades</class>
+    <class>logica.Tipos</class>
+    <properties/>
+  </persistence-unit>
 </persistence>

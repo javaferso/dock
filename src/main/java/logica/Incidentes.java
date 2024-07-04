@@ -14,9 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -137,17 +137,23 @@ public class Incidentes implements Serializable {
     @Column(name = "fecha_cierre")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCierre;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    
+    
+    // Relaciones con las otras tablas
+    @ManyToOne
+    @JoinColumn(name = "moneda", referencedColumnName = "codigo", insertable = false, updatable = false)
     private Moneda moneda1;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    
+    @ManyToOne
+    @JoinColumn(name = "proveedor", referencedColumnName = "nombre", insertable = false, updatable = false)
     private Proveedores proveedores;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    
+    @ManyToOne
+    @JoinColumn(name = "sociedad", referencedColumnName = "nombre", insertable = false, updatable = false)
     private Sociedades sociedades;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    
+    @ManyToOne
+    @JoinColumn(name = "tipo", referencedColumnName = "nombre", insertable = false, updatable = false)
     private Tipos tipos;
 
     public Incidentes() {
