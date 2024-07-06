@@ -107,6 +107,7 @@ public class SvIncidente extends HttpServlet {
             String inc = request.getParameter("inc"); 
             String sapStr = request.getParameter("sap");  
             String tienda = request.getParameter("tienda");
+            String detalle = request.getParameter("detalle");
             String montoStr = request.getParameter("monto");
             String moneda = request.getParameter("moneda"); 
             String proveedor = request.getParameter("proveedor");
@@ -167,6 +168,7 @@ public class SvIncidente extends HttpServlet {
             incidente.setInc(inc);
             incidente.setSap(sap);
             incidente.setTienda(tienda);
+            incidente.setDetalle(detalle);
             incidente.setMonto(monto);
             incidente.setMoneda(moneda);
             incidente.setProveedor(proveedor);
@@ -180,7 +182,13 @@ public class SvIncidente extends HttpServlet {
             incidente.setCotizacion(Cotizacion);
             incidente.setActivo(activo);
             
-            controladora.crearIncidente(tipo, mes, formato, inc, sap, tienda, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, Sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo);
+            try {
+                controladora.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, Sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo);
+                response.sendRedirect("servicios.jsp");
+            } catch (Exception e) {
+                request.setAttribute("error", "Error al agregar el incidente: " + e.getMessage());
+                request.getRequestDispatcher("agregarIncidente.jsp").forward(request, response);
+            }
         }
 }
 

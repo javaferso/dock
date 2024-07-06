@@ -73,7 +73,7 @@ public class IncidentesJpaController implements Serializable {
         }
     }
 
-    public Incidentes crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws PreexistingEntityException {
+    public Incidentes crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws PreexistingEntityException {
         EntityManager emf = null;
         Incidentes incidente = new Incidentes();
         try {
@@ -85,6 +85,7 @@ public class IncidentesJpaController implements Serializable {
             incidente.setInc(inc);
             incidente.setSap(sap);
             incidente.setTienda(tienda);
+            incidente.setDetalle(detalle);
             incidente.setMonto(monto);
             incidente.setMoneda(moneda);
             incidente.setProveedor(proveedor);

@@ -39,7 +39,8 @@
     <% if (user == null) {
             // Redirigir a Login
             response.sendRedirect("login.jsp");
-        } else {%>   
+        } else {%> 
+    
     <body class="body-boleta">
         <%
             System.out.println("controlpos called for user: " + user.getIdUsuario());
