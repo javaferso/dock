@@ -13,17 +13,19 @@
     <head>
         <meta charset="UTF-8">
         <title>SCO PESO DEFINIDO</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="favicon.ico"/>
         <link rel="stylesheet" href="css/style.css">
+        <script src="js/jquery-3.7.0.min.js"></script>
         <link href="css/fontawesome.css" rel="stylesheet">
         <link href="css/brands.css" rel="stylesheet">
         <link href="css/solid.css" rel="stylesheet">
         <script src="js/script.js"></script>
         <script src="js/solid.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script src="js/toastify.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery-3.7.0.min.js"></script>
+        <script src="poppers/popper.js" type="text/javascript"></script>
         <script language="javascript" type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
         <script language="javascript" type="text/javascript">
             tinyMCE.init({

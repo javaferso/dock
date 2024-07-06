@@ -7,7 +7,7 @@
     </div>
     
     <nav>
-        <a href="perfil.jsp" data-bs-toggle="tooltip" data-bs-placement="right" title="Mi Perfil">
+        <a href="controlpos.jsp" data-bs-toggle="tooltip" data-bs-placement="right" title="Mi Perfil">
             <i class="fas fa-user fa-1.5x text-white mb-3 sidebar-icon"></i>
         </a>
         <a href="mailto:e_jferreira@smu.cl" data-bs-toggle="tooltip" data-bs-placement="right" title="Tienes dudas, escri­benos">

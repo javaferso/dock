@@ -5,16 +5,18 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,8 +45,17 @@ public class Sociedades implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "nombre")
     private String nombre;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "sociedades")
-    private Incidentes incidentes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sociedades", fetch = FetchType.LAZY)
+    private Collection<Incidentes> incidentesCollection;
+
+    public Collection<Incidentes> getIncidentesCollection() {
+        return incidentesCollection;
+    }
+
+    public void setIncidentesCollection(Collection<Incidentes> incidentesCollection) {
+        this.incidentesCollection = incidentesCollection;
+    }
+    
 
     public Sociedades() {
     }
@@ -72,14 +83,6 @@ public class Sociedades implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Incidentes getIncidentes() {
-        return incidentes;
-    }
-
-    public void setIncidentes(Incidentes incidentes) {
-        this.incidentes = incidentes;
     }
 
     @Override

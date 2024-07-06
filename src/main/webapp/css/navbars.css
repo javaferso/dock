@@ -3,12 +3,14 @@
     background-color: #B2291F;
     background-repeat: no-repeat;
     background-size: cover;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 300;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -16,12 +18,11 @@
 .navbar .navbar-brand,
 .navbar .navbar-toggler-icon {
     color: white !important;
-    margin-left: 20px;
 }
 
 /* Estilos para la lista de navegación */
 .navbar-list {
-    list-style: none;
+    list-style: none; /* Elimina las viñetas negras */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,15 +37,16 @@
 
 .navbar-item a {
     color: white;
-    text-decoration: none;
+    text-decoration: none; /* Elimina el subrayado */
     display: inline-block;
     padding-bottom: 10px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Agrega transición para el hover */
 }
 
 .navbar-item a:hover {
     color: #FFA500; /* Cambia el color a naranja al pasar el ratón */
-    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2); /* Agrega un fondo transparente al pasar el ratón */
+    text-decoration: none; /* Asegura que el texto no esté subrayado al hacer hover */
 }
 
 /* Estilos para el toggle en dispositivos móviles */
@@ -88,28 +90,6 @@
         display: block;
     }
 }
-
-/* Estilos para el menú desplegable del perfil */
-.dropdown-menu {
-    background-color: #ccc !important; /* Cambia el color de fondo a un gris oscuro */
-    color: white; /* Cambia el color del texto a blanco */
-}
-
-.dropdown-menu .dropdown-item {
-    color: white !important; /* Asegura que el texto de los elementos del menú sea blanco */
-}
-
-.dropdown-menu .dropdown-item:hover {
-    background-color: #555 !important; /* Cambia el color de fondo de los elementos del menú al pasar el mouse */
-    color: white !important; /* Mantiene el texto blanco al pasar el mouse */
-    border-radius: 5px;
-}
-
-.dropdown-menu.show {
-    color: black; /* Cambia esto según la paleta de tu sitio */
-    background-color: white; /* Asegúrate de que el fondo sea adecuado para la legibilidad */
-}
-
 @font-face {
     font-family: 'Roboto';
     src: url('../Roboto/Roboto-Bold.ttf') format('truetype');
@@ -122,83 +102,128 @@
     font-weight: normal;
 }
 
-.breadcrumb { 
-  list-style: none; 
-  overflow: hidden; 
-  font: 18px Helvetica, Arial, Sans-Serif;
+.breadcrumb {
+  list-style: none;
+  overflow: hidden;
+  font: 14px Helvetica, Arial, Sans-Serif;
   margin: 40px;
   padding: 0;
+  margin-left: 90px; /* Ajusta este margen según el ancho del sidebar */
 }
-.breadcrumb li { 
-  float: left; 
+
+.breadcrumb li {
+  float: left;
 }
+
 .breadcrumb li a {
   color: white;
-  text-decoration: none; 
+  text-decoration: none;
   padding: 10px 0 10px 55px;
   background: brown; /* fallback color */
-  background: hsla(34,85%,35%,1); 
-  position: relative; 
+  background: hsla(34, 85%, 35%, 1);
+  position: relative;
   display: block;
   float: left;
 }
-.breadcrumb li a:after { 
-  content: " "; 
-  display: block; 
-  width: 0; 
+
+.breadcrumb li a:after {
+  content: " ";
+  display: block;
+  width: 0;
   height: 0;
-  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
   border-bottom: 50px solid transparent;
-  border-left: 30px solid hsla(34,85%,35%,1);
+  border-left: 30px solid hsla(34, 85%, 35%, 1);
   position: absolute;
   top: 50%;
-  margin-top: -50px; 
+  margin-top: -50px;
   left: 100%;
-  z-index: 2; 
-}	
-.breadcrumb li a:before { 
-  content: " "; 
-  display: block; 
-  width: 0; 
+  z-index: 2;
+}
+
+.breadcrumb li a:before {
+  content: " ";
+  display: block;
+  width: 0;
   height: 0;
-  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
   border-bottom: 50px solid transparent;
   border-left: 30px solid white;
   position: absolute;
   top: 50%;
-  margin-top: -50px; 
+  margin-top: -50px;
   margin-left: 1px;
   left: 100%;
-  z-index: 1; 
-}	
+  z-index: 1;
+}
+
 .breadcrumb li:first-child a {
   padding-left: 10px;
 }
-.breadcrumb li:nth-child(2) a       { background:        hsla(34,85%,45%,1); }
-.breadcrumb li:nth-child(2) a:after { border-left-color: hsla(34,85%,45%,1); }
-.breadcrumb li:nth-child(3) a       { background:        hsla(34,85%,55%,1); }
-.breadcrumb li:nth-child(3) a:after { border-left-color: hsla(34,85%,55%,1); }
-.breadcrumb li:nth-child(4) a       { background:        hsla(34,85%,65%,1); }
-.breadcrumb li:nth-child(4) a:after { border-left-color: hsla(34,85%,65%,1); }
-.breadcrumb li:nth-child(5) a       { background:        hsla(34,85%,75%,1); }
-.breadcrumb li:nth-child(5) a:after { border-left-color: hsla(34,85%,75%,1); }
-.breadcrumb li:last-child a {
-  background: transparent !important;
-  color: black;
+
+.breadcrumb li:nth-child(2) a {
+  background: hsla(34, 85%, 45%, 1);
+}
+
+.breadcrumb li:nth-child(2) a:after {
+  border-left-color: hsla(34, 85%, 45%, 1);
+}
+
+.breadcrumb li:nth-child(3) a {
+  background: hsla(34, 85%, 55%, 1);
+}
+
+.breadcrumb li:nth-child(3) a:after {
+  border-left-color: hsla(34, 85%, 55%, 1);
+}
+
+.breadcrumb li:nth-child(4) a {
+  background: hsla(34, 85%, 65%, 1);
+}
+
+.breadcrumb li:nth-child(4) a:after {
+  border-left-color: hsla(34, 85%, 65%, 1);
+}
+
+.breadcrumb li:nth-child(5) a {
+  background: hsla(34, 85%, 75%, 1);
+}
+
+.breadcrumb li:nth-child(5) a:after {
+  border-left-color: hsla(34, 85%, 75%, 1);
+}
+
+.breadcrumb li:last-child {
+  background: hsla(34, 85%, 75%, 1);
+  color: white;
+  padding: 10px 0 10px 55px;
+  position: relative;
+  display: block;
+  float: left;
+}
+
+.breadcrumb li:last-child:after {
+  content: none;
+}
+
+.breadcrumb li a:hover {
+  background: hsla(34, 85%, 25%, 1);
+}
+
+.breadcrumb li a:hover:after {
+  border-left-color: hsla(34, 85%, 25%, 1) !important;
+}
+
+.breadcrumb .active {
+  background: gray !important;
+  color: white !important;
   pointer-events: none;
   cursor: default;
 }
-.breadcrumb li:last-child a:after { border: 0; }
-.breadcrumb li a:hover { background: hsla(34,85%,25%,1); }
-.breadcrumb li a:hover:after { border-left-color: hsla(34,85%,25%,1) !important; }
 
-.breadcrumb .active {
-            background: gray !important;
-            color: white !important;
-            pointer-events: none;
-            cursor: default;
-        }
-        .breadcrumb .active:after { border-left-color: gray !important; }
+.breadcrumb .active:after {
+  border-left-color: gray !important;
+}
 
 .steps {
   margin: 40px;

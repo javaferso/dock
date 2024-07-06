@@ -1,4 +1,6 @@
-* { box-sizing: border-box;}
+* {
+    box-sizing: border-box;
+}
 :root {
     --color-highlight: rgb(0 0 0 /25%);
 }
@@ -56,6 +58,7 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+   
 }
 
 .container-boleta {
@@ -315,35 +318,34 @@ a:hover {
 }
 
 .logo-img {
-    width: 40px;
+    width: 150px;
     height: 40px;
     padding: 10px 0 auto 12px;
-    margin-left: 10px;
-    margin-right: 20px;
+    margin-left: 15px;
 }
 
 .sidebar {
-    
+
     overflow: hidden;
     position: fixed;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    white-space: nowrap;
     left: -250px;
-    height: 100%;
-    width: 80px !important;
-    min-height: 100vh;
+    padding-top: 30px;
+    height: 100vh;
     top: 0;
     left: 0;
-    bottom: 0;
+    bottom: 0; 
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 10px 10px 10px 10px;
     background-color: #B2291F;
     z-index: 100;
-    transition: width 0.4s;
+    transition: width 0.6s;
 }
-
-.sidebar nav { padding: 0 8px;}
 
 .header {
     position: relative;
@@ -352,7 +354,7 @@ a:hover {
     gap: 16px;
     height: 72px;
     padding: 0 20px 0 8px;
-  
+
 }
 .header img {
     height: 24px;
@@ -372,7 +374,9 @@ a:hover {
         transition: 0.175s;
     }
 }
-.header h1 { left: 50px; }
+.header h1 {
+    left: 50px;
+}
 
 .sidebar:hover {
     width: 180px;
@@ -385,6 +389,13 @@ a:hover {
 .sidebar.visible {
     left: 0;
 }
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar.expanded {
+    width: 250px;
+}
 
 .content {
     transition: margin-left 0.3s ease;
@@ -394,33 +405,70 @@ a:hover {
 .content.shifted {
     margin-left: 250px;
 }
-.sidebar a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 15px 0;
-  color: #ffffff;
-  text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    align-items: center; /* Alinea los items en el centro */
 }
 
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 15px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+.sidebar span {
+    display: inline;
+    vertical-align: central;
+}
 
 .sidebar:hover {
     background-color: #000;
 }
 
 .sidebar-icon {
-  font-size: 18px;
+    font-size: 18px;
+}
+
+.sidebar nav a i {
+    margin-right: 2px;
+    min-width: 5px; /* Ajustar el ancho mínimo del icono */
+}
+
+.sidebar.collapsed nav a span {
+    display: none;
+}
+
+.sidebar-toggle {
+    display: none;
 }
 
 .sidebar .sidebar-text {
-  display: none;
-  margin-left: 10px;
+    display: none;
+    margin-left: 5px;
 }
 
 .sidebar.expanded .sidebar-text {
-  display: inline;
+    display: inline;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: -50px;
+    background-color: #343a40;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
 }
 @media (max-width: 768px) {
     .sidebar {
@@ -434,7 +482,7 @@ a:hover {
     .sidebar .fas {
         margin-left: 0px;
     }
-    
+
     .sidebar a {
         justify-content: center;
     }
@@ -544,8 +592,8 @@ a:hover {
 .sidebar-icon {
     margin-top: 40px;
     margin-bottom: 1rem;
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 3px;
+    margin-right: 3px;
     position: sticky;
     top: 90px;
 }
@@ -765,7 +813,7 @@ html, body {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    display: inline-block; 
+    display: inline-block;
     margin: 0 auto;
     position: relative;
     padding: 0;
@@ -1067,4 +1115,83 @@ tr.selected {
     font-family: 'Roboto';
     src: url('../Roboto/Roboto-Regular.ttf') format('truetype');
     font-weight: normal;
+}
+
+.table th, .table td {
+    padding: 0.25rem; /* Ajusta el padding de las celdas */
+    font-size: 0.875rem; /* Ajusta el tamaño de la fuente */
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+}
+
+.table-sm th, .table-sm td {
+    padding: 0.3rem;
+}
+
+.container-custom {
+    margin-top: 20px; /* Ajusta el margen superior */
+    margin-left: 20px; /* Ajusta el margen izquierdo */
+    margin-right: 20px; /* Ajusta el margen derecho */
+}
+
+.table {
+    margin-top: 10px; /* Ajusta el margen superior de la tabla */
+}
+
+.main-content {
+    padding: 20px;
+}
+/* Estilo para los campos de entrada de filtrado */
+.tablesorter-filter {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* Borde vertical entre celdas */
+.tablesorter th,
+.tablesorter td {
+    border-right: 1px solid #ddd;
+}
+
+/* Borde inferior en encabezados */
+.tablesorter th {
+    border-bottom: 2px solid #ddd;
+}
+
+/* Estilo de las filas alternas */
+.tablesorter .odd {
+    background-color: #f9f9f9;
+}
+
+/* Estilo de las filas al pasar el cursor por encima */
+.tablesorter tbody tr:hover {
+    background-color: #F4D03F;
+}
+
+/* Estilo para las celdas de filtro */
+.tablesorter-header-inner input {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Borde superior para la primera fila de encabezado */
+.tablesorter th:first-child,
+.tablesorter td:first-child {
+    border-left: none;
+}
+
+/* Estilo para encabezados */
+.tablesorter th {
+    background-color: #f2f2f2;
+    color: #333;
 }
