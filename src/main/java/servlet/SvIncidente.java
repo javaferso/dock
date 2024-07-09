@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logica.Controladora;
 import logica.Incidentes;
+import logica.Moneda;
+import logica.Proveedores;
+import logica.Servidores;
+import logica.Sociedades;
+import logica.Tipos;
+import logica.Usuario;
 
 /**
  *
@@ -70,7 +76,18 @@ public class SvIncidente extends HttpServlet {
 
     private void cargarFormulario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lógica para cargar formulario de agregar incidente
-        
+        List<Tipos> tipos = controladora.getAllTipos(); // Obtén la lista de tipos desde la base de datos
+        List<Moneda> monedas = controladora.listarMonedas();
+        List<Proveedores> proveedores = controladora.listarProveedores();
+        List<Sociedades> sociedades = controladora.listarSociedades();
+        List<Usuario> usuarios = controladora.listarUsuarios();
+        request.setAttribute("tipos", tipos);
+        request.setAttribute("monedas", monedas);
+        request.setAttribute("proveedores", proveedores);
+        request.setAttribute("usuarios", usuarios);
+        request.setAttribute("sociedades", sociedades);
+        List<Servidores> listaServidores = controladora.obtenerServidores();
+        request.setAttribute("listaServidores", listaServidores);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/crud/agregarIncidente.jsp");
         dispatcher.forward(request, response);
     }
@@ -101,7 +118,10 @@ public class SvIncidente extends HttpServlet {
     }
     
         private void agregarIncidente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException, Exception {
-            String tipo = request.getParameter("tipo");
+            
+            
+            
+            String tipoStr = request.getParameter("tipo");
             String mesStr = request.getParameter("mes");    
             String formato = request.getParameter("formato");
             String inc = request.getParameter("inc"); 
@@ -109,17 +129,19 @@ public class SvIncidente extends HttpServlet {
             String tienda = request.getParameter("tienda");
             String detalle = request.getParameter("detalle");
             String montoStr = request.getParameter("monto");
-            String moneda = request.getParameter("moneda"); 
-            String proveedor = request.getParameter("proveedor");
+            String monedaStr = request.getParameter("moneda"); 
+            String proveedorStr = request.getParameter("proveedor");
             String fAutorizarStr = request.getParameter("f_autorizar"); 
             String Oc = request.getParameter("oc");
             String fEnvioProvStr = request.getParameter("f_envio_prov");
             String Hes = request.getParameter("hes");
-            String Sociedad = request.getParameter("sociedad");
+            String sociedadStr = request.getParameter("sociedad");
             String OrdenEstadistica = request.getParameter("orden_estadistica");
             String TextoBreve = request.getParameter("texto_breve"); 
             String Cotizacion = request.getParameter("cotizacion");
             String activoStr = request.getParameter("activo");
+            String usuarioId = request.getParameter("usuario");
+           
 
             int mes = 0;
             int sap = 0;
@@ -159,10 +181,14 @@ public class SvIncidente extends HttpServlet {
             }
 
             activo = "true".equalsIgnoreCase(activoStr) || "on".equalsIgnoreCase(activoStr);
-
-
+            
+            Object tipo = controladora.obtenerTiposporNombre(tipoStr);
+            Moneda moneda = controladora.obtenerMonedaporCodigo(monedaStr);
+            Proveedores proveedor = controladora.obtenerNombreProveedor(proveedorStr);
+            Sociedades sociedad = controladora.obtenerSociedadPorNombre(sociedadStr);
+            Usuario usuario = controladora.obtenerUsuarioPorId(usuarioId);
             Incidentes incidente = new Incidentes();
-            incidente.setTipo(tipo);
+            incidente.setTipo((Tipos) tipo);
             incidente.setMes(mes);
             incidente.setFormato(formato);
             incidente.setInc(inc);
@@ -172,23 +198,24 @@ public class SvIncidente extends HttpServlet {
             incidente.setMonto(monto);
             incidente.setMoneda(moneda);
             incidente.setProveedor(proveedor);
-            incidente.setFAutorizar(fAutorizar);
+            incidente.setfAutorizar(fAutorizar);
             incidente.setOc(Oc);
-            incidente.setFEnvioProv(fEnvioProv);
+            incidente.setfEnvioProv(fEnvioProv);
             incidente.setHes(Hes);
-            incidente.setSociedad(Sociedad);
+            incidente.setSociedad(sociedad);
             incidente.setOrdenEstadistica(OrdenEstadistica);
             incidente.setTextoBreve(TextoBreve);
             incidente.setCotizacion(Cotizacion);
             incidente.setActivo(activo);
+            incidente.setUsuarioId(usuarioId);
             
             try {
-                controladora.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, Sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo);
+                controladora.crearIncidente(incidente);
                 response.sendRedirect("servicios.jsp");
             } catch (Exception e) {
                 request.setAttribute("error", "Error al agregar el incidente: " + e.getMessage());
                 request.getRequestDispatcher("agregarIncidente.jsp").forward(request, response);
             }
-        }
+        }       
 }
 

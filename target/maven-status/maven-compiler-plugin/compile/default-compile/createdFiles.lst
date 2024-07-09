@@ -17,6 +17,7 @@ logica\Tienda.class
 logica\Controladora.class
 servlet\SvIniciarMonitor.class
 servlet\SvKpi.class
+logica\Flejes.class
 com\smu\vision\BalanzaService.class
 servlet\SvDetailServerOffline.class
 servlet\SvSSHCommand.class

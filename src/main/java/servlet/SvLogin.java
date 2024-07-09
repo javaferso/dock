@@ -41,7 +41,7 @@ public class SvLogin extends HttpServlet {
             if (password.equals(user.getPassword())) {
                 session.setAttribute(SESSION_USER, user);
                 session.setAttribute(LOGIN_ATTEMPTS, 0);
-                if(user.getIdRole() == 5){
+                if (user.getIdRole().equals(5)) {
                     response.sendRedirect("dashboard.jsp");
                 } else {
                     response.sendRedirect("controlpos.jsp");

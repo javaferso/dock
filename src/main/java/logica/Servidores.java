@@ -49,17 +49,6 @@ import javax.validation.constraints.Size;
 
 public class Servidores implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
-    @Id
-    @GeneratedValue (strategy=GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
-    
-    @Column(name = "nombre_tienda")
-    private String nombreTienda;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
@@ -74,29 +63,40 @@ public class Servidores implements Serializable {
     @Size(max = 100)
     @Column(name = "ciudad")
     private String ciudad;
+    @Size(max = 255)
+    @Column(name = "ip_virtual")
+    private String ipVirtual;
+    @Size(max = 2147483647)
+    @Column(name = "estado_ip")
+    private String estadoIp;
+    @Size(max = 2147483647)
+    @Column(name = "estado_enlace")
+    private String estadoEnlace;
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    private static final long serialVersionUID = 1L;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
+    @Id
+    @GeneratedValue (strategy=GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+    
+    @Column(name = "nombre_tienda")
+    private String nombreTienda;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Column(name = "modified")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modified;
-    @Size(max = 15)
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
     @Column(name = "formato")
     private String formato;
-    @Size(max = 255)
-    @Column(name = "ip_virtual")
-    private String ipVirtual;
     @Column(name = "local", unique = true)
     private String local;
-    @Size(max = 255)
-    @Column(name = "estado_ip")
-    private String estadoIp;
-    @Size(max=50)
-    @Column(name = "estado_enlace")
-    private String estadoEnlace;
     @Size(max=50)
     
 
@@ -182,21 +182,6 @@ public class Servidores implements Serializable {
         this.ipEnlace = ipEnlace;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -262,6 +247,25 @@ public class Servidores implements Serializable {
     public String toString() {
         return "persistencia.Servidores[ id=" + id + " ]";
     }
+
+ 
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
 
   
     

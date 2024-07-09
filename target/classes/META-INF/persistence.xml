@@ -4,8 +4,9 @@
   <persistence-unit name="VisorBoletasPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>logica.Locales</class>
-    <class>logica.Usuario</class>
     <class>logica.Servidores</class>
+    <class>logica.Roles</class>
+    <class>logica.Usuario</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://10.36.94.163:5432/dock_pos"/>
@@ -55,6 +56,8 @@
     <class>logica.Proveedores</class>
     <class>logica.Sociedades</class>
     <class>logica.Tipos</class>
+    <class>logica.Roles</class>
+    <class>logica.Usuario</class>
     <properties/>
   </persistence-unit>
 </persistence>

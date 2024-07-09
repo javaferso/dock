@@ -13,7 +13,11 @@ import javax.persistence.Query;
 import logica.Balanza;
 import logica.Incidentes;
 import logica.Locales;
+import logica.Moneda;
+import logica.Proveedores;
 import logica.Servidores;
+import logica.Sociedades;
+import logica.Tipos;
 
 
 import logica.Usuario;
@@ -31,7 +35,11 @@ public class ControladoraPersistencia {
     ServidoresJpaController servJpa = new ServidoresJpaController(emf);
     BalanzaJpaController balJpa = new BalanzaJpaController(emb);
     IncidentesJpaController incJpa = new IncidentesJpaController(emf);
-   
+    TiposJpaController tipJpa = new TiposJpaController(emf);
+    MonedaJpaController monJpa = new MonedaJpaController(emf);
+    ProveedoresJpaController provJpa = new ProveedoresJpaController(emf);
+    SociedadesJpaController socJpa = new SociedadesJpaController(emf);
+    
     
     private int idRole;
     public List<Servidores> obtenerServidores;
@@ -177,8 +185,39 @@ public class ControladoraPersistencia {
         return incJpa.findIncidentesEntities(idRole, idRole);
     }
 
-    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws Exception {
-        incJpa.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo);
+//    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuarioId) throws Exception {
+//        incJpa.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo, usuarioId);
+//    }
+
+    public List<Tipos> getAllTipos() {
+        return tipJpa.findTiposEntities(idRole, idRole);
     }
 
+    public Moneda obtenerMonedaporCodigo(String monedaStr) {
+        return monJpa.obtenerMonedaporCodigo(monedaStr);
+    }
+
+    public Proveedores obtenerProveedorporNombre(String proveedorStr) {
+        return provJpa.obtenerProveedorporNombre(proveedorStr);
+    }
+
+    public void crearNuevoIncidente(Incidentes incidente) {
+        incJpa.crearNuevoIncidente(incidente);
+    }
+
+    public Object obtenerTiposporNombre(String tipoStr) {
+        return tipJpa.findTiposByNombre(tipoStr);
+    }
+
+    public List<Moneda> obtenerMonedas() {
+        return monJpa.findAll();
+    }
+
+    public List<Proveedores> findProveedoresEntities() {
+        return provJpa.findProveedoresdEntities();
+    }
+
+    public List<Sociedades> findSociedadesEntities() {
+        return socJpa.findSociedadesEntities();
+    }
 }

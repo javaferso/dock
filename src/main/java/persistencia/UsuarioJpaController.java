@@ -139,7 +139,6 @@ public class UsuarioJpaController implements Serializable {
     public Usuario findUsuario(String idUsuario) {
         EntityManager em = getEntityManager();
         try {
-            System.out.println("UsuarioJpaController está buscando al usuario con id: " + idUsuario);
             return em.find(Usuario.class, idUsuario);
         } catch (Exception e) {
             System.out.println("Error al buscar al usuario: " + e.getMessage());

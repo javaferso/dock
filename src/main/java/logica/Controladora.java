@@ -116,9 +116,53 @@ public class Controladora {
         return controlPersis.obtenerIncidentes();
     }
 
-    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws Exception {
-    controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo);
-}
+//    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuario) throws Exception {
+//        controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo, usuario);
+//}
+
+    public List<Tipos> getAllTipos() {
+        return controlPersis.getAllTipos();
+    }
+
+    public Moneda obtenerMonedaporCodigo(String monedaStr) {
+        return controlPersis.obtenerMonedaporCodigo(monedaStr);
+    }
+
+    public Proveedores obtenerNombreProveedor(String proveedorStr) {
+        return controlPersis.obtenerProveedorporNombre(proveedorStr);
+    }
+
+    public List<Moneda> listarMonedas() {
+        return controlPersis.obtenerMonedas();
+    }
+
+    public List<Proveedores> listarProveedores() {
+        return controlPersis.findProveedoresEntities();
+    }
+
+    public List<Sociedades> listarSociedades() {
+        return controlPersis.findSociedadesEntities();
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return controlPersis.obtenerUsuarios();
+    }
+
+    public Sociedades obtenerSociedadPorNombre(String sociedadStr) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Usuario obtenerUsuarioPorId(String usuarioId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void crearIncidente(Incidentes incidente) {
+        controlPersis.crearNuevoIncidente(incidente);
+    }
+
+    public Object obtenerTiposporNombre(String tipoStr) {
+        return controlPersis.obtenerTiposporNombre(tipoStr);
+    }
  
    
 

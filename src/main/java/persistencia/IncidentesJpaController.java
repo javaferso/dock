@@ -12,10 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import logica.Incidentes;
+import logica.Usuario;
 import persistencia.exceptions.PreexistingEntityException;
 
 /**
@@ -73,47 +75,49 @@ public class IncidentesJpaController implements Serializable {
         }
     }
 
-    public Incidentes crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws PreexistingEntityException {
-        EntityManager emf = null;
-        Incidentes incidente = new Incidentes();
-        try {
-            emf = getEntityManager();
-            emf.getTransaction().begin();
-            incidente.setTipo(tipo);
-            incidente.setMes(mes);
-            incidente.setFormato(formato);
-            incidente.setInc(inc);
-            incidente.setSap(sap);
-            incidente.setTienda(tienda);
-            incidente.setDetalle(detalle);
-            incidente.setMonto(monto);
-            incidente.setMoneda(moneda);
-            incidente.setProveedor(proveedor);
-            incidente.setFAutorizar(fAutorizar);
-            incidente.setOc(oc);
-            incidente.setFEnvioProv(fEnvioProv);
-            incidente.setHes(hes);
-            incidente.setSociedad(sociedad);
-            incidente.setOrdenEstadistica(ordenEstadistica);
-            incidente.setTextoBreve(textoBreve);
-            incidente.setCotizacion(cotizacion);
-            incidente.setActivo(activo);
-            incidente.setFechaCreacion(new Date()); // Set current date for creation
-            incidente.setFechaActualizacion(new Date()); // Set current date for update
-            emf.persist(incidente);
-            emf.getTransaction().commit();
-            return incidente;
-            } catch (Exception e) {
-            if (findIncidenteById(incidente.getId()) != null) {
-                throw new PreexistingEntityException("Incidente " + incidente + " already exists.", e);
-            } 
-            throw e;
-        } finally {
-            if (emf != null) {
-                emf.close();
-            }
-        }
-    }
+//    public Incidentes crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuarioId) throws PreexistingEntityException {
+//        EntityManager emf = null;
+//        Incidentes incidente = new Incidentes();
+//        
+//        try {
+//            emf = getEntityManager();
+//            emf.getTransaction().begin();
+//            incidente.setTipo(tipo);
+//            incidente.setMes(mes);
+//            incidente.setFormato(formato);
+//            incidente.setInc(inc);
+//            incidente.setSap(sap);
+//            incidente.setTienda(tienda);
+//            incidente.setDetalle(detalle);
+//            incidente.setMonto(monto);
+//            incidente.setMoneda(moneda);
+//            incidente.setProveedor(proveedor);
+//            incidente.setfAutorizar(fAutorizar);
+//            incidente.setOc(oc);
+//            incidente.setfEnvioProv(fEnvioProv);
+//            incidente.setHes(hes);
+//            incidente.setSociedad(sociedad);
+//            incidente.setOrdenEstadistica(ordenEstadistica);
+//            incidente.setTextoBreve(textoBreve);
+//            incidente.setCotizacion(cotizacion);
+//            incidente.setActivo(activo);
+//            incidente.setUsuarioId(usuarioId);
+//            incidente.setFechaCreacion(new Date()); // Set current date for creation
+//            incidente.setFechaActualizacion(new Date()); // Set current date for update
+//            emf.persist(incidente);
+//            emf.getTransaction().commit();
+//            return incidente;
+//            } catch (Exception e) {
+//            if (findIncidenteById(incidente.getId()) != null) {
+//                throw new PreexistingEntityException("Incidente " + incidente + " already exists.", e);
+//            } 
+//            throw e;
+//        } finally {
+//            if (emf != null) {
+//                emf.close();
+//            }
+//        }
+//    }
 
     private Object findIncidenteById(Integer id) {
         EntityManager em = getEntityManager();
@@ -121,6 +125,27 @@ public class IncidentesJpaController implements Serializable {
             return em.find(Incidentes.class, id);
         } finally {
             em.close();
+        }
+    }
+
+    public void crearNuevoIncidente(Incidentes incidente) {
+        EntityManager em = null;
+        EntityTransaction tx = null;
+        try {
+            em = getEntityManager();
+            tx = em.getTransaction();
+            tx.begin();
+            em.persist(incidente);
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Error al crear Incidente", ex);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
    

@@ -27,13 +27,14 @@ body {
     flex-grow: 1;
     padding: 0;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
 }
 
 /* Estilizar barras de desplazamiento */
 .body-boleta::-webkit-scrollbar {
-    width: 6px; /* Ancho de la barra de desplazamiento */
+    width: 6px; /* Ancho de la barra de desplazamiento vertical */
+    height: 8px; /* Ancho de la barra de desplazamiento horizontal */
 }
 
 .body-boleta::-webkit-scrollbar-thumb {
@@ -67,7 +68,7 @@ body {
 
 
 h1 {
-    color: #C5AEBF;
+    color: #C5AEBF !important;
     margin-bottom: 20px;
 }
 
@@ -318,8 +319,8 @@ a:hover {
 }
 
 .logo-img {
-    width: 150px;
-    height: 40px;
+    width: 160px;
+    height: 30px;
     padding: 10px 0 auto 12px;
     margin-left: 15px;
 }
@@ -1132,7 +1133,7 @@ tr.selected {
 }
 
 .table-sm th, .table-sm td {
-    padding: 0.3rem;
+    padding: 0.2rem;
 }
 
 .container-custom {

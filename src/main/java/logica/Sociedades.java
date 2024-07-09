@@ -45,7 +45,7 @@ public class Sociedades implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sociedades", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sociedad", fetch = FetchType.LAZY)
     private Collection<Incidentes> incidentesCollection;
 
     public Collection<Incidentes> getIncidentesCollection() {

@@ -37,6 +37,7 @@ public class SvDatosLocal extends HttpServlet {
       if (action.equals("getFormatos")) {
          List<String> formatos = controladora.obtenerFormatos();
          out.print((new Gson()).toJson(formatos));
+         req.setAttribute("formatos", formatos);
       } else {
          List cajas;
          String caja;

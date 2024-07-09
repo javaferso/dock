@@ -47,7 +47,7 @@ public class Tipos implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipos", fetch = FetchType.LAZY)
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipo", fetch = FetchType.LAZY)
     private Collection<Incidentes> incidentesCollection;
 
     public Tipos() {

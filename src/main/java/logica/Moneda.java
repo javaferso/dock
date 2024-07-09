@@ -46,7 +46,7 @@ public class Moneda implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "codigo")
     private String codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moneda1", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moneda", fetch = FetchType.LAZY)
     private Collection<Incidentes> incidentesCollection;
 
     public Moneda() {

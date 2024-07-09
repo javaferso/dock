@@ -46,7 +46,7 @@ public class Proveedores implements Serializable {
     @Column(name = "nombre")
     private String nombre;
   
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedores", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedor", fetch = FetchType.LAZY)
     private Collection<Incidentes> incidentesCollection;
 
     public Collection<Incidentes> getIncidentesCollection() {
