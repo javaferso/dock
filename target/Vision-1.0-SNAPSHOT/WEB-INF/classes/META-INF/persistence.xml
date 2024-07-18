@@ -8,14 +8,16 @@
     <class>logica.Roles</class>
     <class>logica.Usuario</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://10.36.94.163:5432/dock_pos"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="Smu.2023!!"/>
-      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.level" value="WARNING"/>
       <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.PostgreSQLPlatform"/>
       <property name="eclipselink.default_schema" value="supervision"/>
+      <property name="javax.persistence.sharedCache.mode" value="ENABLE_SELECTIVE"/>
     </properties>
   </persistence-unit>
   <!-- Unidad de persistencia para monitor_procesos_ti -->
@@ -28,7 +30,7 @@
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="Smu.2023!!"/>
-      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.level" value="WARNING"/>
       <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.PostgreSQLPlatform"/>
       <property name="eclipselink.default_schema" value="datos_basicos"/>
     </properties>
@@ -43,7 +45,7 @@
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="Smu.2023!!"/>
-      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.logging.level" value="WARNING"/>
       <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.PostgreSQLPlatform"/>
       <property name="eclipselink.default_schema" value="monitor"/>
     </properties>
@@ -58,6 +60,8 @@
     <class>logica.Tipos</class>
     <class>logica.Roles</class>
     <class>logica.Usuario</class>
-    <properties/>
+    <properties>
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
   </persistence-unit>
 </persistence>
