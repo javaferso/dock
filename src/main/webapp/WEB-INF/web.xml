@@ -49,8 +49,8 @@
         <servlet-class>servlet.SvPing</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SvTicketPending</servlet-name>
-        <servlet-class>servlet.SvTicketPending</servlet-class>
+        <servlet-name>SvTickets</servlet-name>
+        <servlet-class>servlet.SvTickets</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SvDatosServidor</servlet-name>
@@ -150,8 +150,8 @@
         <url-pattern>/SvPing</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SvTicketPending</servlet-name>
-        <url-pattern>/SvTicketPending</url-pattern>
+        <servlet-name>SvTickets</servlet-name>
+        <url-pattern>/SvTickets</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SvDatosServidor</servlet-name>

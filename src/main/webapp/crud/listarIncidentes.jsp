@@ -30,10 +30,10 @@
     <script src="js/script.js"></script>
 </head>
 <h1>Lista de Servicios Registrados</h1>
-<table id="details" class="table table-striped table-sm tablesorter">
+<table id="details" class="table table-striped table-bordered table-sm">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <th id="idIncidente">ID</th>
             <th>Tipo</th>
             <th>Mes</th>
             <th>Formato</th>
@@ -64,8 +64,12 @@
         %>
 
         <tr>
-            <td><%= incidente.getId()%></td>
-            <td><%= incidente.getTipo().getNombre() %></td>
+            <td>
+                 <a href="SvIncidente?action=edit-form&id=<%= incidente.getId()%>" class="text-decoration-none">
+                    <%= incidente.getId()%>
+                </a>
+            </td>
+            <td><%= incidente.getTipo() %></td>
             <td><%= incidente.getMes()%></td>
             <td><%= incidente.getFormato()%></td>
             <td><%= incidente.getInc()%></td>
@@ -73,19 +77,19 @@
             <td><%= incidente.getTienda()%></td>
             <td><%= incidente.getDetalle()%></td>
             <td><%= incidente.getMonto()%></td>
-            <td><%= incidente.getMoneda() != null ? incidente.getMoneda().getCodigo():"" %></td>
-            <td><%= incidente.getProveedor() != null ? incidente.getProveedor().getNombre(): "" %></td>
+            <td><%= incidente.getMoneda() != null ? incidente.getMoneda():"" %></td>
+            <td><%= incidente.getProveedor() != null ? incidente.getProveedor(): "" %></td>
             <td><%= incidente.getfAutorizar()%></td>
             <td><%= incidente.getOc()%></td>
             <td><%= incidente.getfEnvioProv()%></td>
             <td><%= incidente.getHes()%></td>
-            <td><%= incidente.getSociedad() != null ? incidente.getSociedad().getNombre(): "" %></td>
+            <td><%= incidente.getSociedad() != null ? incidente.getSociedad(): "" %></td>
             <td><%= incidente.getOrdenEstadistica()%></td>
             <td><%= incidente.getTextoBreve()%></td>
             <td><%= incidente.getCotizacion()%></td>
             <td><%= incidente.isActivo() %></td>
             <td><%= incidente.getFechaCierre() %></td>
-            <td><%= incidente.getUsuarioId() != null ? incidente.getUsuarioId().getNombre() + " " + incidente.getUsuarioId().getApellido(): "" %></td>
+            <td><%= incidente.getUsuarioId() != null ? incidente.getUsuarioId() + " " + incidente.getUsuarioId(): "" %></td>
         </tr>
         <%}%>
     </tbody>

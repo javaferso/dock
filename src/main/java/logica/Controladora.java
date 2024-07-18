@@ -5,6 +5,7 @@
 package logica;
 
 import static java.lang.System.out;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +82,7 @@ public class Controladora {
          return controlPersis.findLocalesPorCriterio(query);
     }
 
-    public List<String> buscarServidoresPorCriterio(String query) {
+    public List<Servidores> buscarServidoresPorCriterio(String query) {
         return controlPersis.findServidoresPorCriterio(query);
     }
 
@@ -116,9 +117,9 @@ public class Controladora {
         return controlPersis.obtenerIncidentes();
     }
 
-//    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuario) throws Exception {
-//        controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo, usuario);
-//}
+    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, String sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuario) throws Exception {
+       controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo, usuario);
+    }
 
     public List<Tipos> getAllTipos() {
         return controlPersis.getAllTipos();
@@ -149,22 +150,55 @@ public class Controladora {
     }
 
     public Sociedades obtenerSociedadPorNombre(String sociedadStr) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return controlPersis.findSociedadName(sociedadStr);
     }
 
     public Usuario obtenerUsuarioPorId(String usuarioId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return controlPersis.findIdUsuario(usuarioId);
     }
 
-    public void crearIncidente(Incidentes incidente) {
-        controlPersis.crearNuevoIncidente(incidente);
-    }
+ //   public void crearIncidente(Tipos tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, Moneda moneda, Proveedores proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, Sociedades sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuarioId) {
+ //       System.out.println("crearIncidente en Controladora");
+ ///      controlPersis.crearNuevoIncidente();
+ //   }
 
     public Object obtenerTiposporNombre(String tipoStr) {
         return controlPersis.obtenerTiposporNombre(tipoStr);
     }
  
-   
+    public Tipos findTiposById (int Id) {
+        return controlPersis.findTiposById(Id);
+    }
 
-   
+    public Sociedades findSociedadesById (int Id) {
+        return controlPersis.findSociedadesById(Id);
+    }
+    
+    public Proveedores findProveedoresById(int Id) {
+        return controlPersis.findProveedoresById(Id);
+    }
+    
+    public Moneda findMonedaById (int Id) {
+        return controlPersis.findMonedaById(Id);
+    }
+
+    public Tienda findTiendaByLocal(String datosLocal) {
+        return controlPersis.findTiendaByLocal(datosLocal);
+    }
+
+    public List<Tienda> buscarTiendasPorCriterio(String query) {
+        return controlPersis.findTiendasPorCriterio(query);
+    }
+
+    public Incidentes findIncidenteById(int idIncidente) {
+        return controlPersis.findIncidenteById(idIncidente);
+    }
+
+    public void actualizarIncidente(Incidentes incidente) throws Exception {
+        controlPersis.editarIncidente(incidente);
+    }
+
+    public void updateServidor(Servidores local) throws Exception {
+        controlPersis.editServidores(local);
+    }
 }

@@ -21,6 +21,7 @@
   <!-- Unidad de persistencia para monitor_procesos_ti -->
   <persistence-unit name="MonitorTIPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <non-jta-data-source>Monitor Procesos TI</non-jta-data-source>
     <class>logica.Tienda</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>

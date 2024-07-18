@@ -5,12 +5,16 @@
 package servlet;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.smu.vision.NetworkUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
@@ -19,7 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logica.Controladora;
-import logica.Locales;
 import logica.Servidores;
 
 /**
@@ -48,13 +51,24 @@ public class SvDatosServidor extends HttpServlet {
             System.out.println("Dato recibido desde SvDatosServidor: " + datosLocal);
 
             try {
+
                 if (datosLocal == null || datosLocal.trim().isEmpty()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\":\"Identificador del local no proporcionado.\"}");
                 } else {
-                    Object servidor = controladora.findServidorByLocal(datosLocal);
-                    if (servidor != null) {
-                        out.print(new Gson().toJson(servidor));
+                    Servidores tienda = (Servidores) controladora.findServidorByLocal(datosLocal);
+                    if (tienda != null) {
+                        CompletableFuture<Boolean> ipAddressFuture = NetworkUtils.isReachableAsync(tienda.getIpAddress());
+                        CompletableFuture<Boolean> ipEnlaceFuture = NetworkUtils.isReachableAsync(tienda.getIpEnlace());
+
+                        CompletableFuture.allOf(ipAddressFuture, ipEnlaceFuture).join();
+
+                        boolean isIpAddressReachable = ipAddressFuture.get();
+                        boolean isIpEnlaceReachable = ipEnlaceFuture.get();
+
+                        tienda.setEstadoIp(isIpAddressReachable ? "online" : "offline");
+                        tienda.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
+                        out.print(new Gson().toJson(tienda));
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         out.print("{\"error\":\"Servidor no encontrado\"}");
@@ -68,16 +82,47 @@ public class SvDatosServidor extends HttpServlet {
                 out.flush();
                 out.close();
             }
-        } else if("searchLocals".equals(action)) {
+        } else if ("searchLocals".equals(action)) {
             String query = request.getParameter("query");
-            
+
             try {
-                if(query == null || query.trim().isEmpty()){
+                if (query == null || query.trim().isEmpty()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\":\"Identificador del local no proporcionado.\"}");
                 } else {
-                    List<String> locales = controladora.buscarServidoresPorCriterio(query);
-                    if(locales != null){
+                    if (!isValidQuery(query)) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\":\"Consulta no válida.\"}");
+                        return;
+                    }
+                    List<Servidores> locales = controladora.buscarServidoresPorCriterio(query);
+                    if (locales != null) {
+                        // Usar CompletableFuture para hacer ping a todas las IPs en paralelo
+                        List<CompletableFuture<Void>> futures = locales.stream().map(local -> CompletableFuture.runAsync(() -> {
+                            try {
+                                CompletableFuture<Boolean> ipAddressFuture = NetworkUtils.isReachableAsync(local.getIpAddress());
+                                CompletableFuture<Boolean> ipEnlaceFuture = NetworkUtils.isReachableAsync(local.getIpEnlace());
+
+                                CompletableFuture.allOf(ipAddressFuture, ipEnlaceFuture).join();
+
+                                boolean isIpAddressReachable = ipAddressFuture.get();
+                                boolean isIpEnlaceReachable = ipEnlaceFuture.get();
+
+                                local.setEstadoIp(isIpAddressReachable ? "online" : "offline");
+                                local.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
+
+                                // Actualizar los cambios en la base de datos
+                                controladora.updateServidor(local);
+                            } catch (InterruptedException | ExecutionException e) {
+                                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, null, e);
+                            } catch (Exception ex) {
+                                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        })).collect(Collectors.toList());
+
+                        // Esperar a que todos los futures se completen
+                        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
                         out.print(new Gson().toJson(locales));
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -92,11 +137,6 @@ public class SvDatosServidor extends HttpServlet {
                 out.flush();
                 out.close();
             }
-
-        
-        
-        
-        
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print("{\"error\":\"Acción no definida\"}");
@@ -105,15 +145,8 @@ public class SvDatosServidor extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    private boolean isValidQuery(String query) {
+        return query.matches("[a-zA-Z0-9 ]+");
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

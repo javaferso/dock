@@ -9,6 +9,7 @@ logica\Locales.class
 logica\Proveedores.class
 persistencia\exceptions\PreexistingEntityException.class
 persistencia\exceptions\IllegalOrphanException.class
+com\smu\vision\TicketService.class
 logica\Tipos.class
 servlet\SvLocales.class
 persistencia\TiendaJpaController.class
@@ -26,7 +27,6 @@ servlet\SvIncidente.class
 servlet\SvRoll.class
 persistencia\exceptions\NonexistentEntityException.class
 servlet\SvRoll$1TaskContext.class
-servlet\SvTicketPending.class
 com\smu\vision\ScoPesoDefinido.class
 servlet\SvHttpSessionListener.class
 persistencia\MonedaJpaController.class
@@ -40,6 +40,7 @@ persistencia\UsuarioJpaController.class
 persistencia\ProveedoresJpaController.class
 persistencia\BalanzaJpaController.class
 persistencia\ControladoraPersistencia.class
+servlet\SvTickets.class
 logica\Servidores.class
 servlet\SvBuscarBoleta.class
 servlet\SvPerfil.class
@@ -61,3 +62,4 @@ servlet\SvPing.class
 persistencia\TiposJpaController.class
 logica\Moneda.class
 persistencia\IncidentesJpaController.class
+com\smu\vision\NetworkUtils.class

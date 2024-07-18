@@ -100,6 +100,7 @@ public class BalanzaService {
     private List<Object[]> obtenerDatosDeTienda(Tienda tienda) throws SQLException {
         List<Object[]> resultados = new ArrayList<>();
         String url = "jdbc:informix-sqli://" + tienda.getDireccionIp() + ":1527/INFORMIXSERVER=" + tienda.getInstanciaInformix();
+        out.println(url);
         String user = "usuariosopbd";
         String password = "Cji$R9kwA";
 

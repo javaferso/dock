@@ -1,3 +1,4 @@
+C:\Vision\src\main\java\com\smu\vision\TicketService.java
 C:\Vision\src\main\java\logica\Services.java
 C:\Vision\src\main\java\servlet\SvSSHCommand.java
 C:\Vision\src\main\java\servlet\SvGraficos.java
@@ -12,7 +13,6 @@ C:\Vision\src\main\java\logica\Servidores.java
 C:\Vision\src\main\java\persistencia\ControladoraPersistencia.java
 C:\Vision\src\main\java\persistencia\ServidoresJpaController.java
 C:\Vision\src\main\java\servlet\SvIniciarMonitor.java
-C:\Vision\src\main\java\servlet\SvTicketPending.java
 C:\Vision\src\main\java\com\smu\vision\resources\JavaEE8Resource.java
 C:\Vision\src\main\java\persistencia\exceptions\PreexistingEntityException.java
 C:\Vision\src\main\java\logica\Controladora.java
@@ -33,6 +33,7 @@ C:\Vision\src\main\java\com\smu\vision\ScoPesoDefinido.java
 C:\Vision\src\main\java\servlet\SvDatosLocal.java
 C:\Vision\src\main\java\logica\Tienda.java
 C:\Vision\src\main\java\servlet\SvHttpSessionListener.java
+C:\Vision\src\main\java\servlet\SvTickets.java
 C:\Vision\src\main\java\servlet\SvIncidente.java
 C:\Vision\src\main\java\logica\BalanzaPK.java
 C:\Vision\src\main\java\servlet\SvOfflineServer.java
@@ -44,6 +45,7 @@ C:\Vision\src\main\java\persistencia\exceptions\NonexistentEntityException.java
 C:\Vision\src\main\java\persistencia\MonedaJpaController.java
 C:\Vision\src\main\java\servlet\SvProgreso.java
 C:\Vision\src\main\java\com\smu\vision\exceptions\NonexistentEntityException.java
+C:\Vision\src\main\java\com\smu\vision\NetworkUtils.java
 C:\Vision\src\main\java\servlet\SvBuscarBoleta.java
 C:\Vision\src\main\java\persistencia\ProveedoresJpaController.java
 C:\Vision\src\main\java\logica\Tipos.java

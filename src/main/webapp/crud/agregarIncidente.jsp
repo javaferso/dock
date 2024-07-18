@@ -52,7 +52,7 @@
                 <select class="form-control" id="tipo" name="tipo" required>
                     <option value="">Seleccione un tipo</option>
                     <% for (Tipos tipo : tipos) {%>
-                    <option value="<%= tipo.getId()%>"><%= tipo.getNombre()%></option>
+                    <option value="<%= tipo.getNombre()%>"><%= tipo.getNombre()%></option>
                     <% } %>
                 </select>
             </div>
@@ -78,7 +78,7 @@
             <!-- Input Ingreso Codigo de Local -->
             <div class="mb-3">
                 <label for="sap" class="form-label">SAP</label>
-                <input type="text" class="form-control" id="sap" required>
+                <input type="text" class="form-control" id="sap" name="sap" required>
             </div>
 
             <!-- Input Ingreso Nombre de Local -->
@@ -105,7 +105,7 @@
                 <select class="form-control" id="moneda" name="moneda" required>
                     <option value="">Seleccione Moneda</option>
                     <% for (Moneda moneda : monedas) {%>
-                    <option value="<%= moneda.getId()%>"><%= moneda.getCodigo()%></option>
+                    <option value="<%= moneda.getCodigo()%>"><%= moneda.getCodigo()%></option>
                     <% } %>
                 </select>
             </div>
@@ -116,7 +116,7 @@
                 <select class="form-control" id="proveedor" name="proveedor" required>
                     <option value="">Seleccione Proveedor</option>
                     <% for (Proveedores proveedor : proveedores) {%>
-                    <option value="<%= proveedor.getId()%>"><%= proveedor.getNombre()%></option>
+                    <option value="<%= proveedor.getNombre()%>"><%= proveedor.getNombre()%></option>
                     <% } %>
                 </select>
             </div>
@@ -155,7 +155,7 @@
                 <select class="form-control" id="sociedad" name="sociedad" required>
                     <option value="">Seleccione Sociedad</option>
                     <% for (Sociedades sociedad : sociedades) {%>
-                    <option value="<%= sociedad.getId()%>"><%= sociedad.getNombre()%></option>
+                    <option value="<%= sociedad.getNombre()%>"><%= sociedad.getNombre()%></option>
                     <% } %>
                 </select>       
             </div>
@@ -188,8 +188,13 @@
 
             <!-- Input Texto Breve -->
             <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="activo" name="activo" checked>
-                <label for="activo" class="form-check-label">Activo</label>
+
+                <label for="activo" class="form-check-label">Estado</label>
+                <select class="form-select" name="activo" id="activo">
+                    <option selected>Seleccione...</option>
+                    <option value="True">Activo</option>
+                    <option value="False">Pendiente</option>
+                </select>
             </div>
 
             <div class="mb-3">
@@ -210,7 +215,7 @@
 
 
             </div>
-            <button type="submit" class="btn btn-primary" id="agregarIncidenteForm">Agregar</button>
+            <button type="submit" class="button" id="agregarIncidenteForm">Agregar</button>
         </form>
         <!-- Autocomplete Script -->
         <script>

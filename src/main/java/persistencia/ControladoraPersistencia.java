@@ -4,6 +4,7 @@
  */
 package persistencia;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -17,10 +18,12 @@ import logica.Moneda;
 import logica.Proveedores;
 import logica.Servidores;
 import logica.Sociedades;
+import logica.Tienda;
 import logica.Tipos;
 
 
 import logica.Usuario;
+import persistencia.exceptions.PreexistingEntityException;
 
 /**
  *
@@ -39,7 +42,7 @@ public class ControladoraPersistencia {
     MonedaJpaController monJpa = new MonedaJpaController(emf);
     ProveedoresJpaController provJpa = new ProveedoresJpaController(emf);
     SociedadesJpaController socJpa = new SociedadesJpaController(emf);
-    
+    TiendaJpaController tienJpa = new TiendaJpaController(emf);
     
     private int idRole;
     public List<Servidores> obtenerServidores;
@@ -156,7 +159,7 @@ public class ControladoraPersistencia {
          return locJpa.findLocalesporNombreoLocal(query);
     }
 
-    public List<String> findServidoresPorCriterio(String query) {
+    public List<Servidores> findServidoresPorCriterio(String query) {
         return servJpa.findServidoresPorCriterio(query);
     }
 
@@ -185,9 +188,9 @@ public class ControladoraPersistencia {
         return incJpa.findIncidentesEntities(idRole, idRole);
     }
 
-//    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuarioId) throws Exception {
-//        incJpa.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo, usuarioId);
-//    }
+    public void crearIncidente(String formato, int mes, String inc, String tienda, int sap, String detalle, String oc, BigDecimal monto, String hes, String ordenEstadistica, Date fAutorizar, String textoBreve, Date fEnvioProv, String cotizacion, String ordenEstadistica1, String textoBreve1, String cotizacion1, String sociedad, boolean activo, String usuario) throws Exception {
+        incJpa.crearIncidente(formato, mes, inc, tienda, sap, detalle, oc, monto, hes, ordenEstadistica, fAutorizar, textoBreve, fEnvioProv, cotizacion, sociedad, ordenEstadistica, textoBreve, cotizacion, activo, usuario);
+    }
 
     public List<Tipos> getAllTipos() {
         return tipJpa.findTiposEntities(idRole, idRole);
@@ -202,6 +205,7 @@ public class ControladoraPersistencia {
     }
 
     public void crearNuevoIncidente(Incidentes incidente) {
+        System.out.println("crear Incidente e ControladoraPersistencia");
         incJpa.crearNuevoIncidente(incidente);
     }
 
@@ -219,5 +223,57 @@ public class ControladoraPersistencia {
 
     public List<Sociedades> findSociedadesEntities() {
         return socJpa.findSociedadesEntities();
+    }
+
+    //public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, String usuario) {
+    //    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    //}
+
+    public Sociedades findSociedadName(String sociedadStr) {
+        return socJpa.findSociedadesName(sociedadStr);
+    }
+
+    public Usuario findIdUsuario(String usuarioId) {
+        return usuJpa.findUsuario(usuarioId);
+    }
+
+    public Tipos findTiposById(int Id) {
+        return tipJpa.findTiposById(Id);
+    }
+
+    public Sociedades findSociedadesById(int Id) {
+        return socJpa.findSociedades(Id);
+    }
+
+    public Proveedores findProveedoresById(int Id) {
+        return provJpa.findProveedoresById(Id);
+    }
+
+    public Moneda findMonedaById(int Id) {
+        return monJpa.findMonedaById(Id);
+    }
+
+    //public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, String sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuario) throws PreexistingEntityException {
+   //     incJpa.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo, usuario);
+   // }
+
+    public Tienda findTiendaByLocal(String datosLocal) {
+        return tienJpa.findTiendaByLocal(datosLocal);
+    }
+
+    public List<Tienda> findTiendasPorCriterio(String query) {
+        return tienJpa.findTiendaPorCriterio(query);
+    }
+
+    public Incidentes findIncidenteById(int idIncidente) {
+        return incJpa.findIncidenteById(idIncidente);
+    }
+
+    public void editarIncidente(Incidentes incidente) throws Exception {
+        incJpa.edit(incidente);
+    }
+
+    public void editServidores(Servidores local) throws Exception {
+        servJpa.edit(local);
     }
 }

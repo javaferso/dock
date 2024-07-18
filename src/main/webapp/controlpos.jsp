@@ -179,8 +179,18 @@
         </div>
         <script>
             var ipOculta = [];
-
             $(document).ready(function () {
+                $('#localId').click(function () {
+                    $('#localId').val('');
+                    $('#nombreTienda').val('');
+                    $('#direccionInput').val('');
+                    $('#cityInput').val('');
+                    $('#iPservidorInput').val('');
+                    $('#ipVirtualInput').val('');
+                    $('#enlaceInput').val('');
+                    $('#nombreInput').val('');
+                    $('#todasLasCajas').empty();
+                });
                 $('#localId').autocomplete({
                     source: function (request, response) {
                         $.ajax({
@@ -279,14 +289,13 @@
                 var icon = $(selector);
                 icon.removeClass('bg-success bg-warning bg-danger');
                 if (status === 'online') {
-                    icon.addClass('bg-warning');
+                    icon.addClass('bg-success');
                 } else {
                     icon.addClass('bg-danger');
                 }
             }
 
             var cajasOrdenadas = [];
-            var userRole = <%= user.getIdRole()%>;
 
             $(document).ready(function () {
                 $('#todasLasCajas').on('click', 'tr', function () {
@@ -515,7 +524,7 @@
                padding: 0;
             }
             .bg-success {
-               background-color: yellow;
+               background-color: green;
             }
 
             .bg-danger {

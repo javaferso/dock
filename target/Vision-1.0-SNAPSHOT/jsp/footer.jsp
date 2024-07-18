@@ -18,13 +18,13 @@
             <h6 class="text-muted">Changelog</h6>
             <ul class="list-unstyled text-muted small">
                 <li>
-                    <i class="fas fa-v"></i> [2.3.1] - 2024-04-24
+                    <i class="fas fa-v"></i> [2.3.5] - 2024-07-12
                 </li>
                 <li>
-                    <i class="fas fa-plus-circle"></i> Added: Nueva función conexion a Pos
+                    <i class="fas fa-plus-circle"></i> Added: Nueva Pagina de Gestion Servicios
                 </li>
                 <li>
-                    <i class="fas fa-exchange-alt"></i> Changed: 
+                    <i class="fas fa-exchange-alt"></i> Changed: Mejor disposicion barra de navegacion
                 </li>
                 <li>
                     <i class="fas fa-wrench"></i> Fixed: 

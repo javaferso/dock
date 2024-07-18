@@ -90,8 +90,7 @@ public class Usuario implements Serializable {
     @ManyToOne
     private Roles idRole;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId", fetch = FetchType.LAZY)
-    private Collection<Incidentes> incidentesCollection;
+   
 
     public Usuario() {
     }
@@ -110,14 +109,6 @@ public class Usuario implements Serializable {
 
     public void setIdRole(Roles idRole) {
         this.idRole = idRole;
-    }
-
-    public Collection<Incidentes> getIncidentesCollection() {
-        return incidentesCollection;
-    }
-
-    public void setIncidentesCollection(Collection<Incidentes> incidentesCollection) {
-        this.incidentesCollection = incidentesCollection;
     }
 
     

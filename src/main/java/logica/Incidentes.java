@@ -5,6 +5,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -64,9 +65,9 @@ public class Incidentes implements Serializable {
     @Column(name = "id")
     private Integer id;
     
-    @ManyToOne
-    @JoinColumn(name="tipo", referencedColumnName="nombre")
-    private Tipos tipo;
+    @Basic
+    @Column(name="tipo")
+    private String tipo;
     
     @Basic(optional = false)
     @NotNull
@@ -99,15 +100,11 @@ public class Incidentes implements Serializable {
     private String detalle;
     
     @Column(name = "monto")
-    private BigInteger monto;
+    private BigDecimal monto;
     
-    @ManyToOne
-    @JoinColumn(name = "moneda", referencedColumnName = "codigo")
-    private Moneda moneda;
-    
-    @ManyToOne
-    @JoinColumn(name = "proveedor", referencedColumnName = "nombre")
-    private Proveedores proveedor;
+    @Size(max = 255)
+    @Column(name = "moneda")
+    private String moneda;
     
     @Column(name = "f_autorizar")
     @Temporal(TemporalType.DATE)
@@ -125,13 +122,14 @@ public class Incidentes implements Serializable {
     @Column(name = "hes")
     private String hes;
     
-    @ManyToOne
-    @JoinColumn(name = "sociedad", referencedColumnName = "nombre")
-    private Sociedades sociedad;
+    @Size(max = 255)
+    @Column(name = "sociedad")
+    private String sociedad;
     
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
-    private Usuario usuarioId;
+    
+    @Size(max = 255)
+    @Column(name = "usuario_id")
+    private String usuarioId;
 
     @Size(max = 255)
     @Column(name = "orden_estadistica")
@@ -144,6 +142,10 @@ public class Incidentes implements Serializable {
     @Size(max = 255)
     @Column(name = "cotizacion")
     private String cotizacion;
+    
+    @Size(max = 255)
+    @Column(name = "proveedor")
+    private String proveedor;
     
     @Basic(optional = false)
     @NotNull
@@ -161,6 +163,7 @@ public class Incidentes implements Serializable {
     @Column(name = "fecha_cierre")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCierre;
+    
 
     public Incidentes() {
     }
@@ -169,7 +172,7 @@ public class Incidentes implements Serializable {
         this.id = id;
     }
 
-    public Incidentes(Integer id, Tipos tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, Moneda moneda, Proveedores proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, Sociedades sociedad, Usuario usuarioId, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, Date fechaCreacion, Date fechaActualizacion, Date fechaCierre) {
+    public Incidentes(Integer id, String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String usuarioId, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, Date fechaCreacion, Date fechaActualizacion, Date fechaCierre) {
         this.id = id;
         this.tipo = tipo;
         this.mes = mes;
@@ -204,12 +207,8 @@ public class Incidentes implements Serializable {
         this.id = id;
     }
 
-    public Tipos getTipo() {
+    public String getTipo() {
         return tipo;
-    }
-
-    public void setTipo(Tipos tipo) {
-        this.tipo = tipo;
     }
 
     public int getMes() {
@@ -260,21 +259,21 @@ public class Incidentes implements Serializable {
         this.detalle = detalle;
     }
 
-    public BigInteger getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(BigInteger monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
-    public Moneda getMoneda() {
+    public String getMoneda() {
         return moneda;
     }
 
     
 
-    public Proveedores getProveedor() {
+    public String getProveedor() {
         return proveedor;
     }
 
@@ -311,13 +310,12 @@ public class Incidentes implements Serializable {
         this.hes = hes;
     }
 
-    public Sociedades getSociedad() {
+    public String getSociedad() {
         return sociedad;
     }
 
-   
-
-    public Usuario getUsuarioId() {
+  
+    public String getUsuarioId() {
         return usuarioId;
     }
 
@@ -403,28 +401,25 @@ public class Incidentes implements Serializable {
         return "logica.Incidentes[ id=" + id + " ]";
     }
 
-    public void setUsuarioId(String usuarioId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    public void setMoneda(Moneda moneda) {
-        
-    }
-
-    public void setProveedor(Proveedores proveedor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void setSociedad(Sociedades sociedad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 
     public void setProveedor(String proveedor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.proveedor = proveedor;
     }
 
     public void setSociedad(String sociedad) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.sociedad = sociedad;
+    }
+    
+    public void setUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
 }

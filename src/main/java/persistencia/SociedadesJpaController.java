@@ -7,8 +7,10 @@ package persistencia;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import logica.Sociedades;
 import persistencia.exceptions.NonexistentEntityException;
@@ -102,4 +104,18 @@ public class SociedadesJpaController {
             em.close();
         }
     }
+
+    Sociedades findSociedadesName(String sociedadStr) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Sociedades> query = em.createQuery("SELECT s FROM Sociedades s WHERE s.nombre = :nombre", Sociedades.class);
+            query.setParameter("nombre", sociedadStr);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
 }

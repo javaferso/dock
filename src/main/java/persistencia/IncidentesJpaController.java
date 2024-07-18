@@ -5,6 +5,7 @@
 package persistencia;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,13 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import logica.Incidentes;
+import logica.Moneda;
+import logica.Proveedores;
+import logica.Servidores;
+import logica.Sociedades;
+import logica.Tipos;
 import logica.Usuario;
+import persistencia.exceptions.NonexistentEntityException;
 import persistencia.exceptions.PreexistingEntityException;
 
 /**
@@ -54,7 +61,28 @@ public class IncidentesJpaController implements Serializable {
             em.close();
         }
     }
-
+    public void edit(Incidentes incidentes) throws NonexistentEntityException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            incidentes = em.merge(incidentes);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = incidentes.getId();
+                if (findIncidenteById(id) == null) {
+                    throw new NonexistentEntityException("The Incidents with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
     public List<Incidentes> findIncidentesEntities(int maxResults, int firstResult) {
         return findIncidentesEntities(false, maxResults, firstResult);
     }
@@ -119,7 +147,7 @@ public class IncidentesJpaController implements Serializable {
 //        }
 //    }
 
-    private Object findIncidenteById(Integer id) {
+    public Incidentes findIncidenteById(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Incidentes.class, id);
@@ -131,6 +159,7 @@ public class IncidentesJpaController implements Serializable {
     public void crearNuevoIncidente(Incidentes incidente) {
         EntityManager em = null;
         EntityTransaction tx = null;
+        System.out.println("crearNuevoIncidente called desde JpaController");
         try {
             em = getEntityManager();
             tx = em.getTransaction();
@@ -147,6 +176,53 @@ public class IncidentesJpaController implements Serializable {
                 em.close();
             }
         }
+    }
+
+    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, String sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuario) throws PreexistingEntityException {
+        EntityManager emf = null;
+        Incidentes incidente = new Incidentes();
+        
+        try {
+            emf = getEntityManager();
+            emf.getTransaction().begin();
+            incidente.setTipo(tipo);
+            incidente.setMes(mes);
+            incidente.setFormato(formato);
+            incidente.setInc(inc);
+            incidente.setSap(sap);
+            incidente.setTienda(tienda);
+            incidente.setDetalle(detalle);
+            incidente.setMonto(monto);
+            incidente.setMoneda(moneda);
+            incidente.setProveedor(proveedor);
+            incidente.setfAutorizar(fAutorizar);
+            incidente.setOc(Oc);
+            incidente.setfEnvioProv(fEnvioProv);
+            incidente.setHes(Hes);
+            incidente.setSociedad(sociedad);
+            incidente.setOrdenEstadistica(OrdenEstadistica);
+            incidente.setTextoBreve(TextoBreve);
+            incidente.setCotizacion(Cotizacion);
+            incidente.setActivo(activo);
+            incidente.setUsuarioId(usuario);
+            incidente.setFechaCreacion(new Date()); // Set current date for creation
+            incidente.setFechaActualizacion(new Date()); // Set current date for update
+            emf.persist(incidente);
+            emf.getTransaction().commit();
+            } catch (Exception e) {
+            if (findIncidenteById(incidente.getId()) != null) {
+                throw new PreexistingEntityException("Incidente " + incidente + " already exists.", e);
+            } 
+            throw e;
+        } finally {
+           if (emf != null) {
+                emf.close();
+            }
+       }
+    }
+
+    void crearIncidente(String formato, int mes, String inc, String tienda, int sap, String detalle, String oc, BigInteger monto, String hes, String ordenEstadistica, Date fAutorizar, String textoBreve, Date fEnvioProv, String cotizacion, Sociedades sociedad, String ordenEstadistica0, String textoBreve0, String cotizacion0, boolean activo, Usuario usuarioId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
    
     

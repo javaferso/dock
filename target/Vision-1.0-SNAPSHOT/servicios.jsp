@@ -36,21 +36,26 @@
             <!-- Sidebar -->
             <nav>
                 <!-- Admin Functions -->
+                <a><hr class="dropdown-divider"></a>
+                <a><hr class="dropdown-divider"></a>
                 <a href="javascript:listarIncidentes()" id="list-incidents" data-bs-toggle="tooltip" data-bs-placement="right" title="Listar Incidentes" style="color: #ffffff;">
                     <i class="fas fa-list text-white mb-1 sidebar-icon"></i>
                 </a>
                 <a href="javascript:agregarIncidente()" id="add-incident" data-bs-toggle="tooltip" data-bs-placement="right" title="Agregar Incidente">
                     <i class="fas fa-plus text-white mb-1 sidebar-icon"></i>
                 </a>
-                <a href="javascript:eliminarIncidente()" id="delete-incident" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Incidente">
-                    <i class="fas fa-trash text-white mb-1 sidebar-icon"></i>
-                </a>
                 <a href="javascript:editarIncidente()" id="edit-incident" data-bs-toggle="tooltip" data-bs-placement="right" title="Editar Incidente">
                     <i class="fas fa-edit text-white mb-1 sidebar-icon"></i>
                 </a>
                 <a><hr class="dropdown-divider"></a>
                 <a><hr class="dropdown-divider"></a>
-                <a><hr class="dropdown-divider"></a>
+                <a href="javascript:IncidentePendientes()" id="pending-incident" data-bs-toggle="tooltip" data-bs-placement="right" title="Incidentes Pendientes">
+                    <i class="fa-regular fa-hourglass-half"></i>
+                </a>
+                <a href="javascript:eliminarIncidente()" id="delete-incident" data-bs-toggle="tooltip" data-bs-placement="right" title="Eliminar Incidente">
+                    <i class="fas fa-trash text-white mb-1 sidebar-icon"></i>
+                </a>
+
                 <a><hr class="dropdown-divider"></a>
                 <a onclick="exitMonitor()" class="dropdown-item" href="index.jsp">
                     <i class="fas fa-sign-out-alt text-white mb-3 sidebar-icon"></i>
@@ -60,12 +65,26 @@
         <header>
             <%@include file="jsp/navbar.jsp" %>
         </header>
+         
         <div class="container-fluid">
+            
             <!-- Main Content -->
             <div id="main-content" class="w-100 ml-3">
                 <!-- Your main content will appear here -->
             </div>
         </div>
+        <!-- Botón de Volver Arriba -->
+        <button 
+            type="button"
+            class="btn btn-danger btn-floating btn-lg"
+            id="backToTop">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <!-- Botón para desplazarse hacia la izquierda -->
+        <button id="scrollLeft" title="Scroll Left" style="display: none; position: fixed; bottom: 60px; left: 10px; z-index: 9999;"><i class="fas fa-arrow-left"></i></button>
+
+        <!-- Botón para desplazarse hacia la derecha -->
+        <button id="scrollRight" title="Scroll Right" style="display: none; position: fixed; bottom: 60px; right: 10px; z-index: 9999;"><i class="fas fa-arrow-right"></i></button>
 
         <!-- JavaScript for changing content -->
         <script>
@@ -76,6 +95,19 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         document.getElementById('main-content').innerHTML = xhr.responseText;
+                        $('#backToTop').click(function () {
+                            $('html, body').animate({scrollTop: 0}, 1000);
+                            return false;
+                        });
+
+                        $(window).scroll(function () {
+                            if ($(window).scrollTop() > 100) {
+                                $('#backToTop').fadeIn();
+                            } else {
+                                $('#backToTop').fadeOut();
+                            }
+                        });
+                        
                         inicializarTablesorter(); // Inicializar tablesorter después de cargar el contenido
                     }
                 };
@@ -195,11 +227,26 @@
 
             function inicializarTablesorter() {
                 $("#details").tablesorter({
-                    theme: 'default',
-                    widgets: ['zebra', 'filter'],
+                    theme: 'blue',
+                    widgets: ['zebra', 'filter', 'pager', 'stickyHeaders'],
                     widgetOptions: {
                         zebra: ["even", "odd"],
-                        filter_reset: ".reset"
+                        filter_reset: ".reset",
+                        filter_cssFilter: 'form-control',
+                        filter_columnFilters: true,
+                        filter_placeholder: {search: 'Buscar...', select: 'Seleccionar filtro'},
+                        pager_output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
+                        pager_selectors: {
+                            container: '#pager',
+                            first: '.first',
+                            prev: '.prev',
+                            next: '.next',
+                            last: '.last',
+                            gotoPage: '.gotoPage',
+                            pageDisplay: '.pagedisplay',
+                            pageSize: '.pagesize'
+                        },
+                        stickyHeaders: "thead"
                     }
                 });
             }
@@ -227,6 +274,18 @@
                     document.getElementById(id).addEventListener('click', actions[id]);
                 });
             });
+            // Función para desplazarse hacia la izquierda
+            $('#scrollLeft').click(function (event) {
+                event.preventDefault();
+                $(window).scrollBy(-250, 0); // Desplazar 250px hacia la izquierda
+            });
+
+            // Función para desplazarse hacia la derecha
+            $('#scrollRight').click(function (event) {
+                event.preventDefault();
+                $(window).scrollBy(250, 0); // Desplazar 250px hacia la derecha
+            });
+
         </script>
     </body>
 </html>

@@ -5,11 +5,7 @@
 package servlet;
 
 import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -47,10 +43,10 @@ public class SvPing extends HttpServlet {
         Gson gson = new Gson();
         Map<String, Map<String, String>> resultados = new HashMap<>();
         String local = request.getParameter("local");
+ 
         
-     
-       
         
+          
         Controladora controladora = new Controladora();
         List<String> cajas = new ArrayList<>();
 
@@ -67,7 +63,6 @@ public class SvPing extends HttpServlet {
        
         List<CompletableFuture<Map<String, String>>> futures = cajas.stream().map(caja -> CompletableFuture.supplyAsync(() -> {
             String ip = controladora.findIpByCaja(caja, local);
-            int tickets = controladora.findByCajaTicket(caja, local);
             boolean online = false;
             try {
                 online = InetAddress.getByName(ip).isReachable(1000); // 1000 ms timeout
@@ -80,7 +75,6 @@ public class SvPing extends HttpServlet {
             detallesCaja.put("estado", online ? "online" : "offline");
             detallesCaja.put("ip", ip);
             detallesCaja.put("caja", caja);
-            detallesCaja.put("tickets", Integer.toString(tickets));
             return detallesCaja;
         })).collect(Collectors.toList());
 
@@ -99,6 +93,5 @@ public class SvPing extends HttpServlet {
         out.flush();
 
     }
-
     
 }

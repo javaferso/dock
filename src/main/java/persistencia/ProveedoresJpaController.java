@@ -9,8 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import logica.Proveedores;
 
@@ -37,7 +39,11 @@ public class ProveedoresJpaController {
     Proveedores obtenerProveedorporNombre(String nombre) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Proveedores.class, nombre);
+            TypedQuery<Proveedores> query = em.createQuery("SELECT p FROM Proveedores p WHERE p.nombre = :nombre", Proveedores.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
@@ -79,6 +85,16 @@ public class ProveedoresJpaController {
         } finally {
             em.close();
         }
+    }
+
+    Proveedores findProveedoresById(int Id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Proveedores.class, Id);
+        } finally {
+            em.close();
+        }
+        
     }
     
 }
