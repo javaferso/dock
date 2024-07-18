@@ -211,7 +211,9 @@
                         $('#ipVirtualInput').val(data.ipVirtual);
                         $('#enlaceInput').val(data.ipEnlace);
                         $('#nombreInput').val(data.formato);
-                        $('#ipOculta').val(data.ipAddress);
+                        $('#ipOculta').val(data.IpAddress);
+                        $('#local').val(data.local);
+                        console.log(data.local);
                         cargarCajas(data.local);
                         updateStatusIcon('#status-icon-ip', data.estadoIp);
                         updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
