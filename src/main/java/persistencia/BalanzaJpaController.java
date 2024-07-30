@@ -5,12 +5,15 @@
 package persistencia;
 
 import java.io.Serializable;
+import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import logica.Balanza;
@@ -49,6 +52,7 @@ public class BalanzaJpaController implements Serializable {
         }
     }
     
+   
     public List<Balanza> findBalanzaEntities() {
         return findBalanzaEntities(true, -1, -1);
     }
@@ -87,5 +91,22 @@ public class BalanzaJpaController implements Serializable {
         }
     }
 
-    
+    List<Balanza>getBalanzasByLocal(int local) {
+        EntityManager em = emb.createEntityManager();
+        try {
+             Query q = em.createNamedQuery("Balanza.findByTiendaNumero");
+             q.setParameter("tiendaNumero", local);
+             return q.getResultList();
+        } catch (NoResultException ex) {
+            System.err.println("No se encontró lista de balanzas para: " + local);
+            out.print("No se encontró ningun numero de balanza con: " + local);
+            return (List<Balanza>) ex;
+            
+        } catch (PersistenceException ex) {
+            System.err.println("Error de conexión o problema con la base de datos: " + ex.getMessage());
+            throw new RuntimeException("Error de conexión con la base de datos.", ex);
+        } finally {
+            em.close();
+        }
+    }
 }

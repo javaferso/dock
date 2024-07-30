@@ -5,7 +5,9 @@
 package servlet;
 
 import com.google.gson.Gson;
+import com.smu.vision.BashExecutor;
 import com.smu.vision.TicketService;
+import com.smu.vision.RolloutService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -26,14 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logica.Controladora;
 
-/**
- *
- * @author JFerreira
- */
 @WebServlet(name = "SvTickets", urlPatterns = {"/SvTickets"})
 public class SvTickets extends HttpServlet {
 
     private final TicketService ticketService = new TicketService();
+    private final RolloutService rolloutService = new RolloutService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +42,7 @@ public class SvTickets extends HttpServlet {
         Gson gson = new Gson();
         Map<String, Map<String, String>> resultados = new HashMap<>();
         String local = request.getParameter("local");
+        System.out.println("SvTickets llamado con parametro " + local);
         Controladora controladora = new Controladora();
         List<String> cajas = new ArrayList<>();
 
@@ -53,10 +53,10 @@ public class SvTickets extends HttpServlet {
         if (cajas.isEmpty()) {
             out.print("{vacio}");
             out.flush();
-
+            return; // Salir del método si no hay cajas
         }
-        
-    List<CompletableFuture<Map<String, String>>> futures = cajas.stream().map(caja -> CompletableFuture.supplyAsync(() -> {
+
+        List<CompletableFuture<Map<String, String>>> futures = cajas.stream().map(caja -> CompletableFuture.supplyAsync(() -> {
             String ip = controladora.findIpByCaja(caja, local);
             String tickets = obtenerInfoTickets(ip);
             boolean online = false;
@@ -71,6 +71,7 @@ public class SvTickets extends HttpServlet {
             detallesCaja.put("ip", ip);
             detallesCaja.put("caja", caja);
             detallesCaja.put("tickets", tickets);
+            detallesCaja.put("online", String.valueOf(online));
 
             return detallesCaja;
         })).collect(Collectors.toList());
@@ -85,24 +86,24 @@ public class SvTickets extends HttpServlet {
         } catch (InterruptedException | ExecutionException e) {
             Logger.getLogger(SvTickets.class.getName()).log(Level.SEVERE, null, e);
             out.print("No data");
+            out.flush();
+            return; // Salir del método en caso de error
         }
         out.print(gson.toJson(resultados));
         out.flush();
     }
-    
-    
 
     private String obtenerInfoTickets(String ip) {
-        StringBuilder logContent = new StringBuilder();
-        try {
-            // Suponiendo que TicketService tiene un método getTicketData que realiza la consulta
-            String ticketData = ticketService.getTicketCount(ip);
-            logContent.append(ticketData);
-
-            // Otra lógica para procesar los datos obtenidos
-        } catch (Exception e) {
-            logContent.append("Error al obtener los datos de la boleta: ").append(e.getMessage());
-        }
-        return logContent.toString();
+    StringBuilder logContent = new StringBuilder();
+    try {
+        // Pasar la IP al método getTicketCount de TicketService
+        String ticketCount = ticketService.getTicketCount(ip);
+        logContent.append(ticketCount);
+    } catch (Exception e) {
+        logContent.append("Error: " + e.getMessage());
     }
+    return logContent.toString();
 }
+
+}
+

@@ -16,20 +16,23 @@
         <!-- Changelog Section -->
         <div class="col-md-4 mt-3">
             <h6 class="text-muted">Changelog</h6>
-            <ul class="list-unstyled text-muted small">
-                <li>
-                    <i class="fas fa-v"></i> [2.3.5] - 2024-07-12
-                </li>
-                <li>
-                    <i class="fas fa-plus-circle"></i> Added: Nueva Pagina de Gestion Servicios
-                </li>
-                <li>
-                    <i class="fas fa-exchange-alt"></i> Changed: Mejor disposicion barra de navegacion
-                </li>
-                <li>
-                    <i class="fas fa-wrench"></i> Fixed: 
-                </li>
-            </ul>
+            <dl class="row text-gray-400">
+                <dt class="col-sm-3"><i class="fas fa-v x0.4"></i> [2.3.5]</dt>
+                <dd class="col-sm-9">2024-07-12</dd>
+                
+                <dt class="col-sm-3"><i class="fas fa-plus-circle x0.4"></i> Added: </dt>
+                <dd class="col-sm-9">Nueva Pagina de Gestion Servicios</dd>
+                
+                <dt class="col-sm-3"><i class="fas fa-exchange-alt x0.4"></i>Changed: </dt>
+                <dd class="col-sm-9"> Mejor disposicion barra de navegacion</dd>
+                
+                <dt class="col-sm-3"><i class="fas fa-wrench x0.4"></i><u> Fixed:</u></dt>
+                <dd class="col-sm-9"> 
+                    <p>- Envio ping al servidor y enlace al cargar pag.</p>
+                    <p>- Color verde-rojo estado online-offline en serv.</p>
+                </dd>
+               
+            </dl>
         </div>
         <!-- End of Changelog Section -->
     </footer>

@@ -1,49 +1,50 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.smu.vision;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
-/**
- *
- * @author JFerreira
- */
 public class TicketService {
-    public String getTicketCount(String ip) throws IOException, InterruptedException {
-        String mysqlQuery = "SELECT COUNT(sendstate) FROM tickets WHERE date(ticketdate) BETWEEN date(now() - INTERVAL 7 DAY) AND date(now()) AND sendstate IN ('F', 'P');";
-        String dir = "/home/supervision_caja/" + ip + "-ticketP.log";
 
-        ProcessBuilder pb = new ProcessBuilder("ssh", "root@" + ip, "mysql", "-u", "root", "-pgocom", "geopos", "-e", "\"" + mysqlQuery + "\"");
-        Process process = pb.start();
+    private static final String USER = "root";
+    private static final String PASS = "geocom";
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuilder output = new StringBuilder();
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            output.append(line).append("\n");
-        }
-
-        int exitVal = process.waitFor();
-        if (exitVal == 0) {
-            // Guardar el resultado en el archivo
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(dir))) {
-                writer.write(output.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
+    public String getTicketCount(String ip) {
+        try {
+            // Construir la URL de la base de datos dinámicamente usando la IP proporcionada
+            String dbUrl = "jdbc:mysql://" + ip + ":3306/geopos";
+            
+            Connection conn = DriverManager.getConnection(dbUrl, USER, PASS);
+            Statement stmt = conn.createStatement();
+            
+            String mysqlQuery = "SELECT COUNT(sendstate) FROM tickets WHERE date(ticketdate) BETWEEN date(now() - INTERVAL 7 DAY) AND date(now()) AND sendstate IN ('F', 'P');";
+            ResultSet rs = stmt.executeQuery(mysqlQuery);
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                System.out.println("Ticket count for IP " + ip + ": " + count);
+                
+                // Crear y escribir en el archivo de log
+                String dir = "/home/supervision_caja/" + ip + "-ticketP.log";
+                try {
+                    Files.write(Paths.get(dir), Integer.toString(count).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                } catch (IOException e) {
+                    System.err.println("Error writing to file: " + e.getMessage());
+                }
+                
+                return Integer.toString(count);
             }
-        } else {
-            // Manejar errores
-            System.err.println("Error executing command.");
+        } catch (Exception e) {
+            System.err.println("Error obtaining ticket count for IP " + ip + ": " + e.getMessage());
+            return "s/cnx";
         }
-
-        return output.toString();
+        
+        return null;
     }
-    
 }

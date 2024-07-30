@@ -7,6 +7,7 @@ package logica;
 import static java.lang.System.out;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
@@ -201,4 +202,13 @@ public class Controladora {
     public void updateServidor(Servidores local) throws Exception {
         controlPersis.editServidores(local);
     }
+
+    public List<Balanza> obtenerBalanza(int local) {
+        return controlPersis.obtenerBalanzasporLocal(local);
+    }
+
+    public List<ConsultoresPrecios> obtenerConsultaPreciosByLocal(int local) {
+        return controlPersis.obtenerConsultaPreciosByLocal(local);
+    }
+
 }

@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -10,14 +11,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -63,6 +61,7 @@ public class SvPing extends HttpServlet {
        
         List<CompletableFuture<Map<String, String>>> futures = cajas.stream().map(caja -> CompletableFuture.supplyAsync(() -> {
             String ip = controladora.findIpByCaja(caja, local);
+            int tickets = controladora.findByCajaTicket(caja, local);
             boolean online = false;
             try {
                 online = InetAddress.getByName(ip).isReachable(1000); // 1000 ms timeout
@@ -72,9 +71,11 @@ public class SvPing extends HttpServlet {
                 Logger.getLogger(SvPing.class.getName()).log(Level.SEVERE, null, ex);
             }
             Map<String, String> detallesCaja = new HashMap<>();
+            detallesCaja.put("local", local);
             detallesCaja.put("estado", online ? "online" : "offline");
             detallesCaja.put("ip", ip);
             detallesCaja.put("caja", caja);
+            detallesCaja.put("tickets", Integer.toString(tickets));
             return detallesCaja;
         })).collect(Collectors.toList());
 

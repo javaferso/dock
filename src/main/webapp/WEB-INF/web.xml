@@ -100,6 +100,14 @@
         <servlet-name>SvServices</servlet-name>
         <servlet-class>servlet.SvServices</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SvInfoBalanzas</servlet-name>
+        <servlet-class>servlet.SvInfoBalanzas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SvConsultaPrecios</servlet-name>
+        <servlet-class>servlet.SvConsultaPrecios</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SvUsuarios</servlet-name>
         <url-pattern>/SvUsuarios</url-pattern>
@@ -200,6 +208,14 @@
     <servlet-mapping>
         <servlet-name>SvServices</servlet-name>
         <url-pattern>/SvServices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SvInfoBalanzas</servlet-name>
+        <url-pattern>/SvInfoBalanzas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SvConsultaPrecios</servlet-name>
+        <url-pattern>/SvConsultaPrecios</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,5 +1,7 @@
 com\smu\vision\exceptions\IllegalOrphanException.class
 logica\Usuario.class
+persistencia\ConsultoresPreciosJpaController.class
+com\smu\vision\ServFlejesElectronicos.class
 servlet\SvServices.class
 com\smu\vision\JAXRSConfiguration.class
 servlet\SvGraficos.class
@@ -7,14 +9,17 @@ servlet\SvAdmin.class
 com\smu\vision\exceptions\NonexistentEntityException.class
 logica\Locales.class
 logica\Proveedores.class
+com\smu\vision\RolloutService.class
 persistencia\exceptions\PreexistingEntityException.class
 persistencia\exceptions\IllegalOrphanException.class
 com\smu\vision\TicketService.class
 logica\Tipos.class
 servlet\SvLocales.class
+com\smu\vision\BashExecutor.class
 persistencia\TiendaJpaController.class
 logica\Incidentes.class
 logica\Tienda.class
+servlet\SvConsultaPrecios.class
 logica\Controladora.class
 servlet\SvIniciarMonitor.class
 servlet\SvKpi.class
@@ -33,6 +38,7 @@ persistencia\MonedaJpaController.class
 servlet\SvOffline.class
 logica\Services.class
 persistencia\LocalesJpaController.class
+com\smu\vision\BalanzaNagios.class
 logica\Sociedades.class
 logica\Roles.class
 servlet\SvLogin.class
@@ -41,6 +47,7 @@ persistencia\ProveedoresJpaController.class
 persistencia\BalanzaJpaController.class
 persistencia\ControladoraPersistencia.class
 servlet\SvTickets.class
+logica\ConsultoresPrecios.class
 logica\Servidores.class
 servlet\SvBuscarBoleta.class
 servlet\SvPerfil.class
@@ -51,10 +58,12 @@ persistencia\ServidoresJpaController.class
 servlet\SvOfflineServer.class
 logica\BalanzaPK.class
 servlet\SvDatosLocal.class
+servlet\SvInfoBalanzas.class
 com\smu\vision\resources\JavaEE8Resource.class
 persistencia\SociedadesJpaController.class
 com\smu\vision\exceptions\PreexistingEntityException.class
 servlet\SvDatosServidor.class
+com\smu\vision\TiendasNagios.class
 com\smu\vision\Breadcrumb.class
 servlet\SvBalanzas.class
 servlet\SvLogout.class

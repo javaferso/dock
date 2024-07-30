@@ -8,10 +8,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import logica.Balanza;
+import logica.ConsultoresPrecios;
 import logica.Incidentes;
 import logica.Locales;
 import logica.Moneda;
@@ -43,6 +45,7 @@ public class ControladoraPersistencia {
     ProveedoresJpaController provJpa = new ProveedoresJpaController(emf);
     SociedadesJpaController socJpa = new SociedadesJpaController(emf);
     TiendaJpaController tienJpa = new TiendaJpaController(emf);
+    ConsultoresPreciosJpaController consulJpa = new ConsultoresPreciosJpaController(emf);
     
     private int idRole;
     public List<Servidores> obtenerServidores;
@@ -276,4 +279,25 @@ public class ControladoraPersistencia {
     public void editServidores(Servidores local) throws Exception {
         servJpa.edit(local);
     }
+
+    public List<Balanza> obtenerBalanzasporLocal(int local) {
+        return balJpa.getBalanzasByLocal(local);
+    }
+    
+    public List<Object[]> obtenerEstadoNagios(String hostName) {
+        EntityManager em = emb.createEntityManager();
+        try {
+            String sql = "SELECT return_code, output, service_description FROM monitor.nagios_chequeo_estado WHERE host_name = '" + hostName + "' ORDER BY service_description DESC;";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter("hostName", hostName);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<ConsultoresPrecios> obtenerConsultaPreciosByLocal(int local) {
+        return consulJpa.obtenerConsultaPreciosByLocal(local);
+    }
+
 }

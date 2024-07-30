@@ -16,12 +16,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheType;
 
 /**
  *
  * @author JFerreira
  */
 @Entity
+@Cache(type = CacheType.SOFT, size = 64000)
+@Table(name = "locales", schema = "supervision")
 @NamedQueries({
     @NamedQuery(name = "Locales.findDistinctFormato", query = "SELECT DISTINCT l.formato FROM Locales l"),
     @NamedQuery(name = "Locales.findDistinctLocalesByFormato", query = "SELECT DISTINCT l.local FROM Locales l WHERE l.formato = :formato ORDER BY l.local asc"),
@@ -31,7 +35,6 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Locales.findLocalesporNombreoLocal", query = "SELECT l FROM Locales l WHERE l.local LIKE :query OR LOWER(l.nombreTienda) LIKE LOWER(:query)")
 })
 
-@Table(name = "locales", schema = "supervision")
 public class Locales implements Serializable {
 
     @Id

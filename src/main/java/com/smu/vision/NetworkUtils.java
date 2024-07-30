@@ -1,30 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.smu.vision;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package com.smu.vision;
 
 /**
  *
  * @author JFerreira
  */
+import java.net.InetAddress;
+import java.util.concurrent.CompletableFuture;
+
 public class NetworkUtils {
-       public static CompletableFuture<Boolean> isReachableAsync(String ipAddress) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                InetAddress inet = InetAddress.getByName(ipAddress);
-                return inet.isReachable(2000); // 2000 ms = 2 segundos de timeout
-            } catch (IOException e) {
-                Logger.getLogger(NetworkUtils.class.getName()).log(Level.SEVERE, null, e);
-                return false;
-            }
-        });
+
+    // Método asíncrono para realizar ping
+    public static CompletableFuture<Boolean> isReachableAsync(String ipAddress) {
+        return CompletableFuture.supplyAsync(() -> isReachable(ipAddress));
     }
-    
+
+    // Método síncrono para realizar ping
+    public static boolean isReachable(String ipAddress) {
+        try {
+            InetAddress address = InetAddress.getByName(ipAddress);
+            boolean reachable = address.isReachable(7000); // Timeout de 7000ms (7 segundos)
+            System.out.println("Ping a " + ipAddress + ": " + (reachable ? "online" : "offline"));
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

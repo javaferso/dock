@@ -1,42 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package servlet;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 import com.smu.vision.NetworkUtils;
+import com.smu.vision.ServFlejesElectronicos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.stream.Collectors;
 import logica.Controladora;
 import logica.Servidores;
 
-/**
- *
- * @author JFerreira
- */
-@WebServlet(
-        name = "SvDatosServidor",
-        urlPatterns = {"/SvDatosServidor"}
-)
+@WebServlet(name = "SvDatosServidor", urlPatterns = {"/SvDatosServidor"})
 public class SvDatosServidor extends HttpServlet {
-
-    @PersistenceContext
-    EntityManager em;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -46,29 +30,64 @@ public class SvDatosServidor extends HttpServlet {
         String action = request.getParameter("action");
         Controladora controladora = new Controladora();
 
-        if ("getLocal".equals(action)) {
+        if ("ping".equals(action)) {
+            String ipServidor = request.getParameter("ipServidor");
+            String ipEnlace = request.getParameter("ipEnlace");
+
+            try {
+                if (ipServidor == null || ipServidor.trim().isEmpty() ||
+                    ipEnlace == null || ipEnlace.trim().isEmpty()) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    out.print("{\"error\":\"Faltan datos para realizar el ping.\"}");
+                } else {
+                    boolean isIpAddressReachable = NetworkUtils.isReachable(ipServidor);
+                    boolean isIpEnlaceReachable = NetworkUtils.isReachable(ipEnlace);
+
+                    System.out.println("Resultado del ping a IP Servidor: " + isIpAddressReachable);
+                    System.out.println("Resultado del ping a IP Enlace: " + isIpEnlaceReachable);
+
+                    JsonObject responseJson = new JsonObject();
+                    responseJson.addProperty("estadoIp", isIpAddressReachable ? "online" : "offline");
+                    responseJson.addProperty("estadoEnlace", isIpEnlaceReachable ? "online" : "offline");
+
+                    out.print(new Gson().toJson(responseJson));
+                }
+            } catch (Exception ex) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"error\":\"Error interno del servidor\"}");
+                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, "No se pudo realizar el ping", ex);
+            } finally {
+                out.flush();
+                out.close();
+            }
+        } else if ("getLocal".equals(action)) {
             String datosLocal = request.getParameter("datosLocal");
             System.out.println("Dato recibido desde SvDatosServidor: " + datosLocal);
 
             try {
-
                 if (datosLocal == null || datosLocal.trim().isEmpty()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\":\"Identificador del local no proporcionado.\"}");
                 } else {
                     Servidores tienda = (Servidores) controladora.findServidorByLocal(datosLocal);
                     if (tienda != null) {
-                        CompletableFuture<Boolean> ipAddressFuture = NetworkUtils.isReachableAsync(tienda.getIpAddress());
-                        CompletableFuture<Boolean> ipEnlaceFuture = NetworkUtils.isReachableAsync(tienda.getIpEnlace());
-
-                        CompletableFuture.allOf(ipAddressFuture, ipEnlaceFuture).join();
-
-                        boolean isIpAddressReachable = ipAddressFuture.get();
-                        boolean isIpEnlaceReachable = ipEnlaceFuture.get();
+                        boolean isIpAddressReachable = NetworkUtils.isReachable(tienda.getIpAddress());
+                        boolean isIpEnlaceReachable = NetworkUtils.isReachable(tienda.getIpEnlace());
 
                         tienda.setEstadoIp(isIpAddressReachable ? "online" : "offline");
                         tienda.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
-                        out.print(new Gson().toJson(tienda));
+
+                        JsonObject responseJson = new JsonObject();
+                        responseJson.add("tienda", new Gson().toJsonTree(tienda));
+
+                        if (tienda.getFlejeElectronico()) {
+                            ServFlejesElectronicos servFlejesElectronicos = new ServFlejesElectronicos();
+                            JsonObject flejeData = servFlejesElectronicos.getDatosFlejeElectronico(datosLocal);
+                            responseJson.add("flejeData", flejeData);
+                        }
+
+                        out.print(new Gson().toJson(responseJson));
+
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         out.print("{\"error\":\"Servidor no encontrado\"}");
@@ -97,33 +116,33 @@ public class SvDatosServidor extends HttpServlet {
                     }
                     List<Servidores> locales = controladora.buscarServidoresPorCriterio(query);
                     if (locales != null) {
-                        // Usar CompletableFuture para hacer ping a todas las IPs en paralelo
-                        List<CompletableFuture<Void>> futures = locales.stream().map(local -> CompletableFuture.runAsync(() -> {
+                        List<JsonObject> resultados = locales.stream().map(local -> {
+                            JsonObject localJson = new JsonObject();
+                            boolean isIpAddressReachable = NetworkUtils.isReachable(local.getIpAddress());
+                            boolean isIpEnlaceReachable = NetworkUtils.isReachable(local.getIpEnlace());
+
+                            local.setEstadoIp(isIpAddressReachable ? "online" : "offline");
+                            local.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
+
+                            localJson.add("local", new Gson().toJsonTree(local));
+                            if (local.getFlejeElectronico()) {
+                                ServFlejesElectronicos servFlejesElectronicos = new ServFlejesElectronicos();
+                                JsonObject flejeData = servFlejesElectronicos.getDatosFlejeElectronico(local.getLocal());
+                                localJson.add("flejeData", flejeData);
+                            }
+
                             try {
-                                CompletableFuture<Boolean> ipAddressFuture = NetworkUtils.isReachableAsync(local.getIpAddress());
-                                CompletableFuture<Boolean> ipEnlaceFuture = NetworkUtils.isReachableAsync(local.getIpEnlace());
-
-                                CompletableFuture.allOf(ipAddressFuture, ipEnlaceFuture).join();
-
-                                boolean isIpAddressReachable = ipAddressFuture.get();
-                                boolean isIpEnlaceReachable = ipEnlaceFuture.get();
-
-                                local.setEstadoIp(isIpAddressReachable ? "online" : "offline");
-                                local.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
-
-                                // Actualizar los cambios en la base de datos
                                 controladora.updateServidor(local);
-                            } catch (InterruptedException | ExecutionException e) {
-                                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, null, e);
                             } catch (Exception ex) {
                                 Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        })).collect(Collectors.toList());
+                            return localJson;
+                        }).collect(Collectors.toList());
 
-                        // Esperar a que todos los futures se completen
-                        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+                        JsonArray responseArray = new JsonArray();
+                        resultados.forEach(responseArray::add);
 
-                        out.print(new Gson().toJson(locales));
+                        out.print(new Gson().toJson(responseArray));
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         out.print("{\"error\":\"Locales no encontrados\"}");
@@ -148,5 +167,4 @@ public class SvDatosServidor extends HttpServlet {
     private boolean isValidQuery(String query) {
         return query.matches("[a-zA-Z0-9 ]+");
     }
-
 }

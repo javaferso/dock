@@ -101,7 +101,7 @@ JFerreira --%>
                         onclick="location.href = 'monitor.jsp'"
                         />
 
-                    <% if (user.getIdRole().equals(5)) { %>
+                    <% if (user.getIdRole().getIdRole().equals(1)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -133,14 +133,14 @@ JFerreira --%>
                         value="SSH Pos"
                         onclick="setSSHLink()"
                         />
-                    <% } else if (user.getIdRole().equals(2)) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(2)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
                         value="Buscar Boleta"
                         onclick="location.href = 'buscarBoleta.jsp'"
                         />
-                    <% } else if (user.getIdRole().equals(3)) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(3)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -161,7 +161,7 @@ JFerreira --%>
                         onclick="setSSHLink()"
                         />
 
-                    <% } else if (user.getIdRole().equals(5)) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(5)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -175,7 +175,7 @@ JFerreira --%>
 
 
                 <script>
-                        var userRole = <%= role.getIdRole() %>;
+                        var userRole = <%= user.getIdRole().getIdRole() %>;
                         console.log("userRole : ", userRole);
                         $(document).ready(function () {
                             cargarFormatos();
