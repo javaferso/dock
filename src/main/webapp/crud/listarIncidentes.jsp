@@ -4,9 +4,18 @@
     Author     : JFerreira
 --%>
 
-<%@page import="logica.Incidentes"%>
 <%@page import="java.util.List"%>
+<%@page import="logica.Usuario"%>
+<%@page import="logica.Incidentes"%>
+<%@page import="logica.Moneda"%>
+<%@page import="logica.Proveedores"%>
+<%@page import="logica.Sociedades"%>
+<%@page import="logica.Tipos"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    Usuario user = (Usuario) session.getAttribute("user");
+    System.out.println("Session ID: " + session.getId());
+%>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,10 +30,10 @@
     <script src="js/script.js"></script>
 </head>
 <h1>Lista de Servicios Registrados</h1>
-<table id="details" class="table table-striped table-sm tablesorter">
+<table id="details" class="table table-striped table-bordered table-sm">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <th id="idIncidente">ID</th>
             <th>Tipo</th>
             <th>Mes</th>
             <th>Formato</th>
@@ -45,6 +54,7 @@
             <th>Cotización</th>
             <th>Activo</th>
             <th>Fecha Cierre</th>
+            <th>Responsable TI</th>
         </tr>
     </thead>
     <tbody>
@@ -54,8 +64,12 @@
         %>
 
         <tr>
-            <td><%= incidente.getId()%></td>
-            <td><%= incidente.getTipo()%></td>
+            <td>
+                 <a href="SvIncidente?action=edit-form&id=<%= incidente.getId()%>" class="text-decoration-none">
+                    <%= incidente.getId()%>
+                </a>
+            </td>
+            <td><%= incidente.getTipo() %></td>
             <td><%= incidente.getMes()%></td>
             <td><%= incidente.getFormato()%></td>
             <td><%= incidente.getInc()%></td>
@@ -63,18 +77,19 @@
             <td><%= incidente.getTienda()%></td>
             <td><%= incidente.getDetalle()%></td>
             <td><%= incidente.getMonto()%></td>
-            <td><%= incidente.getMoneda()%></td>
-            <td><%= incidente.getProveedor()%></td>
-            <td><%= incidente.getFAutorizar()%></td>
+            <td><%= incidente.getMoneda() != null ? incidente.getMoneda():"" %></td>
+            <td><%= incidente.getProveedor() != null ? incidente.getProveedor(): "" %></td>
+            <td><%= incidente.getfAutorizar()%></td>
             <td><%= incidente.getOc()%></td>
-            <td><%= incidente.getFEnvioProv()%></td>
+            <td><%= incidente.getfEnvioProv()%></td>
             <td><%= incidente.getHes()%></td>
-            <td><%= incidente.getSociedad()%></td>
+            <td><%= incidente.getSociedad() != null ? incidente.getSociedad(): "" %></td>
             <td><%= incidente.getOrdenEstadistica()%></td>
             <td><%= incidente.getTextoBreve()%></td>
             <td><%= incidente.getCotizacion()%></td>
-            <td><%= incidente.getActivo()%></td>
-            <td><%= incidente.getFechaCierre()%></td>
+            <td><%= incidente.isActivo() %></td>
+            <td><%= incidente.getFechaCierre() %></td>
+            <td><%= incidente.getUsuarioId() != null ? incidente.getUsuarioId() + " " + incidente.getUsuarioId(): "" %></td>
         </tr>
         <%}%>
     </tbody>

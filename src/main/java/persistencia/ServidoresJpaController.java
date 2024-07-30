@@ -165,7 +165,7 @@ public class ServidoresJpaController implements Serializable {
         }
     }
 
-    List<String> findServidoresPorCriterio(String query) {
+    List<Servidores> findServidoresPorCriterio(String query) {
         EntityManager em = getEntityManager();
         try {
             Query q = em.createNamedQuery("Servidores.findServidoresPorCriterio");
@@ -175,7 +175,7 @@ public class ServidoresJpaController implements Serializable {
         } catch (NoResultException ex) {
             System.err.println("No se encontró lista de locales: " + query);
             out.print("No se encontró ningun numero de local con: " + query);
-            return (List<String>) ex;
+            return (List<Servidores>) ex;
         }catch (PersistenceException ex) {
             System.err.println("Error de conexión o problema con la base de datos: " + ex.getMessage());
             throw new RuntimeException("Error de conexión con la base de datos.", ex);

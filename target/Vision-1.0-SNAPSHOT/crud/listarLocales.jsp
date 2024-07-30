@@ -14,7 +14,7 @@
     <title>JSP Page</title>
 </head>
 
-<table class="table">
+<table id="details" class="table table-striped table-bordered table-sm">
     <thead class="table-dark">
         <tr>
             <th>Id</th>

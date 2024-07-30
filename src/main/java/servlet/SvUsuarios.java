@@ -12,8 +12,6 @@ import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,22 +22,20 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import logica.Controladora;
 import logica.Usuario;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author JFerreira
  */
 @WebServlet(
-        name = "SvUsuarios", 
+        name = "SvUsuarios",
         urlPatterns = {"/SvUsuarios"}
-        )
+)
 public class SvUsuarios extends HttpServlet {
-    
-   @PersistenceContext
-   EntityManager em;
 
-   public SvUsuarios() {
-   }
+    public SvUsuarios() {
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,17 +43,20 @@ public class SvUsuarios extends HttpServlet {
         String action = request.getParameter("action");
         if ("list".equals(action)) {
             listarUsuarios(request, response);
-    }   else if ("loadForm".equals(action)) {
+        } else if ("loadForm".equals(action)) {
             cargarFormulario(request, response);
-            }
-    // Aquí puedes añadir más acciones como agregar, eliminar, etc.
-}   private void cargarFormulario(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
+        }
+        // Aquí puedes añadir más acciones como agregar, eliminar, etc.
+    }
+
+    private void cargarFormulario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("crud/agregarUsuarios.jsp");
         rd.forward(request, response);
-}
-    private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
+    }
+
+    private void listarUsuarios(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         Controladora controladora = new Controladora();
         List<Usuario> listaUsuarios = controladora.obtenerUsuarios();
 
@@ -66,11 +65,10 @@ public class SvUsuarios extends HttpServlet {
         rd.forward(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         String action = request.getParameter("action");
         if ("add".equals(action)) {
             try {
@@ -98,9 +96,9 @@ public class SvUsuarios extends HttpServlet {
                 Logger.getLogger(SvUsuarios.class.getName()).log(Level.SEVERE, null, ex);
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-            
+
         } else if ("delete-form".equals(action)) {
-            try {          
+            try {
                 deleteForm(request, response);
                 System.out.println("delete-form es la action llamada");
             } catch (Exception ex) {
@@ -109,62 +107,62 @@ public class SvUsuarios extends HttpServlet {
             }
         }
     }
-    
-        private void agregarUsuarios(HttpServletRequest request, HttpServletResponse response) 
-                throws ServletException, IOException, Exception {  
-            Controladora controladora = new Controladora();
-            String idUsuario = request.getParameter("idUsuario");
-            String password = request.getParameter("password");
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String sexo = request.getParameter("sexo");
-            String idRoleString = request.getParameter("idRole");
-            int idRole = Integer.parseInt(idRoleString);
-            String habilitado = request.getParameter("habilitado");
-            PrintWriter out = response.getWriter();
-            out.println("idUsuario recibido: " + idUsuario);
-            out.println("idUsuario recibido: " + password);
-            out.println("idUsuario recibido: " + nombre);
-            out.println("idUsuario recibido: " + apellido);
-            out.println("idUsuario recibido: " + sexo);
-            out.println("idUsuario recibido: " + habilitado);
-            out.println("idUsuario recibido: " + idRole);
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(idUsuario);
-            usuario.setPassword(password);
-            usuario.setNombre(nombre);
-            usuario.setApellido(apellido);
-            usuario.setSexo(sexo);
-            usuario.setIdRole(idRole);
-            usuario.setHabilitado(habilitado);
 
-            controladora.crearUsuario(idUsuario, password, nombre, apellido, sexo, idRole,habilitado);
+    private void agregarUsuarios(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        Controladora controladora = new Controladora();
+        String idUsuario = request.getParameter("idUsuario");
+        String password = request.getParameter("password");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String sexo = request.getParameter("sexo");
+        String idRoleString = request.getParameter("idRole");
+        int idRole = Integer.parseInt(idRoleString);
+        String habilitado = request.getParameter("habilitado");
+        PrintWriter out = response.getWriter();
+        out.println("idUsuario recibido: " + idUsuario);
+        out.println("idUsuario recibido: " + password);
+        out.println("idUsuario recibido: " + nombre);
+        out.println("idUsuario recibido: " + apellido);
+        out.println("idUsuario recibido: " + sexo);
+        out.println("idUsuario recibido: " + habilitado);
+        out.println("idUsuario recibido: " + idRole);
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(idUsuario);
+        usuario.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setSexo(sexo);
+        usuario.setIdRole(idRole);
+        usuario.setHabilitado(habilitado);
+        controladora.crearUsuario(idUsuario, usuario.getPassword(), nombre, apellido, sexo, idRole, habilitado);
 
-        }
-        private void changePassword(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException, Exception {
-             HttpSession session = request.getSession();  
-            // Lógica para cambiar la contraseña
-            String contrasenaActual = request.getParameter("contrasenaActual");
-            String nuevaContrasena = request.getParameter("nuevaContrasena");
-            System.out.println("Recibiendo cambio de contraseña actual " + contrasenaActual);
-            Usuario usuario = (Usuario) request.getSession().getAttribute("user");
-            
-            if (usuario != null) {
-                if (usuario.getPassword().equals(contrasenaActual)) {
-                    usuario.setPassword(nuevaContrasena);
-                    Controladora controladora = new Controladora();
-                    controladora.actualizarUsuario(usuario);
-                    session.setAttribute("changePassword","Contraseña Cambiada!!");
-                    RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-                    rd.forward(request, response);
-                } else {
-                    System.out.println("La contraseña actual no coincide");
-                }   
+    }
+    private void changePassword(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, Exception {
+        HttpSession session = request.getSession();
+        // Lógica para cambiar la contraseña
+        String contrasenaActual = request.getParameter("contrasenaActual");
+        String nuevaContrasena = request.getParameter("nuevaContrasena");
+        System.out.println("Recibiendo cambio de contraseña actual " + contrasenaActual);
+        Usuario usuario = (Usuario) request.getSession().getAttribute("user");
+
+        if (usuario != null) {
+            if (BCrypt.checkpw(contrasenaActual, usuario.getPassword())) {
+                usuario.setPassword(BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt()));
+                Controladora controladora = new Controladora();
+                controladora.actualizarUsuario(usuario);
+                session.setAttribute("changePassword", "Contraseña Cambiada!!");
+                RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+                rd.forward(request, response);
             } else {
-                System.out.println("No hay usuario logueado para cambiar contraseña");
+                System.out.println("La contraseña actual no coincide");
             }
+            
+        } else {
+            System.out.println("No hay usuario logueado para cambiar contraseña");
         }
+    }
 
     @Override
     public String getServletInfo() {
@@ -172,7 +170,7 @@ public class SvUsuarios extends HttpServlet {
     }// </editor-fold>
 
     private void uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, Exception {
-        
+
         Part filePart = request.getPart("imagenPerfil"); // Obtiene el archivo subido
         System.out.println("uploadImage called...");
         if (filePart != null) {
@@ -195,47 +193,39 @@ public class SvUsuarios extends HttpServlet {
             response.setContentType("text/html");
             out.println("<script type=\"text/javascript\">");
             out.println("alert('No se pudo cargar la imagen');");
-            out.println("window.location.href = 'perfil.jsp';");  // reemplaza 'tuPagina.jsp' con la página a la que quieres redirigir
+            out.println("window.location.href = 'perfil.jsp';");
             out.println("</script>");
         }
-        
 
-        
     }
-    
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response) 
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
         String idUser = request.getParameter("idUsuario");
         if (usuario != null) {
             if (usuario.getIdUsuario().equals(idUser)) {
-                
+
                 Controladora controladora = new Controladora();
                 controladora.eliminarUsuario(idUser);
-                
+
             }
         } else {
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
             out.println("<script type=\"text/javascript\">");
             out.println("alert('Usuario no logueado');");
-            out.println("window.location.href = 'admin.jsp';");  // reemplaza 'tuPagina.jsp' con la página a la que quieres redirigir
+            out.println("window.location.href = 'admin.jsp';");
             out.println("</script>");
         }
-        
+
     }
 
-    private void deleteForm(HttpServletRequest request, HttpServletResponse response) 
-             throws ServletException, Exception {
-            System.out.println("deleteForm called");
-            RequestDispatcher rd = request.getRequestDispatcher("crud/eliminarUsuarios.jsp");
-            rd.forward(request, response);
+    private void deleteForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, Exception {
+        System.out.println("deleteForm called");
+        RequestDispatcher rd = request.getRequestDispatcher("crud/eliminarUsuarios.jsp");
+        rd.forward(request, response);
     }
 
 }
-    
-   
-
-    
-    
-

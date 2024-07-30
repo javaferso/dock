@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
  * @author JFerreira
  */
 @Entity
-@Table(name = "tienda", schema = "datos_basicos")
+@Table(name = "tienda")
 
 @NamedQueries({
     @NamedQuery(name = "Tienda.findAll", query = "SELECT t FROM Tienda t"),
@@ -45,7 +45,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Tienda.findByRegionNumero", query = "SELECT t FROM Tienda t WHERE t.regionNumero = :regionNumero"),
     @NamedQuery(name = "Tienda.findBySdwanHabilitado", query = "SELECT t FROM Tienda t WHERE t.sdwanHabilitado = :sdwanHabilitado"),
     @NamedQuery(name = "Tienda.findByHabilitadoReporteFlejes", query = "SELECT t FROM Tienda t WHERE t.habilitadoReporteFlejes = :habilitadoReporteFlejes"),
-    @NamedQuery(name = "Tienda.findByAbiertoDiasDomingo", query = "SELECT t FROM Tienda t WHERE t.abiertoDiasDomingo = :abiertoDiasDomingo")})
+    @NamedQuery(name = "Tienda.findByAbiertoDiasDomingo", query = "SELECT t FROM Tienda t WHERE t.abiertoDiasDomingo = :abiertoDiasDomingo"),
+    @NamedQuery(name = "Tienda.findTiendaPorCriterio", query = "SELECT t FROM Tienda t WHERE t.numero LIKE :query OR LOWER(t.nombre) LIKE LOWER(:query)")})
 public class Tienda implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,7 +57,7 @@ public class Tienda implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "numero")
-    private Integer numero;
+    private String numero;
     @Size(max = 50)
     @Column(name = "nombre")
     private String nombre;
@@ -109,11 +110,11 @@ public class Tienda implements Serializable {
     public Tienda() {
     }
 
-    public Tienda(Integer numero) {
+    public Tienda(String numero) {
         this.numero = numero;
     }
 
-    public Tienda(Integer numero, int habilitado, Date fechaActualizacion) {
+    public Tienda(String numero, int habilitado, Date fechaActualizacion) {
         this.numero = numero;
         this.habilitado = habilitado;
         this.fechaActualizacion = fechaActualizacion;
@@ -127,11 +128,11 @@ public class Tienda implements Serializable {
         this.formatoCodigo = formatoCodigo;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

@@ -17,17 +17,20 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheType;
 
 /**
  *
  * @author JFerreira
  */
+@Cache(type = CacheType.SOFT, size = 64000)
 @Entity
 @Table(name = "balanza", schema = "monitor")
 
 @NamedQueries({
     @NamedQuery(name = "Balanza.findAll", query = "SELECT b FROM Balanza b"),
-    @NamedQuery(name = "Balanza.findByTiendaNumero", query = "SELECT b FROM Balanza b WHERE b.balanzaPK.tiendaNumero = :tiendaNumero"),
+    @NamedQuery(name = "Balanza.findByTiendaNumero", query = "SELECT b FROM Balanza b WHERE b.balanzaPK.tiendaNumero = :tiendaNumero AND b.habilitado = 0"),
     @NamedQuery(name = "Balanza.findById", query = "SELECT b FROM Balanza b WHERE b.balanzaPK.id = :id"),
     @NamedQuery(name = "Balanza.findByDireccionIp", query = "SELECT b FROM Balanza b WHERE b.direccionIp = :direccionIp"),
     @NamedQuery(name = "Balanza.findByHabilitado", query = "SELECT b FROM Balanza b WHERE b.habilitado = :habilitado"),
@@ -60,7 +63,7 @@ public class Balanza implements Serializable {
     private String nombre;
     @Column(name = "puerto")
     private Integer puerto;
-
+    
     public Balanza() {
     }
 
@@ -133,7 +136,7 @@ public class Balanza implements Serializable {
     public void setPuerto(Integer puerto) {
         this.puerto = puerto;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

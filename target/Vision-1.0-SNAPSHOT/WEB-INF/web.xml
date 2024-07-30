@@ -49,8 +49,8 @@
         <servlet-class>servlet.SvPing</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SvTicketPending</servlet-name>
-        <servlet-class>servlet.SvTicketPending</servlet-class>
+        <servlet-name>SvTickets</servlet-name>
+        <servlet-class>servlet.SvTickets</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SvDatosServidor</servlet-name>
@@ -99,6 +99,14 @@
     <servlet>
         <servlet-name>SvServices</servlet-name>
         <servlet-class>servlet.SvServices</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SvInfoBalanzas</servlet-name>
+        <servlet-class>servlet.SvInfoBalanzas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SvConsultaPrecios</servlet-name>
+        <servlet-class>servlet.SvConsultaPrecios</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SvUsuarios</servlet-name>
@@ -150,8 +158,8 @@
         <url-pattern>/SvPing</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SvTicketPending</servlet-name>
-        <url-pattern>/SvTicketPending</url-pattern>
+        <servlet-name>SvTickets</servlet-name>
+        <url-pattern>/SvTickets</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SvDatosServidor</servlet-name>
@@ -200,6 +208,14 @@
     <servlet-mapping>
         <servlet-name>SvServices</servlet-name>
         <url-pattern>/SvServices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SvInfoBalanzas</servlet-name>
+        <url-pattern>/SvInfoBalanzas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SvConsultaPrecios</servlet-name>
+        <url-pattern>/SvConsultaPrecios</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

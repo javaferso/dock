@@ -105,8 +105,8 @@
 .breadcrumb {
   list-style: none;
   overflow: hidden;
-  font: 14px Helvetica, Arial, Sans-Serif;
-  margin: 40px;
+  font: 10px Helvetica, Arial, Sans-Serif;
+  margin: 30px;
   padding: 0;
   margin-left: 90px; /* Ajusta este margen según el ancho del sidebar */
 }

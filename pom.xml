@@ -123,15 +123,21 @@
             <version>2.10.1</version> 
         </dependency>
         <dependency>
-          <groupId>org.webjars.npm</groupId>
-          <artifactId>popper.js</artifactId>
-          <version>1.16.1</version>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>popper.js</artifactId>
+            <version>1.16.1</version>
         </dependency>
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>0.1.55</version>
         </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
     </dependencies>
     
     <build>

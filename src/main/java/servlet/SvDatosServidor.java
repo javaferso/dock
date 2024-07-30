@@ -1,39 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package servlet;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.Gson;
+import com.smu.vision.NetworkUtils;
+import com.smu.vision.ServFlejesElectronicos;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.stream.Collectors;
 import logica.Controladora;
-import logica.Locales;
 import logica.Servidores;
 
-/**
- *
- * @author JFerreira
- */
-@WebServlet(
-        name = "SvDatosServidor",
-        urlPatterns = {"/SvDatosServidor"}
-)
+@WebServlet(name = "SvDatosServidor", urlPatterns = {"/SvDatosServidor"})
 public class SvDatosServidor extends HttpServlet {
-
-    @PersistenceContext
-    EntityManager em;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +30,37 @@ public class SvDatosServidor extends HttpServlet {
         String action = request.getParameter("action");
         Controladora controladora = new Controladora();
 
-        if ("getLocal".equals(action)) {
+        if ("ping".equals(action)) {
+            String ipServidor = request.getParameter("ipServidor");
+            String ipEnlace = request.getParameter("ipEnlace");
+
+            try {
+                if (ipServidor == null || ipServidor.trim().isEmpty() ||
+                    ipEnlace == null || ipEnlace.trim().isEmpty()) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    out.print("{\"error\":\"Faltan datos para realizar el ping.\"}");
+                } else {
+                    boolean isIpAddressReachable = NetworkUtils.isReachable(ipServidor);
+                    boolean isIpEnlaceReachable = NetworkUtils.isReachable(ipEnlace);
+
+                    System.out.println("Resultado del ping a IP Servidor: " + isIpAddressReachable);
+                    System.out.println("Resultado del ping a IP Enlace: " + isIpEnlaceReachable);
+
+                    JsonObject responseJson = new JsonObject();
+                    responseJson.addProperty("estadoIp", isIpAddressReachable ? "online" : "offline");
+                    responseJson.addProperty("estadoEnlace", isIpEnlaceReachable ? "online" : "offline");
+
+                    out.print(new Gson().toJson(responseJson));
+                }
+            } catch (Exception ex) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"error\":\"Error interno del servidor\"}");
+                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, "No se pudo realizar el ping", ex);
+            } finally {
+                out.flush();
+                out.close();
+            }
+        } else if ("getLocal".equals(action)) {
             String datosLocal = request.getParameter("datosLocal");
             System.out.println("Dato recibido desde SvDatosServidor: " + datosLocal);
 
@@ -52,9 +69,25 @@ public class SvDatosServidor extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\":\"Identificador del local no proporcionado.\"}");
                 } else {
-                    Object servidor = controladora.findServidorByLocal(datosLocal);
-                    if (servidor != null) {
-                        out.print(new Gson().toJson(servidor));
+                    Servidores tienda = (Servidores) controladora.findServidorByLocal(datosLocal);
+                    if (tienda != null) {
+                        boolean isIpAddressReachable = NetworkUtils.isReachable(tienda.getIpAddress());
+                        boolean isIpEnlaceReachable = NetworkUtils.isReachable(tienda.getIpEnlace());
+
+                        tienda.setEstadoIp(isIpAddressReachable ? "online" : "offline");
+                        tienda.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
+
+                        JsonObject responseJson = new JsonObject();
+                        responseJson.add("tienda", new Gson().toJsonTree(tienda));
+
+                        if (tienda.getFlejeElectronico()) {
+                            ServFlejesElectronicos servFlejesElectronicos = new ServFlejesElectronicos();
+                            JsonObject flejeData = servFlejesElectronicos.getDatosFlejeElectronico(datosLocal);
+                            responseJson.add("flejeData", flejeData);
+                        }
+
+                        out.print(new Gson().toJson(responseJson));
+
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         out.print("{\"error\":\"Servidor no encontrado\"}");
@@ -68,17 +101,48 @@ public class SvDatosServidor extends HttpServlet {
                 out.flush();
                 out.close();
             }
-        } else if("searchLocals".equals(action)) {
+        } else if ("searchLocals".equals(action)) {
             String query = request.getParameter("query");
-            
+
             try {
-                if(query == null || query.trim().isEmpty()){
+                if (query == null || query.trim().isEmpty()) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     out.print("{\"error\":\"Identificador del local no proporcionado.\"}");
                 } else {
-                    List<String> locales = controladora.buscarServidoresPorCriterio(query);
-                    if(locales != null){
-                        out.print(new Gson().toJson(locales));
+                    if (!isValidQuery(query)) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\":\"Consulta no válida.\"}");
+                        return;
+                    }
+                    List<Servidores> locales = controladora.buscarServidoresPorCriterio(query);
+                    if (locales != null) {
+                        List<JsonObject> resultados = locales.stream().map(local -> {
+                            JsonObject localJson = new JsonObject();
+                            boolean isIpAddressReachable = NetworkUtils.isReachable(local.getIpAddress());
+                            boolean isIpEnlaceReachable = NetworkUtils.isReachable(local.getIpEnlace());
+
+                            local.setEstadoIp(isIpAddressReachable ? "online" : "offline");
+                            local.setEstadoEnlace(isIpEnlaceReachable ? "online" : "offline");
+
+                            localJson.add("local", new Gson().toJsonTree(local));
+                            if (local.getFlejeElectronico()) {
+                                ServFlejesElectronicos servFlejesElectronicos = new ServFlejesElectronicos();
+                                JsonObject flejeData = servFlejesElectronicos.getDatosFlejeElectronico(local.getLocal());
+                                localJson.add("flejeData", flejeData);
+                            }
+
+                            try {
+                                controladora.updateServidor(local);
+                            } catch (Exception ex) {
+                                Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            return localJson;
+                        }).collect(Collectors.toList());
+
+                        JsonArray responseArray = new JsonArray();
+                        resultados.forEach(responseArray::add);
+
+                        out.print(new Gson().toJson(responseArray));
                     } else {
                         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         out.print("{\"error\":\"Locales no encontrados\"}");
@@ -92,11 +156,6 @@ public class SvDatosServidor extends HttpServlet {
                 out.flush();
                 out.close();
             }
-
-        
-        
-        
-        
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print("{\"error\":\"Acción no definida\"}");
@@ -105,15 +164,7 @@ public class SvDatosServidor extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    private boolean isValidQuery(String query) {
+        return query.matches("[a-zA-Z0-9 ]+");
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

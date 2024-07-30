@@ -5,7 +5,9 @@
 package logica;
 
 import static java.lang.System.out;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Query;
@@ -81,7 +83,7 @@ public class Controladora {
          return controlPersis.findLocalesPorCriterio(query);
     }
 
-    public List<String> buscarServidoresPorCriterio(String query) {
+    public List<Servidores> buscarServidoresPorCriterio(String query) {
         return controlPersis.findServidoresPorCriterio(query);
     }
 
@@ -116,11 +118,97 @@ public class Controladora {
         return controlPersis.obtenerIncidentes();
     }
 
-    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo) throws Exception {
-    controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, oc, fEnvioProv, hes, sociedad, ordenEstadistica, textoBreve, cotizacion, activo);
-}
- 
-   
+    public void crearIncidente(String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, String sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuario) throws Exception {
+       controlPersis.crearIncidente(tipo, mes, formato, inc, sap, tienda, detalle, monto, moneda, proveedor, fAutorizar, Oc, fEnvioProv, Hes, sociedad, OrdenEstadistica, TextoBreve, Cotizacion, activo, usuario);
+    }
 
-   
+    public List<Tipos> getAllTipos() {
+        return controlPersis.getAllTipos();
+    }
+
+    public Moneda obtenerMonedaporCodigo(String monedaStr) {
+        return controlPersis.obtenerMonedaporCodigo(monedaStr);
+    }
+
+    public Proveedores obtenerNombreProveedor(String proveedorStr) {
+        return controlPersis.obtenerProveedorporNombre(proveedorStr);
+    }
+
+    public List<Moneda> listarMonedas() {
+        return controlPersis.obtenerMonedas();
+    }
+
+    public List<Proveedores> listarProveedores() {
+        return controlPersis.findProveedoresEntities();
+    }
+
+    public List<Sociedades> listarSociedades() {
+        return controlPersis.findSociedadesEntities();
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return controlPersis.obtenerUsuarios();
+    }
+
+    public Sociedades obtenerSociedadPorNombre(String sociedadStr) {
+        return controlPersis.findSociedadName(sociedadStr);
+    }
+
+    public Usuario obtenerUsuarioPorId(String usuarioId) {
+        return controlPersis.findIdUsuario(usuarioId);
+    }
+
+ //   public void crearIncidente(Tipos tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigInteger monto, Moneda moneda, Proveedores proveedor, Date fAutorizar, String Oc, Date fEnvioProv, String Hes, Sociedades sociedad, String OrdenEstadistica, String TextoBreve, String Cotizacion, boolean activo, String usuarioId) {
+ //       System.out.println("crearIncidente en Controladora");
+ ///      controlPersis.crearNuevoIncidente();
+ //   }
+
+    public Object obtenerTiposporNombre(String tipoStr) {
+        return controlPersis.obtenerTiposporNombre(tipoStr);
+    }
+ 
+    public Tipos findTiposById (int Id) {
+        return controlPersis.findTiposById(Id);
+    }
+
+    public Sociedades findSociedadesById (int Id) {
+        return controlPersis.findSociedadesById(Id);
+    }
+    
+    public Proveedores findProveedoresById(int Id) {
+        return controlPersis.findProveedoresById(Id);
+    }
+    
+    public Moneda findMonedaById (int Id) {
+        return controlPersis.findMonedaById(Id);
+    }
+
+    public Tienda findTiendaByLocal(String datosLocal) {
+        return controlPersis.findTiendaByLocal(datosLocal);
+    }
+
+    public List<Tienda> buscarTiendasPorCriterio(String query) {
+        return controlPersis.findTiendasPorCriterio(query);
+    }
+
+    public Incidentes findIncidenteById(int idIncidente) {
+        return controlPersis.findIncidenteById(idIncidente);
+    }
+
+    public void actualizarIncidente(Incidentes incidente) throws Exception {
+        controlPersis.editarIncidente(incidente);
+    }
+
+    public void updateServidor(Servidores local) throws Exception {
+        controlPersis.editServidores(local);
+    }
+
+    public List<Balanza> obtenerBalanza(int local) {
+        return controlPersis.obtenerBalanzasporLocal(local);
+    }
+
+    public List<ConsultoresPrecios> obtenerConsultaPreciosByLocal(int local) {
+        return controlPersis.obtenerConsultaPreciosByLocal(local);
+    }
+
 }

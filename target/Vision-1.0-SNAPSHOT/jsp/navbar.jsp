@@ -6,7 +6,7 @@
 <nav class="navbar">
     <div class="container-fluid">
         <a class="navbar-brand" href="dashboard.jsp">
-            <img src="images/logo_smu_white.png" alt="alt"/>
+            <img class="logo-img" src="images/logo_smu_white.png" alt="alt"/>
         </a>
         <!-- Brand -->
         <a class="navbar-brand" href="dashboard.jsp">
@@ -25,14 +25,14 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <!-- Menu items -->
             <ul class="navbar-list">
-                <% if (user != null && user.getIdRole() != 5) { %>
+                
                 <li class="navbar-item">
                     <a class="nav-link active" href="controlpos.jsp" title="Control de Punto de Venta"><i class="fa-solid fa-laptop-code"></i> ControlPos</a>
                 </li>
                 <li class="navbar-item">
                     <a class="nav-link active" href="servicios.jsp" title="Control de Servicios"><i class="fa-solid fa-list-check"></i> Gestion de Servicios</a>
                 </li>
-                <% } %>
+               
                 <li class="navbar-item">
                     <a href="sco.jsp"><i class="fas fa-weight-hanging"></i> Carga de Peso SCO</a>
                 </li>

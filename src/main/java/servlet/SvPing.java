@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -5,23 +6,16 @@
 package servlet;
 
 import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -47,10 +41,10 @@ public class SvPing extends HttpServlet {
         Gson gson = new Gson();
         Map<String, Map<String, String>> resultados = new HashMap<>();
         String local = request.getParameter("local");
+ 
         
-     
-       
         
+          
         Controladora controladora = new Controladora();
         List<String> cajas = new ArrayList<>();
 
@@ -77,6 +71,7 @@ public class SvPing extends HttpServlet {
                 Logger.getLogger(SvPing.class.getName()).log(Level.SEVERE, null, ex);
             }
             Map<String, String> detallesCaja = new HashMap<>();
+            detallesCaja.put("local", local);
             detallesCaja.put("estado", online ? "online" : "offline");
             detallesCaja.put("ip", ip);
             detallesCaja.put("caja", caja);
@@ -99,6 +94,5 @@ public class SvPing extends HttpServlet {
         out.flush();
 
     }
-
     
 }

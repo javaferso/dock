@@ -5,6 +5,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -29,7 +30,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "incidentes", schema = "servicios")
-
 @NamedQueries({
     @NamedQuery(name = "Incidentes.findAll", query = "SELECT i FROM Incidentes i"),
     @NamedQuery(name = "Incidentes.findById", query = "SELECT i FROM Incidentes i WHERE i.id = :id"),
@@ -54,7 +54,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Incidentes.findByActivo", query = "SELECT i FROM Incidentes i WHERE i.activo = :activo"),
     @NamedQuery(name = "Incidentes.findByFechaCreacion", query = "SELECT i FROM Incidentes i WHERE i.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Incidentes.findByFechaActualizacion", query = "SELECT i FROM Incidentes i WHERE i.fechaActualizacion = :fechaActualizacion"),
-    @NamedQuery(name = "Incidentes.findByFechaCierre", query = "SELECT i FROM Incidentes i WHERE i.fechaCierre = :fechaCierre")})
+    @NamedQuery(name = "Incidentes.findByFechaCierre", query = "SELECT i FROM Incidentes i WHERE i.fechaCierre = :fechaCierre"),
+    @NamedQuery(name = "Incidentes.findByUsuarioId", query = "SELECT i FROM Incidentes i WHERE i.usuarioId = :usuarioId")})
 public class Incidentes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,98 +64,106 @@ public class Incidentes implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "tipo")
+    
+    @Basic
+    @Column(name="tipo")
     private String tipo;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "mes")
     private int mes;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "formato")
     private String formato;
+    
     @Size(max = 255)
     @Column(name = "inc")
     private String inc;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "sap")
     private int sap;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "tienda")
     private String tienda;
+    
     @Size(max = 2147483647)
     @Column(name = "detalle")
     private String detalle;
+    
     @Column(name = "monto")
-    private BigInteger monto;
-    @Size(max = 10)
+    private BigDecimal monto;
+    
+    @Size(max = 255)
     @Column(name = "moneda")
     private String moneda;
-    @Size(max = 255)
-    @Column(name = "proveedor")
-    private String proveedor;
+    
     @Column(name = "f_autorizar")
     @Temporal(TemporalType.DATE)
     private Date fAutorizar;
+    
     @Size(max = 255)
     @Column(name = "oc")
     private String oc;
+    
     @Column(name = "f_envio_prov")
     @Temporal(TemporalType.DATE)
     private Date fEnvioProv;
+    
     @Size(max = 255)
     @Column(name = "hes")
     private String hes;
+    
     @Size(max = 255)
     @Column(name = "sociedad")
     private String sociedad;
+    
+    
+    @Size(max = 255)
+    @Column(name = "usuario_id")
+    private String usuarioId;
+
     @Size(max = 255)
     @Column(name = "orden_estadistica")
     private String ordenEstadistica;
+    
     @Size(max = 2147483647)
     @Column(name = "texto_breve")
     private String textoBreve;
+    
     @Size(max = 255)
     @Column(name = "cotizacion")
     private String cotizacion;
+    
+    @Size(max = 255)
+    @Column(name = "proveedor")
+    private String proveedor;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "activo")
     private boolean activo;
+    
     @Column(name = "fecha_creacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
+    
     @Column(name = "fecha_actualizacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaActualizacion;
+    
     @Column(name = "fecha_cierre")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCierre;
     
-    
-    // Relaciones con las otras tablas
-    @ManyToOne
-    @JoinColumn(name = "moneda", referencedColumnName = "codigo", insertable = false, updatable = false)
-    private Moneda moneda1;
-    
-    @ManyToOne
-    @JoinColumn(name = "proveedor", referencedColumnName = "nombre", insertable = false, updatable = false)
-    private Proveedores proveedores;
-    
-    @ManyToOne
-    @JoinColumn(name = "sociedad", referencedColumnName = "nombre", insertable = false, updatable = false)
-    private Sociedades sociedades;
-    
-    @ManyToOne
-    @JoinColumn(name = "tipo", referencedColumnName = "nombre", insertable = false, updatable = false)
-    private Tipos tipos;
 
     public Incidentes() {
     }
@@ -163,14 +172,31 @@ public class Incidentes implements Serializable {
         this.id = id;
     }
 
-    public Incidentes(Integer id, String tipo, int mes, String formato, int sap, String tienda, boolean activo) {
+    public Incidentes(Integer id, String tipo, int mes, String formato, String inc, int sap, String tienda, String detalle, BigDecimal monto, String moneda, String proveedor, Date fAutorizar, String oc, Date fEnvioProv, String hes, String sociedad, String usuarioId, String ordenEstadistica, String textoBreve, String cotizacion, boolean activo, Date fechaCreacion, Date fechaActualizacion, Date fechaCierre) {
         this.id = id;
         this.tipo = tipo;
         this.mes = mes;
         this.formato = formato;
+        this.inc = inc;
         this.sap = sap;
         this.tienda = tienda;
+        this.detalle = detalle;
+        this.monto = monto;
+        this.moneda = moneda;
+        this.proveedor = proveedor;
+        this.fAutorizar = fAutorizar;
+        this.oc = oc;
+        this.fEnvioProv = fEnvioProv;
+        this.hes = hes;
+        this.sociedad = sociedad;
+        this.usuarioId = usuarioId;
+        this.ordenEstadistica = ordenEstadistica;
+        this.textoBreve = textoBreve;
+        this.cotizacion = cotizacion;
         this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
+        this.fechaCierre = fechaCierre;
     }
 
     public Integer getId() {
@@ -183,10 +209,6 @@ public class Incidentes implements Serializable {
 
     public String getTipo() {
         return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public int getMes() {
@@ -237,11 +259,11 @@ public class Incidentes implements Serializable {
         this.detalle = detalle;
     }
 
-    public BigInteger getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(BigInteger monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
@@ -249,23 +271,18 @@ public class Incidentes implements Serializable {
         return moneda;
     }
 
-    public void setMoneda(String moneda) {
-        this.moneda = moneda;
-    }
+    
 
     public String getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(String proveedor) {
-        this.proveedor = proveedor;
-    }
 
-    public Date getFAutorizar() {
+    public Date getfAutorizar() {
         return fAutorizar;
     }
 
-    public void setFAutorizar(Date fAutorizar) {
+    public void setfAutorizar(Date fAutorizar) {
         this.fAutorizar = fAutorizar;
     }
 
@@ -277,11 +294,11 @@ public class Incidentes implements Serializable {
         this.oc = oc;
     }
 
-    public Date getFEnvioProv() {
+    public Date getfEnvioProv() {
         return fEnvioProv;
     }
 
-    public void setFEnvioProv(Date fEnvioProv) {
+    public void setfEnvioProv(Date fEnvioProv) {
         this.fEnvioProv = fEnvioProv;
     }
 
@@ -297,9 +314,11 @@ public class Incidentes implements Serializable {
         return sociedad;
     }
 
-    public void setSociedad(String sociedad) {
-        this.sociedad = sociedad;
+  
+    public String getUsuarioId() {
+        return usuarioId;
     }
+
 
     public String getOrdenEstadistica() {
         return ordenEstadistica;
@@ -325,7 +344,7 @@ public class Incidentes implements Serializable {
         this.cotizacion = cotizacion;
     }
 
-    public boolean getActivo() {
+    public boolean isActivo() {
         return activo;
     }
 
@@ -356,39 +375,7 @@ public class Incidentes implements Serializable {
     public void setFechaCierre(Date fechaCierre) {
         this.fechaCierre = fechaCierre;
     }
-
-    public Moneda getMoneda1() {
-        return moneda1;
-    }
-
-    public void setMoneda1(Moneda moneda1) {
-        this.moneda1 = moneda1;
-    }
-
-    public Proveedores getProveedores() {
-        return proveedores;
-    }
-
-    public void setProveedores(Proveedores proveedores) {
-        this.proveedores = proveedores;
-    }
-
-    public Sociedades getSociedades() {
-        return sociedades;
-    }
-
-    public void setSociedades(Sociedades sociedades) {
-        this.sociedades = sociedades;
-    }
-
-    public Tipos getTipos() {
-        return tipos;
-    }
-
-    public void setTipos(Tipos tipos) {
-        this.tipos = tipos;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -413,5 +400,26 @@ public class Incidentes implements Serializable {
     public String toString() {
         return "logica.Incidentes[ id=" + id + " ]";
     }
+
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public void setSociedad(String sociedad) {
+        this.sociedad = sociedad;
+    }
     
+    public void setUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
 }

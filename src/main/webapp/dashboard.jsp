@@ -5,12 +5,14 @@ Author :
 JFerreira --%> 
 
 <%@page import="logica.Usuario"%>
+<%@page import="logica.Roles"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %> 
 <%@page import="com.smu.vision.resources.JavaEE8Resource"%>
 <%
     Usuario user = (Usuario) session.getAttribute("user");
+    Roles role = new Roles();
     System.out.println("Session ID: " + session.getId());
-
+    
 %>
 <!DOCTYPE html>
 <html>
@@ -99,7 +101,7 @@ JFerreira --%>
                         onclick="location.href = 'monitor.jsp'"
                         />
 
-                    <% if (user.getIdRole() == 1) { %>
+                    <% if (user.getIdRole().getIdRole().equals(1)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -131,14 +133,14 @@ JFerreira --%>
                         value="SSH Pos"
                         onclick="setSSHLink()"
                         />
-                    <% } else if (user.getIdRole() == 2) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(2)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
                         value="Buscar Boleta"
                         onclick="location.href = 'buscarBoleta.jsp'"
                         />
-                    <% } else if (user.getIdRole() == 3) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(3)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -159,7 +161,7 @@ JFerreira --%>
                         onclick="setSSHLink()"
                         />
 
-                    <% } else if (user.getIdRole() == 5) { %>
+                    <% } else if (user.getIdRole().getIdRole().equals(5)) { %>
                     <input
                         type="button"
                         class="btn btn-outline-dark me-md-2"
@@ -173,7 +175,8 @@ JFerreira --%>
 
 
                 <script>
-                        var userRole = <%= user.getIdRole()%>;
+                        var userRole = <%= user.getIdRole().getIdRole() %>;
+                        console.log("userRole : ", userRole);
                         $(document).ready(function () {
                             cargarFormatos();
 
@@ -192,7 +195,7 @@ JFerreira --%>
                                 data.forEach(function (item) {
                                     $('#formato').append('<option value="' + item + '">' + item + '</option>');
                                 });
-                                if (userRole == 5) {
+                                if (userRole === 5) {
                                     $('#formato').val('MFC');
                                     cargarLocales();
                                 }
