@@ -4,6 +4,29 @@
 :root {
     --color-highlight: rgb(0 0 0 /25%);
 }
+
+input::placeholder {
+  color: red;
+  font-size: 1em;
+  font-style: italic;
+}
+.form-container {
+    position: relative;
+    overflow: hidden; /* Asegura que el fondo no sobresalga */
+}
+
+.watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    opacity: 0.1; /* Nivel de transparencia de la marca de agua */
+    pointer-events: none; /* No permite la interacción con el fondo */
+    z-index: -1; /* Coloca la imagen debajo del contenido */
+}
+
 body {
     font-family: Roboto, sans-serif;
     margin: 0;

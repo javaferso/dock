@@ -50,7 +50,7 @@
         </script>
     </head>
     <%@ include file = "jsp/navbar.jsp" %>
-    <body class="body-boleta">
+    <body class="body-maleta">
         <div class="container-boleta">
             <h2 class="text-center">Buscar Log en <%= caja%> de Local <%= local%></h2>
             <form id="formulario" style="max-width: 600px; margin: auto;">

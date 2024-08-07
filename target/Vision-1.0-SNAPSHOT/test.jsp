@@ -36,6 +36,7 @@
         <script src="js/toastify.js"></script>
         <script src="js/stickyfill.min.js"></script>
         <script src="js/script.js"></script>
+
     </head>
     <header>
         <%@ include file="jsp/navbar.jsp" %>
@@ -44,77 +45,75 @@
             // Redirigir a Login
             response.sendRedirect("login.jsp");
         } else {%> 
-    <body class="body-boleta">
+    <body class="body-maleta">
         <div class="container-fluid">
-            <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-                <div class="row">
-                    <label for="tiendaInput" class="col-md-1 col-form-label">Tienda:</label>
-                    <div class="col-2">
-                        <input type="text" id="localId" class="form-control" value="">
-                    </div>
-                    <div class="col-2"></div> 
-                    <div class="col-2">
-                        <button type="button" class="btn btn-outline-dark me-md-2" id="ip_virtual" value="" onclick="setVirtual($('#ipVirtualInput').val())">Serv. Virtual</button>
-                    </div>   
-                    <label for="flejeraInput" class="col-md-1 form-group row d-flex justify-content-end">Flejera:</label>     
-                    <div class="col-2">
-                        <input type="text" id="flejeraInput" class="form-control" value="" readonly>
-                    </div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-outline-dark me-md-2" id="ipFlejeElectronico" value="" onclick="setFlejeElectronico($('#ipFlejeElectronico').val())">Fleje Electronico</button>
-                    </div>  
-                </div>
-                <div class="row">
-                    <input type="hidden" id="ipVirtualInput" value="">
-                    <label for="nombreInput" class="col-md-1 col-form-label">Nombre:</label>
-                    <div class="col-4">
-                        <input type="text" id="nombreTienda" class="form-control w-full" value="" readonly>
-                    </div>
-                    <div class="col-2"></div>
-                    <label for="serieInput" class="col-md-1 form-group row d-flex justify-content-end">Formato:</label>
-                    <div class="col-2">
-                        <input type="text" id="nombreInput" class="form-control" value="" readonly>
-                    </div>
-                </div>
-                <div class="row">
-                    <label for="direccionInput" class="col-md-1 col-form-label">Dirección:</label>
-                    <div class="col-md-4">
-                        <input type="text" id="direccionInput" class="form-control" value="" readonly>
-                    </div>   
-                    <div class="col-2">
-                        <button type="button" class="btn btn-outline-dark me-md-2" id="ipServer" value="" onclick="setServerssh($('#iPservidorInput').val())">SSHServidor</button>
-                    </div>       
-                    <label for="ipInput" class="col-md-1 form-group row d-flex justify-content-end">IP Serv:</label>        
-                    <div class="col-2">
-                        <input type="text" id="iPservidorInput" class="form-control w-full" value="" readonly>
-                    </div>         
-                    <div class="col-2">
-                        <button type="button" class="btn status-icon" id="status-icon-ip"></button>
-                        <button type="button" class="btn btn-outline-dark rounded-circle ms-2" id="ping-icon" onclick="solicitarPing()">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
+            <div class="shadow p-2 mb-3 bg-body-tertiary rounded">
+                <div class="form-container">
+                    <div class="input-section">
+                        <div class="input-group mb-1">
+                            <label for="tiendaInput" class="form-label">
+                                <img src="icons/search_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="Tienda" class="icon-svg mt-2"/>
+                            </label>
+                            <input type="text" id="localId" class="form-control p-2" value="" placeholder="Ingrese sap o nombre de tienda">
+                            <label for="nombreInput" class="form-label">
+                                <img src="icons/info_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="Nombre" class="icon-svg mt-2"/>
+                            </label>
+                            <input type="text" id="nombreTienda" class="form-control" value="" readonly>
+                        </div>
+                        <div class="input-group mb-1">
+                            <label for="direccionInput" class="form-label">
+                                <img src="icons/near_me_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="Dirección" class="icon-svg"/>
+                            </label>
+                            <input type="text" id="direccionInput" class="form-control" value="" readonly>
+                        </div>
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">
+                                <img src="icons/dns_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="IP Serv" class="icon-svg"/>
+                            </span>
+                            <input type="text" id="iPservidorInput" class="form-control" value="" readonly>
+                            <span class="input-group-text">
+                                <button type="button" class="btn status-icon bg-success" id="status-icon-ip"></button>
 
-                    </div>        
-                </div>            
-                <div class="row">
-                    <label for="telefonoInput" class="col-md-1 col-form-label">Ciudad:</label>
-                    <div class="col-md-4">
-                        <input type="text" id="cityInput" class="form-control" value="" readonly>
+                            </span>
+                            <span class="input-group-text">
+                                <button type="button" class="btn btn-light" id="ping-icon" onclick="solicitarPing()">
+                                    <i class="fas fa-sync-alt fa-xs"></i>
+                                </button>
+                            </span>
+                            <span class="input-group-text">
+                                <img src="icons/lan_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="P.Enlace" class="icon-svg"/>
+                            </span>
+                            <input type="text" id="enlaceInput" class="form-control" value="" readonly>
+                            <span class="input-group-text">
+                                <button type="button" class="btn status-icon bg-success" id="status-icon-enlace"></button>
+                            </span>
+                            <span class="input-group-text">
+                                <button type="button" class="btn btn-light" id="ping-icon" onclick="solicitarPingEnlace()">
+                                    <i class="fas fa-sync-alt fa-xs"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
-                    <div class="col-2"></div>
-                    <label for="enlaceInput" class="col-md-1 form-group row d-flex justify-content-end">P.Enlace:</label>
-                    <div class="col-2">
-                        <input type="text" id="enlaceInput" class="form-control" value="" readonly>
+
+
+                    <div class="button-section text-center">
+                        <!-- El input está como campo oculto -->
+                        <input type="hidden" id="ipVirtualInput" value="">
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-dark me-md-2" id="ip_virtual" value="" onclick="setVirtual($('#ipVirtualInput').val())">Serv. Virtual</button>
+                            <button type="button" class="btn btn-outline-dark mb-1" id="ipServer" value="" onclick="setServerssh($('#iPservidorInput').val())">SSHServidor</button>
+                            <button type="button" class="btn btn-outline-dark mb-1" id="ip_consola" value="" onclick="setConsola($('#iPservidorInput').val())">Geoconsola</button>
+                            <button type="button" class="btn btn-outline-dark mb-1" id="ip_pricer" value="" onclick="setPricer($('#iPservidorInput').val())">GeoPricer</button>
+                            <button type="button" class="btn btn-outline-dark mb-1" id="ip_conciliacion" value="" onclick="setConciliacion($('#iPservidorInput').val())">GeoConciliacion</button>
+                            <button type="button" class="btn btn-outline-dark mb-1" id="ipFlejeElectronico" value="" onclick="setFlejeElectronico($('#ipFlejeElectronico').val())">Fleje Electronico</button>
+                        </div>
+
                     </div>
-                    <div class="col-2">
-                        <button type="button" class="btn status-icon" id="status-icon-enlace"></button>
-                    </div>
-                </div> 
+                </div>
             </div>
         </div>
         <div>
             <div class="worko-tabs">
-
                 <input class="state" type="radio" title="tab-one" name="tabs-state" id="tab-one" checked />
                 <input class="state" type="radio" title="tab-two" name="tabs-state" id="tab-two" onclick="cargarBalanzas($('#local').val())" />
                 <input class="state" type="radio" title="tab-three" name="tabs-state" id="tab-three" onclick="cargarConsultaPrecios($('#local').val())" />
@@ -126,34 +125,36 @@
                     <label for="tab-three" id="tab-three-label" class="tab">Consulta Precios</label>
                     <label for="tab-four" id="tab-four-label" class="tab">Otros</label>
 
-
                     <div id="tab-one-panel" class="panel active">
                         <!-- Contenido para la pestaña POS -->
-                        <div
-                            id="todasLasCajas"
-                            class="bg-light p-3 shadow-sm mb-3 mt-3"
-                            style="border-radius: 15px; background-color: #a3cfbb"
-                            >
+                        <div id="todasLasCajas" class="bg-light p-3 shadow-sm mb-3 mt-3" style="border-radius: 15px; background-color: #a3cfbb">
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoPos</h1>
                         </div>
                     </div>
                     <div id="tab-two-panel" class="panel">
                         <!-- Contenido para la pestaña BALANZAS -->
-                        <div
-                            id="todasLasBalanzas"
-                            class="bg-light p-3 shadow-sm mb-3 mt-3"
-                            style="border-radius: 15px; background-color: #a3cfbb"
-                            >
+                        <div id="todasLasBalanzas" class="bg-light p-3 shadow-sm mb-3 mt-3" style="border-radius: 15px; background-color: #a3cfbb">
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoBalanzas</h1>
                         </div>
                     </div>
                     <div id="tab-three-panel" class="panel">
                         <!-- Contenido para la pestaña CONSULTA PRECIOS -->
-                        <div
-                            id="todasLasConsultas"
-                            class="bg-light p-3 shadow-sm mb-3 mt-3"
-                            style="border-radius: 15px; background-color: #a3cfbb"
-                            >
+                        <div id="todasLasConsultas" class="bg-light p-3 shadow-sm mb-3 mt-3" style="border-radius: 15px; background-color: #a3cfbb">
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoConsultaPrecios</h1>
                         </div>
                     </div>
@@ -161,60 +162,41 @@
                         <h1>InfoTiendaUps</h1>
                     </div>
                 </div>
-
             </div>
-            <div>
-                <div class="d-grid gap-2 d-md-flex justify-content-xl-end">
-                    <input type="text" class="input-group-lg" id="ipCajaOculta" value="" placeholder="Ip Seleccionada"/>
-                    <button
-                        type="button"
-                        id="local"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setTickets($('#local').val())"
-                        >Obtener Tickets</button>
-                    <button
-                        type="button"
-                        id="verSSHButton"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setSSHLink()"
-                        >SSH Pos</button>
-                    <input type="hidden" id="ipPosShadow" value=''/>
-                    <button
-                        type="button"
-                        id="verVNCButton"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setVNCLink()"
-                        >VNC Pos</button>
+        </div>
+        <div>
+            <div class="d-grid gap-1 d-md-flex justify-content-xl-start">
+                <input type="text" class="input-group-lg" id="ipCajaOculta" value="" placeholder="Ip Seleccionada"/>
+                <button
+                    type="button"
+                    id="local"
+                    class="btn btn-outline-dark me-md-2"
+                    value=""
+                    onclick="setTickets($('#local').val())"
+                    >Obtener Tickets</button>
+                <button
+                    type="button"
+                    id="verSSHButton"
+                    class="btn btn-outline-dark me-md-2"
+                    value=""
+                    onclick="setSSHLink($('#ipCajaOculta').val())"
+                    >SSH Pos</button>
+                <input type="hidden" id="ipPosShadow" value=''/>
+                <button
+                    type="button"
+                    id="verVNCButton"
+                    class="btn btn-outline-dark me-md-2"
+                    value=""
+                    onclick="setVNCLink($('#ipCajaOculta').val())"
+                    >VNC Pos</button>
 
-                    <button
-                        type="button"
-                        id="ip_consola"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setConsola($('#iPservidorInput').val())"
-                        >Geoconsola</button>
-                    <input type="hidden" id="ipPosShadow" value=''/>
-                    <button
-                        type="button"
-                        id="ip_pricer"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setPricer($('#iPservidorInput').val())"
-                        >GeoPricer</button>
-                    <button
-                        type="button"
-                        id="ip_conciliacion"
-                        class="btn btn-outline-dark me-md-2"
-                        value=""
-                        onclick="setConciliacion($('#iPservidorInput').val())"
-                        >GeoConciliacion</button>
-                </div>
+
             </div>
         </div>
         <script>
+            function getValueById(id) {
+                return $('#' + id).val();
+            }
             var ipOculta = [];
             var enterPressed = false;
             $(document).ready(function () {
@@ -247,6 +229,7 @@
                             success: function (data) {
                                 response(data.map(function (item) {
                                     var local = item.local; // Extraer el objeto local
+                                    $('#loading').show();
                                     return {
                                         label: local.formato + " " + local.local + " - " + local.nombreTienda,
                                         value: local.local,
@@ -259,11 +242,13 @@
                     select: function (event, ui) {
                         if (enterPressed) {
                             enterPressed = false;
+                            $('#loading').hide();
                             return false;
                         }
                         var data = ui.item.data.local;
-                        $('#nombreTienda').val(data.formato + " " + data.nombreTienda);
-                        $('#direccionInput').val(data.direccion);
+                        $('#nombreTienda').val(data.formatoCodigo + " " + data.localTxt + " " + data.nombreTienda);
+                        var concatenatedLocation = data.direccion + ", " + data.ciudad;
+                        $('#direccionInput').val(concatenatedLocation);
                         $('#cityInput').val(data.ciudad);
                         $('#iPservidorInput').val(data.ipAddress);
                         $('#ipVirtualInput').val(data.ipVirtual);
@@ -276,7 +261,7 @@
                         cargarConsultaPrecios(data.local);
                         updateStatusIcon('#status-icon-ip', data.estadoIp);
                         updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
-
+                        
                         if (ui.item.data.flejeData) {
                             // Manejar los datos de flejeData si existen
                             $('#ipFlejeElectronico').val(ui.item.data.flejeData.IpFlejeElectronico);
@@ -309,11 +294,13 @@
                                     var flejeData = response.flejeData;
 
                                     if (data) {
-                                        var concatenatedData = data.formato + " " + data.nombreTienda;
+                                        var concatenatedData = data.formatoCodigo + " " + data.localTxt + " " + data.nombreTienda;
                                         $('#nombreTienda').val(concatenatedData);
-                                        $('#direccionInput').val(data.direccion);
+                                        var concatenatedLocation = data.direccion + ", " + data.ciudad;
+                                        $('#direccionInput').val(concatenatedLocation);
                                         $('#iPservidorInput').val(data.ipAddress);
                                         $('#ipVirtualInput').val(data.ipVirtual);
+                                        console.log(data.ipVirtual);
                                         $('#enlaceInput').val(data.ipEnlace);
                                         $('#nombreInput').val(data.formato);
                                         $('#cityInput').val(data.ciudad);
@@ -363,7 +350,7 @@
 
 
             });
-
+            
             function updateStatusIcon(selector, status) {
                 var icon = $(selector);
                 icon.removeClass('bg-success bg-warning bg-danger');
@@ -378,27 +365,37 @@
 
             function solicitarPing() {
                 var ipServidor = $('#iPservidorInput').val();
-                var ipEnlace = $('#enlaceInput').val();
                 var local = $('#localId').val();
 
                 // Inicializar los iconos sin color
                 updateStatusIcon('#status-icon-ip', '');
+
+                $.get('SvDatosServidor', {action: 'ping', ipServidor: ipServidor, local: local}, function (data) {
+                    updateStatusIcon('#status-icon-ip', data.estadoIp);
+                }).fail(function () {
+                    alert('Error al realizar el ping.');
+                });
+            }
+            function solicitarPingEnlace() {
+                var ipEnlace = $('#enlaceInput').val();
+                var local = $('#localId').val();
+
+                // Inicializar los iconos sin color
                 updateStatusIcon('#status-icon-enlace', '');
 
-                $.get('SvDatosServidor', {action: 'ping', ipServidor: ipServidor, ipEnlace: ipEnlace, local: local}, function (data) {
-                    updateStatusIcon('#status-icon-ip', data.estadoIp);
+                $.get('SvDatosServidor', {action: 'pingEnlace', ipEnlace: ipEnlace, local: local}, function (data) {
+
                     updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
                 }).fail(function () {
                     alert('Error al realizar el ping.');
                 });
             }
-
             var cajasOrdenadas = [];
             $(document).ready(function () {
                 $('#todasLasCajas').on('click', 'tr', function () {
                     $('tr').removeClass('selected');
                     $(this).addClass('selected');
-                    //Selecciona la Ip de caja para con.SSH VNC
+                    // Selecciona la Ip de caja para con.SSH VNC
                     var ipCaja = $(this).find('td:eq(2)').text();
                     $('#ipCajaOculta').val(ipCaja);
                 });
@@ -433,18 +430,35 @@
                             cajasOrdenadas.forEach(function (caja) {
                                 if (resultados[caja]) {
                                     var detalles = resultados[caja];
-                                    var claseEstado = detalles.estado === 'online' ? 'estado-online' : 'estado-offline';
                                     var ticketValue = parseInt(detalles.tickets, 10);
                                     var claseTicket = ticketValue === 0 ? 'ticket-cero' : 'ticket-otros';
+
+                                    var estadoIcono = $('<td>');
+                                    var icon = $('<img>');
+                                    if (detalles.estado === "online") {
+                                        icon.attr("src", "icons/wifi_30dp_434343.svg"); // Icono verde
+                                    } else if (detalles.estado === "offline") {
+                                        icon.attr("src", "icons/wifi_off_30dp_BB271A.svg"); // Icono rojo
+                                    } else {
+                                        icon.attr("src", "icons/alert-circle.svg").addClass("icon-warning"); // Icono de advertencia
+                                    }
+                                    estadoIcono.append(icon);
+
                                     var fila = $('<tr>').append(
                                             $('<td>').text(local),
                                             $('<td>').text(caja),
                                             $('<td>').text(detalles.ip),
                                             $('<td>').addClass(claseTicket).text(detalles.tickets),
-                                            $('<td>').addClass(claseEstado).text(detalles.estado),
+                                            estadoIcono,
                                             $('<td>').append(
                                             $('<button>').addClass('btn btn-outline-dark me-md-2').text('Ping').click(function () {
                                         hacerPing(caja, local);
+                                    }),
+                                            $('<button>').addClass('btn btn-outline-dark me-md-2').text('SSH').click(function () {
+                                        setSSHLink(detalles.ip);
+                                    }),
+                                            $('<button>').addClass('btn btn-outline-dark me-md-2').text('VNC').click(function () {
+                                        setVNCLink(detalles.ip);
                                     })
                                             )
                                             );
@@ -457,6 +471,76 @@
                             $('#todasLasCajas').html('<p>No hay datos disponibles.</p>');
                         }
                     });
+                }
+            }
+
+            function mostrarEstadoCajas() {
+                var localSeleccionado = $('#local').val();
+                if (localSeleccionado) {
+                    $.get('SvPing?local=' + localSeleccionado, function (resultados) {
+                        var resultadosOrdenados = {};
+                        cajasOrdenadas.forEach(function (caja) {
+                            if (resultados[caja]) {
+                                resultadosOrdenados[caja] = resultados[caja];
+                            }
+                        });
+                        var contenedor = $('#todasLasCajas');
+                        contenedor.empty();
+                        var tabla = $('<table>').addClass('table');
+                        var cabecera = $('<tr>').append(
+                                $('<th>').text('Tienda'),
+                                $('<th>').text('Caja'),
+                                $('<th>').text('IpAddress'),
+                                $('<th>').text('Tickets'),
+                                $('<th>').text('Estado'),
+                                $('<th>').text('Acción')
+                                );
+                        tabla.append(cabecera);
+                        $.each(resultadosOrdenados, function (caja, detalles) {
+                            var estadoIcono = $('<td>');
+                            var icon = $('<img>');
+                            if (detalles.estado === "online") {
+                                icon.attr("src", "icons/wifi_30dp_434343.svg"); // Icono verde
+                            } else if (detalles.estado === "offline") {
+                                icon.attr("src", "icons/wifi_off_30dp_BB271A.svg"); // Icono rojo
+                            } else {
+                                icon.attr("src", "icons/alert-circle.svg").addClass("icon-warning"); // Icono de advertencia
+                            }
+                            estadoIcono.append(icon);
+
+                            var ticketValue = parseInt(detalles.tickets, 10);
+                            var claseTicket = isNaN(ticketValue) || ticketValue === 0 ? 'ticket-cero' : 'ticket-otros';
+                            console.log('Caja:', caja, 'Ticket Value:', ticketValue, 'Clase Ticket:', claseTicket);
+                            var fila = $('<tr>').append(
+                                    $('<td>').text(localSeleccionado),
+                                    $('<td>').text(caja),
+                                    $('<td>').text(detalles.ip),
+                                    $('<td>').addClass(claseTicket).text(detalles.tickets),
+                                    estadoIcono,
+                                    $('<td>').append(
+                                    $('<button>').addClass('btn btn-outline-dark me-md-2').text('Ping').click(function () {
+                                hacerPing(caja, localSeleccionado);
+                            }),
+                                    $('<button>').addClass('btn btn-outline-dark me-md-2').text('SSH').click(function () {
+                                setSSHLink(detalles.ip);
+                            }),
+                                    $('<button>').addClass('btn btn-outline-dark me-md-2').text('VNC').click(function () {
+                                setVNCLink(detalles.ip);
+                            })
+                                    )
+                                    );
+                            tabla.append(fila);
+                        });
+                        contenedor.append(tabla);
+                    });
+                }
+            }
+
+            function setSSHLink(ipCaja) {
+                if (ipCaja) {
+                    location.href = 'ssh://root@' + ipCaja;
+                } else {
+                    alert('No se ha encontrado la ip de caja');
                 }
             }
 
@@ -487,142 +571,75 @@
                 });
             }
 
-            function mostrarEstadoCajas() {
-    var localSeleccionado = $('#local').val();
-    if (localSeleccionado) {
-        $.get('SvPing?local=' + localSeleccionado, function (resultados) {
-            var resultadosOrdenados = {};
-            cajasOrdenadas.forEach(function (caja) {
-                if (resultados[caja]) {
-                    resultadosOrdenados[caja] = resultados[caja];
-                }
-            });
-            var contenedor = $('#todasLasCajas');
-            contenedor.empty();
-            var tabla = $('<table>').addClass('table');
-            var cabecera = $('<tr>').append(
-                $('<th>').text('Tienda'),
-                $('<th>').text('Caja'),
-                $('<th>').text('IpAddress'),
-                $('<th>').text('Tickets'),
-                $('<th>').text('Estado'),
-                $('<th>').text('Acción')
-            );
-            tabla.append(cabecera);
-            $.each(resultadosOrdenados, function (caja, detalles) {
-                var estadoIcono = $('<td>');
-                var icon = $('<img>');
-                if (detalles.estado === "online") {
-                    icon.attr("src", "icons/wifi_30dp_434343.svg").addClass("icon-success"); // Icono verde
-                } else if (detalles.estado === "offline") {
-                    icon.attr("src", "icons/wifi_off_30dp_BB271A.svg").addClass("icon-danger"); // Icono rojo
-                } else {
-                    icon.attr("src", "icons/alert-circle.svg").addClass("icon-warning"); // Icono de advertencia
-                }
-                estadoIcono.append(icon);
-
-                var ticketValue = parseInt(detalles.tickets, 10);
-                var claseTicket = isNaN(ticketValue) || ticketValue === 0 ? 'ticket-cero' : 'ticket-otros';
-                console.log('Caja:', caja, 'Ticket Value:', ticketValue, 'Clase Ticket:', claseTicket);
-                var fila = $('<tr>').append(
-                    $('<td>').text(localSeleccionado),
-                    $('<td>').text(caja),
-                    $('<td>').text(detalles.ip),
-                    $('<td>').addClass(claseTicket).text(detalles.tickets),
-                    estadoIcono,
-                    $('<td>').append(
-                        $('<button>').addClass('btn btn-outline-dark me-md-2').text('Ping').click(function () {
-                            hacerPing(caja, localSeleccionado);
-                        }),
-                        $('<button>').addClass('btn btn-outline-dark me-md-2').text('SSH').click(function () {
-                            setSSHLink(detalles.ip);
-                        })
-                    )
-                );
-                tabla.append(fila);
-            });
-            contenedor.append(tabla);
-        });
-    }
-}
-
-function setSSHLink(ipCaja) {
-    if (ipCaja) {
-        location.href = 'ssh://root@' + ipCaja;
-    } else {
-        alert('No se ha encontrado la ip de caja');
-    }
-}
-
-function cargarSVG(url, callback) {
-    $.get(url, function (data) {
-        var svg = $(data).find('svg');
-        callback(svg);
-    });
-}
-
-$(document).ready(function () {
-    $('#todasLasBalanzas').on('click', 'tr', function () {
-        $('tr').removeClass('selected');
-        $(this).addClass('selected');
-        //Selecciona la Ip de caja para con.SSH VNC
-        var ipBal = $(this).find('td:eq(5)').text();
-        $('#ipCajaOculta').val(ipBal);
-    });
-});
-
-function cargarBalanzas(local) {
-    if (local) {
-        $('#todasLasBalanzas').empty();
-        $('#loading').show();
-        $.get('SvInfoBalanzas?local=' + local, function (resultados) {
-            $('#loading').hide();
-            if (!$.isEmptyObject(resultados)) {
-                var tabla = $('<table>').addClass('table');
-                var cabecera = $('<tr>').append(
-                    $('<th>').text('Tienda'),
-                    $('<th>').text('ID Bal'),
-                    $('<th>').text('Marca'),
-                    $('<th>').text('Modelo'),
-                    $('<th>').text('Descripcion'),
-                    $('<th>').text('IP'),
-                    $('<th>').text('Estado'),
-                    $('<th>').text('Fecha Actualizacion')
-                );
-                tabla.append(cabecera);
-
-                $.each(resultados, function (index, balanza) {
-                    var estadoIcono = $('<td>');
-                    var icon = $('<img>');
-                    if (balanza.estadoPing === "Online") {
-                        icon.attr("src", "icons/wifi_30dp_434343.svg").addClass("icon-success"); // Icono verde
-                    } else if (balanza.estadoPing === "Offline") {
-                        icon.attr("src", "icons/wifi_off_30dp_BB271A.svg").addClass("icon-danger"); // Icono rojo
-                    } else {
-                        icon.attr("src", "icons/alert-circle.svg").addClass("icon-warning"); // Icono de advertencia
-                    }
-                    estadoIcono.append(icon);
-
-                    var fila = $('<tr>').append(
-                        $('<td>').text(balanza.tiendaNumero),
-                        $('<td>').text(balanza.id),
-                        $('<td>').text(balanza.marca),
-                        $('<td>').text(balanza.modelo),
-                        $('<td>').text(balanza.nombre),
-                        $('<td>').text(balanza.direccionIp),
-                        estadoIcono,
-                        $('<td>').text(balanza.fechaActualizacionNagios)
-                    );
-                    tabla.append(fila);
+            function cargarSVG(url, callback) {
+                $.get(url, function (data) {
+                    var svg = $(data).find('svg');
+                    callback(svg);
                 });
-
-                $('#todasLasBalanzas').append(tabla);
-            } else {
-                $('#todasLasBalanzas').html('<p>No hay datos disponibles.</p>');
             }
-        });
-    }
-}
+
+            $(document).ready(function () {
+                $('#todasLasBalanzas').on('click', 'tr', function () {
+                    $('tr').removeClass('selected');
+                    $(this).addClass('selected');
+                    //Selecciona la Ip de caja para con.SSH VNC
+                    var ipBal = $(this).find('td:eq(5)').text();
+                    $('#ipCajaOculta').val(ipBal);
+                });
+            });
+
+            function cargarBalanzas(local) {
+                if (local) {
+                    $('#todasLasBalanzas').empty();
+                    $('#loading').show();
+                    $.get('SvInfoBalanzas?local=' + local, function (resultados) {
+                        $('#loading').hide();
+                        if (!$.isEmptyObject(resultados)) {
+                            var tabla = $('<table>').addClass('table');
+                            var cabecera = $('<tr>').append(
+                                    $('<th>').text('Tienda'),
+                                    $('<th>').text('ID Bal'),
+                                    $('<th>').text('Marca'),
+                                    $('<th>').text('Modelo'),
+                                    $('<th>').text('Descripcion'),
+                                    $('<th>').text('IP'),
+                                    $('<th>').text('Estado'),
+                                    $('<th>').text('Fecha Actualizacion')
+                                    );
+                            tabla.append(cabecera);
+
+                            $.each(resultados, function (index, balanza) {
+                                var estadoIcono = $('<td>');
+                                var icon = $('<img>');
+                                if (balanza.estadoPing === "Online") {
+                                    icon.attr("src", "icons/wifi_30dp_434343.svg"); // Icono verde
+                                } else if (balanza.estadoPing === "Offline") {
+                                    icon.attr("src", "icons/wifi_off_30dp_BB271A.svg"); // Icono rojo
+                                } else {
+                                    icon.attr("src", "icons/alert-circle.svg").addClass("icon-warning"); // Icono de advertencia
+                                }
+                                estadoIcono.append(icon);
+
+                                var fila = $('<tr>').append(
+                                        $('<td>').text(balanza.tiendaNumero),
+                                        $('<td>').text(balanza.id),
+                                        $('<td>').text(balanza.marca),
+                                        $('<td>').text(balanza.modelo),
+                                        $('<td>').text(balanza.nombre),
+                                        $('<td>').text(balanza.direccionIp),
+                                        estadoIcono,
+                                        $('<td>').text(balanza.fechaActualizacionNagios)
+                                        );
+                                tabla.append(fila);
+                            });
+
+                            $('#todasLasBalanzas').append(tabla);
+                        } else {
+                            $('#todasLasBalanzas').html('<p>No hay datos disponibles.</p>');
+                        }
+                    });
+                }
+            }
 
 
 
@@ -708,17 +725,32 @@ function cargarBalanzas(local) {
             function actualizarDatosCaja(resultados, caja) {
                 var detallesCaja = resultados[caja];
                 var filaCaja = $('tr:contains("' + caja + '")');
-                filaCaja.find('td:eq(4)').text(detallesCaja.ip);
-                var estadoCaja = filaCaja.find('td:eq(4)');
-                estadoCaja.text(detallesCaja.estado).removeClass('estado-online estado-offline').addClass(detallesCaja.estado === 'online' ? 'estado-online' : 'estado-offline');
-                estadoCaja.addClass('animate-blink');
+                var estadoIcono = filaCaja.find('td:eq(4) img');
+
+                if (detallesCaja.estado === "online") {
+                    estadoIcono.attr("src", "icons/wifi_30dp_434343.svg");
+                } else if (detallesCaja.estado === "offline") {
+                    estadoIcono.attr("src", "icons/wifi_off_30dp_BB271A.svg");
+                } else {
+                    estadoIcono.attr("src", "icons/alert-circle.svg").removeClass("icon-success icon-danger").addClass("icon-warning");
+                }
+                estadoIcono.addClass('animate-blink');
                 setTimeout(function () {
-                    estadoCaja.removeClass('animate-blink');
+                    estadoIcono.removeClass('animate-blink');
                 }, 2000); // Ajuste de tiempo milisegundos
+
+                filaCaja.find('td:eq(3)').text(detallesCaja.tickets);
+                var celdaTickets = filaCaja.find('td:eq(3)');
+                celdaTickets.text(detallesCaja.tickets);
+                var ticketValue = parseInt(detallesCaja.tickets, 10);
+                if (isNaN(ticketValue) || ticketValue === 0) {
+                    celdaTickets.removeClass('ticket-otros').addClass('ticket-cero');
+                } else {
+                    celdaTickets.removeClass('ticket-cero').addClass('ticket-otros');
+                }
             }
 
-            function setSSHLink() {
-                var ipCaja = $('#ipCajaOculta').val();
+            function setSSHLink(ipCaja) {
                 if (ipCaja) {
                     location.href = 'ssh://root@' + ipCaja;
                 } else {
@@ -726,8 +758,7 @@ function cargarBalanzas(local) {
                 }
             }
 
-            function setVNCLink() {
-                var ipCaja = $('#ipCajaOculta').val();
+            function setVNCLink(ipCaja) {
                 if (ipCaja) {
                     location.href = 'vnc://' + ipCaja + ':5900';
                 } else {
@@ -760,6 +791,7 @@ function cargarBalanzas(local) {
             }
 
             function setVirtual(ipVirtual) {
+                console.log("IP Visrtual ingresada: ", ipVirtual);
                 if (ipVirtual) {
                     window.open('http://' + ipVirtual, '_blank');
                 } else {
@@ -786,6 +818,48 @@ function cargarBalanzas(local) {
             }
         </script>
         <style>
+            .form-control, .input-group-text, .status-icon {
+                height: calc(1.5em + .75rem + 2px); /* Ajusta según sea necesario */
+                line-height: calc(1.5em + .75rem + 2px); /* Para centrar verticalmente el contenido */
+            }
+            @media (min-width: 992px) {
+                .form-container {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                }
+                .form-container .input-section,
+                .form-container .button-section {
+                    width: 48%;
+                }
+                .form-container .full-width {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                .form-container .full-width .input-group {
+                    width: calc(50% - 10px);
+                }
+            }
+            .btn-outline-dark {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+            .table-btn {
+                width: auto;
+                max-width: none;
+                margin: 0;
+            }
+            .input-group-text {
+                border-radius: 0.25rem;
+            }
+            .icon-svg {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: 0.5rem;
+            }
             .status-icon {
                 height: 20px;
                 width: 20px;
@@ -806,23 +880,9 @@ function cargarBalanzas(local) {
             .bg-warning {
                 background-color: white;
             }
-            .icon-success {
-                width: 30px;
-                height: 30px;
-                fill: green;
-            }
-            .icon-danger {
-                width: 30px;
-                height: 30px;
-                fill: red;
-            }
-            .icon-warning {
-                width: 30px;
-                height: 30px;
-                fill: orange;
-            }
 
-            #todasLasCajas {
+            #todasLasCajas,
+            #todasLasBalanzas {
                 width: 100% !important;
                 min-height: 100px;
                 background-color: #a3cfbb;
@@ -833,146 +893,143 @@ function cargarBalanzas(local) {
                 width: 100% !important;
                 border-collapse: collapse;
             }
-            #todasLasCajas th {
+            #todasLasCajas th,
+            #todasLasBalanzas th,
+            #todasLasConsultas th {
                 border-bottom: 2px solid #000;
                 padding-bottom: 4px;
+            }
+
+            #todasLasCajas button {
+                width: 80px;
+                height: 30px;
+                font-family: 'Roboto', sans-serif;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 2.5px;
+                font-weight: 500;
+                color: #000;
+                background-color: #fff;
+                border: none;
+                border-radius: 45px;
+                box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease 0s;
+                cursor: pointer;
+                outline: none;
+                margin-left: 10px;
+            }
+
+            #todasLasCajas button:hover {
+                background-color: #C0C0C0;
+                box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+                color: #fff;
+                transform: translateY(-7px);
             }
 
             .spinner-border {
                 animation: spin 1s linear infinite;
             }
-            @import "bourbon";
-
-            /* Android 2.3 :checked fix */
-            @keyframes fake {
-                from {
-                    opacity: 1;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-            body {
-                animation: fake 1s infinite;
-            }
-
             .worko-tabs {
-                margin: 20px auto; /* Cambiado a auto para centrar horizontalmente */
+                margin: 20px auto;
                 width: 80%;
-                position: relative; /* Asegura que los elementos hijos puedan posicionarse correctamente */
-                top: 50%; /* Ajusta la posición vertical */
-
-
-                .state{
-                    position: absolute;
-                    left: -10000px;
-                }
-
-                .flex-tabs{
-                    display: flex;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-
-                    .tab{
-                        flex-grow: 1;
-                        max-height: 40px;
-                    }
-
-                    .panel {
-                        background-color: #fff;
-                        padding: 20px;
-                        min-height: 300px;
-                        display: none;
-                        width: 100%;
-                        flex-basis: auto;
-                    }
-                }
-
-                .tab {
-                    display: inline-block;
-                    padding: 10px;
-                    vertical-align: top;
-                    background-color: #eee;
-                    cursor: hand;
-                    cursor: pointer;
-                    border-left: 10px solid #ccc;
-
-                    &:hover{
-                        background-color: #fff;
-                    }
-                }
+                position: relative;
+                top: 50%;
             }
-
-            #tab-one:checked ~ .tabs #tab-one-label,
-            #tab-two:checked ~ .tabs #tab-two-label,
-            #tab-three:checked ~ .tabs #tab-three-label,
-            #tab-four:checked ~ .tabs #tab-four-label{
+            .worko-tabs .state {
+                position: absolute;
+                left: -10000px;
+            }
+            .worko-tabs .flex-tabs {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .worko-tabs .tab {
+                flex-grow: 1;
+                max-height: 40px;
+            }
+            .worko-tabs .panel {
+                background-color: #fff;
+                padding: 20px;
+                min-height: 300px;
+                display: none;
+                width: 100%;
+                flex-basis: auto;
+            }
+            .worko-tabs .tab {
+                display: inline-block;
+                padding: 10px;
+                vertical-align: top;
+                background-color: #eee;
+                cursor: hand;
+                cursor: pointer;
+                border-left: 10px solid #ccc;
+            }
+            .worko-tabs .tab:hover {
+                background-color: #fff;
+            }
+            .worko-tabs #tab-one:checked ~ .tabs #tab-one-label,
+            .worko-tabs #tab-two:checked ~ .tabs #tab-two-label,
+            .worko-tabs #tab-three:checked ~ .tabs #tab-three-label,
+            .worko-tabs #tab-four:checked ~ .tabs #tab-four-label {
                 background-color: #fff;
                 cursor: default;
                 border-left-color: #69be28;
             }
-
-            #tab-one:checked ~ .tabs #tab-one-panel,
-            #tab-two:checked ~ .tabs #tab-two-panel,
-            #tab-three:checked ~ .tabs #tab-three-panel,
-            #tab-four:checked ~ .tabs #tab-four-panel{
+            .worko-tabs #tab-one:checked ~ .tabs #tab-one-panel,
+            .worko-tabs #tab-two:checked ~ .tabs #tab-two-panel,
+            .worko-tabs #tab-three:checked ~ .tabs #tab-three-panel,
+            .worko-tabs #tab-four:checked ~ .tabs #tab-four-panel {
                 display: block;
             }
-
-            @media (max-width: 600px){
-                .flex-tabs{
+            @media (max-width: 600px) {
+                .worko-tabs .flex-tabs {
                     flex-direction: column;
-
-                    .tab{
-                        background: #fff;
-                        border-bottom: 1px solid #ccc;
-
-                        &:last-of-type{
-                            border-bottom: none;
-                        }
-                    }
-
-                    #tab-one-label{
-                        order:1;
-                    }
-                    #tab-two-label{
-                        order: 3;
-                    }
-                    #tab-three-label{
-                        order: 5;
-                    }
-                    ;
-                    #tab-four-label{
-                        order: 7;
-                    }
-                    ;
-                    #tab-one-panel{
-                        order: 2;
-                    }
-                    #tab-two-panel{
-                        order: 4;
-                    }
-                    #tab-three-panel{
-                        order: 6;
-                    }
-                    #tab-four-panel{
-                        order: 8;
-                    }
                 }
-
-                #tab-one:checked ~ .tabs #tab-one-label,
-                #tab-two:checked ~ .tabs #tab-two-label,
-                #tab-three:checked ~ .tabs #tab-three-label,
-                #tab-four:checked ~ .tabs #tab-four-label{
-                    border-bottom: none;
-                }
-
-                #tab-one:checked ~ .tabs #tab-one-panel,
-                #tab-two:checked ~ .tabs #tab-two-panel,
-                #tab-three:checked ~ .tabs #tab-three-panel,
-                #tab-four:checked ~ .tabs #tab-four-panel{
+                .worko-tabs .tab {
+                    background: #fff;
                     border-bottom: 1px solid #ccc;
                 }
+                .worko-tabs .tab:last-of-type {
+                    border-bottom: none;
+                }
+                .worko-tabs #tab-one-label {
+                    order: 1;
+                }
+                .worko-tabs #tab-two-label {
+                    order: 3;
+                }
+                .worko-tabs #tab-three-label {
+                    order: 5;
+                }
+                .worko-tabs #tab-four-label {
+                    order: 7;
+                }
+                .worko-tabs #tab-one-panel {
+                    order: 2;
+                }
+                .worko-tabs #tab-two-panel {
+                    order: 4;
+                }
+                .worko-tabs #tab-three-panel {
+                    order: 6;
+                }
+                .worko-tabs #tab-four-panel {
+                    order: 8;
+                }
+                .worko-tabs #tab-one:checked ~ .tabs #tab-one-label,
+                .worko-tabs #tab-two:checked ~ .tabs #tab-two-label,
+                .worko-tabs #tab-three:checked ~ .tabs #tab-three-label,
+                .worko-tabs #tab-four:checked ~ .tabs #tab-four-label {
+                    border-bottom: none;
+                }
+                .worko-tabs #tab-one:checked ~ .tabs #tab-one-panel,
+                .worko-tabs #tab-two:checked ~ .tabs #tab-two-panel,
+                .worko-tabs #tab-three:checked ~ .tabs #tab-three-panel,
+                .worko-tabs #tab-four:checked ~ .tabs #tab-four-panel {
+                    border-bottom: 1px solid #ccc;
+                }
+
             }
         </style>
 

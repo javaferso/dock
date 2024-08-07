@@ -26,7 +26,7 @@
         <link href="css/style.css" rel="stylesheet" />
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="icons/feather-main/src/icons.js"></script>
-        <script src="icons/feather-main/src/icon.js" type="text/javascript"></script>
+        <script src="icons/feather-main/src/icon.js"></script>
         <link href="fontawesome/css/fontawesome.css" rel="stylesheet" type="text/css"/>
         <link href="css/brands.css" rel="stylesheet" />
         <link href="css/solid.css" rel="stylesheet" />
@@ -129,12 +129,19 @@
 
                     <div id="tab-one-panel" class="panel active">
                         <!-- Contenido para la pestaña POS -->
+
                         <div
                             id="todasLasCajas"
                             class="bg-light p-3 shadow-sm mb-3 mt-3"
                             style="border-radius: 15px; background-color: #a3cfbb"
                             >
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoPos</h1>
+
                         </div>
                     </div>
                     <div id="tab-two-panel" class="panel">
@@ -144,6 +151,11 @@
                             class="bg-light p-3 shadow-sm mb-3 mt-3"
                             style="border-radius: 15px; background-color: #a3cfbb"
                             >
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoBalanzas</h1>
                         </div>
                     </div>
@@ -154,6 +166,11 @@
                             class="bg-light p-3 shadow-sm mb-3 mt-3"
                             style="border-radius: 15px; background-color: #a3cfbb"
                             >
+                            <div id="loading" style="display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                                </div>
+                            </div>
                             <h1>InfoConsultaPrecios</h1>
                         </div>
                     </div>
@@ -178,7 +195,7 @@
                         id="verSSHButton"
                         class="btn btn-outline-dark me-md-2"
                         value=""
-                        onclick="setSSHLink()"
+                        onclick="setSSHLink($('#ipCajaOculta').val())"
                         >SSH Pos</button>
                     <input type="hidden" id="ipPosShadow" value=''/>
                     <button
@@ -186,7 +203,7 @@
                         id="verVNCButton"
                         class="btn btn-outline-dark me-md-2"
                         value=""
-                        onclick="setVNCLink()"
+                        onclick="setVNCLink($('#ipCajaOculta').val())"
                         >VNC Pos</button>
 
                     <button
@@ -392,7 +409,6 @@
                     alert('Error al realizar el ping.');
                 });
             }
-
             var cajasOrdenadas = [];
             $(document).ready(function () {
                 $('#todasLasCajas').on('click', 'tr', function () {

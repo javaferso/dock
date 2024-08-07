@@ -75,6 +75,18 @@ public class Servidores implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "estado_enlace")
     private String estadoEnlace;
+    @Size(max = 25)
+    @Column(name = "formato_codigo")
+    private String formatoCodigo;
+    @Size(max = 200)
+    @Column(name = "local_txt")
+    private String localTxt;
+    @Size(max = 100)
+    @Column(name = "hostname")
+    private String hostname;
+    @Size(max = 10)
+    @Column(name = "host_tipo")
+    private String hostTipo;
     @Column(name = "fleje_electronico")
     private Boolean flejeElectronico;
     @Column(name = "updated_at")
@@ -259,6 +271,14 @@ public class Servidores implements Serializable {
     }
 
 
+    public Boolean getFlejeElectronico() {
+        return flejeElectronico;
+    }
+
+    public void setFlejeElectronico(Boolean flejeElectronico) {
+        this.flejeElectronico = flejeElectronico;
+    }
+
     public String getDireccion() {
         return direccion;
     }
@@ -275,12 +295,36 @@ public class Servidores implements Serializable {
         this.ciudad = ciudad;
     }
 
-    public Boolean getFlejeElectronico() {
-        return flejeElectronico;
+    public String getFormatoCodigo() {
+        return formatoCodigo;
     }
 
-    public void setFlejeElectronico(Boolean flejeElectronico) {
-        this.flejeElectronico = flejeElectronico;
+    public void setFormatoCodigo(String formatoCodigo) {
+        this.formatoCodigo = formatoCodigo;
+    }
+
+    public String getLocalTxt() {
+        return localTxt;
+    }
+
+    public void setLocalTxt(String localTxt) {
+        this.localTxt = localTxt;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public String getHostTipo() {
+        return hostTipo;
+    }
+
+    public void setHostTipo(String hostTipo) {
+        this.hostTipo = hostTipo;
     }
 
 }

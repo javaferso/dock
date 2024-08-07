@@ -52,7 +52,7 @@ JFerreira --%>
                     
         
         <div class="col-sm-11">
-            <body class="body-boleta">
+            <body class="body-maleta">
                 <p>Bienvenido <%= user.getNombre() + " " + user.getApellido()%></p>
 
                 <div class="container-fluid mt-3 mb-5 p-2">

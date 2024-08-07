@@ -47,4 +47,37 @@ public class TicketService {
         
         return null;
     }
+    
+    public String getReverseCount(String ip) {
+        try {
+            // Construir la URL de la base de datos dinámicamente usando la IP proporcionada
+            String dbUrl = "jdbc:mysql://" + ip + ":3306/geopos";
+            
+            Connection conn = DriverManager.getConnection(dbUrl, USER, PASS);
+            Statement stmt = conn.createStatement();
+            
+            String mysqlQuery = "SELECT spdhContext FROM spdhreverse;";
+            ResultSet rs = stmt.executeQuery(mysqlQuery);
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                System.out.println("Reverse count for IP " + ip + ": " + count);
+                
+                // Crear y escribir en el archivo de log
+                String dir = "/home/supervision_caja/" + ip + "-reversePos.log";
+                try {
+                    Files.write(Paths.get(dir), Integer.toString(count).getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                } catch (IOException e) {
+                    System.err.println("Error writing to file: " + e.getMessage());
+                }
+                
+                return Integer.toString(count);
+            }
+        } catch (Exception e) {
+            System.err.println("Error obtaining ticket count for IP " + ip + ": " + e.getMessage());
+            return "s/cnx";
+        }
+        
+        return null;
+    }
 }
