@@ -59,6 +59,7 @@ public class SvTickets extends HttpServlet {
         List<CompletableFuture<Map<String, String>>> futures = cajas.stream().map(caja -> CompletableFuture.supplyAsync(() -> {
             String ip = controladora.findIpByCaja(caja, local);
             String tickets = obtenerInfoTickets(ip);
+            String reverse = obtenerReversePos(ip);
             boolean online = false;
             try {
                 online = InetAddress.getByName(ip).isReachable(1000); // 1000 ms timeout
@@ -72,7 +73,7 @@ public class SvTickets extends HttpServlet {
             detallesCaja.put("caja", caja);
             detallesCaja.put("tickets", tickets);
             detallesCaja.put("online", String.valueOf(online));
-
+            detallesCaja.put("reverse", reverse);
             return detallesCaja;
         })).collect(Collectors.toList());
 
@@ -103,7 +104,17 @@ public class SvTickets extends HttpServlet {
         logContent.append("Error: " + e.getMessage());
     }
     return logContent.toString();
-}
-
+    }
+    
+    private String obtenerReversePos(String ip) {
+        StringBuilder logContent = new StringBuilder();
+        try {
+            String reverseCount = ticketService.getReverseCount(ip);
+            logContent.append(reverseCount);
+        } catch (Exception e) {
+            logContent.append("Error: " + e.getMessage());
+        }
+        return logContent.toString();
+    }
 }
 

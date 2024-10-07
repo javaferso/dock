@@ -36,7 +36,7 @@
         <script src="js/toastify.js"></script>
         <script src="js/stickyfill.min.js"></script>
         <script src="js/script.js"></script>
-
+        <script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
     </head>
     <header>
         <%@ include file="jsp/navbar.jsp" %>
@@ -174,6 +174,14 @@
                     value=""
                     onclick="setTickets($('#local').val())"
                     >Obtener Tickets</button>
+
+                <button 
+                    type="button" 
+                    id="obtenerReversas" 
+                    class="btn btn-outline-dark me-md-2" 
+                    onclick="obtenerReversas()"
+                    >Obtener Reversas</button>
+
                 <button
                     type="button"
                     id="verSSHButton"
@@ -189,8 +197,14 @@
                     value=""
                     onclick="setVNCLink($('#ipCajaOculta').val())"
                     >VNC Pos</button>
-
-
+            </div>
+            <!-- Modal -->
+            <div id="myModal" class="modal">
+                <!-- Contenido del Modal -->
+                <div class="modal-content">
+                    <span class="close" onclick="cerrarModal()">&times;</span>
+                    <div id="tinymceEditor"></div>
+                </div>
             </div>
         </div>
         <script>
@@ -214,7 +228,9 @@
                     $('#ipConsultaPrecios').val('');
                     $('#ipConsultaPrecios2').val('');
                     $('#todasLasCajas').empty();
-                    $('#status-icon-enl').empty();
+                    $('#status-icon-enlace').empty();
+                    $('#status-icon-ip').empty();
+                    $('#ipCajaOculta').empty();
                 });
                 $('#localId').autocomplete({
                     source: function (request, response) {
@@ -261,7 +277,7 @@
                         cargarConsultaPrecios(data.local);
                         updateStatusIcon('#status-icon-ip', data.estadoIp);
                         updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
-                        
+
                         if (ui.item.data.flejeData) {
                             // Manejar los datos de flejeData si existen
                             $('#ipFlejeElectronico').val(ui.item.data.flejeData.IpFlejeElectronico);
@@ -350,7 +366,7 @@
 
 
             });
-            
+
             function updateStatusIcon(selector, status) {
                 var icon = $(selector);
                 icon.removeClass('bg-success bg-warning bg-danger');
@@ -423,7 +439,8 @@
                                     $('<th>').text('IpAddress'),
                                     $('<th>').text('Tickets'),
                                     $('<th>').text('Estado'),
-                                    $('<th>').text('Acción')
+                                    $('<th>').text('Acción'),
+                                    $('<th>').text('Otros')
                                     );
                             tabla.append(cabecera);
                             // Itera sobre las cajas ordenadas y agrega las filas a la tabla
@@ -460,7 +477,9 @@
                                             $('<button>').addClass('btn btn-outline-dark me-md-2').text('VNC').click(function () {
                                         setVNCLink(detalles.ip);
                                     })
-                                            )
+
+                                            ),
+                                            $('<td>').text(detalles.reverse)
                                             );
                                     tabla.append(fila);
                                 }
@@ -493,7 +512,8 @@
                                 $('<th>').text('IpAddress'),
                                 $('<th>').text('Tickets'),
                                 $('<th>').text('Estado'),
-                                $('<th>').text('Acción')
+                                $('<th>').text('Acción'),
+                                $('<th>').text('Otros')
                                 );
                         tabla.append(cabecera);
                         $.each(resultadosOrdenados, function (caja, detalles) {
@@ -527,7 +547,8 @@
                                     $('<button>').addClass('btn btn-outline-dark me-md-2').text('VNC').click(function () {
                                 setVNCLink(detalles.ip);
                             })
-                                    )
+                                    ),
+                                    $('<td>').text(detalles.reverse)
                                     );
                             tabla.append(fila);
                         });
@@ -791,7 +812,7 @@
             }
 
             function setVirtual(ipVirtual) {
-                console.log("IP Visrtual ingresada: ", ipVirtual);
+                console.log("IP Virtual ingresada: ", ipVirtual);
                 if (ipVirtual) {
                     window.open('http://' + ipVirtual, '_blank');
                 } else {
@@ -816,11 +837,55 @@
                     alert('No corresponde a un servidor para fleje electronico');
                 }
             }
+            function obtenerReversas() {
+                var local = $('#local').val(); // Obtener el valor del local actual
+                // Realiza la solicitud al servidor para obtener las reversas
+                $.get('SvTickets?local=' + local, function (resultados) {
+                    console.log(resultados);
+                    var contenidoReverse = "<div style='font-size:24px; font-weight:bold; margin-bottom:10px; text-align:center; color:#333;'>Cajas con reversa</div>";
+                    contenidoReverse += "<table style='width:100%; border-collapse:collapse; border:1px solid #ccc;'><thead><tr style='background-color:#009879; color:#ffffff;'><th style='padding:12px 15px;'>Caja</th><th style='padding:12px 15px;'>Reversa</th></tr></thead><tbody>";
+
+                    $.each(resultados, function (index, detalles) {
+                        var reverse = detalles.reverse || 'N/A'; // Usa 'N/A' si no hay datos de reverse
+                        contenidoReverse += "<tr style='border-bottom:1px solid #ccc;'><td style='padding:12px 15px;'>" + index + "</td><td style='padding:12px 15px;'>" + reverse + "</td></tr>";
+                    });
+
+                    contenidoReverse += "</tbody></table>";
+
+                    // Configurar TinyMCE para cargar el contenido en el div del modal
+                    tinymce.init({
+                        selector: '#tinymceEditor',
+                        plugins: [],
+                        toolbar: false,
+                        menubar: false,
+                        statusbar: false,
+                        branding: false,
+                        elementspath: false,
+                        init_instance_callback: function (editor) {
+                            editor.setContent(contenidoReverse); // Cargamos el contenido dinámico
+                            document.getElementById("myModal").style.display = "block"; // Mostrar el modal después de inicializar TinyMCE
+                        }
+                    });
+                });
+            }
+
+            // Cerrar el modal si se hace clic fuera de la ventana modal
+            window.onclick = function (event) {
+                var modal = document.getElementById("myModal");
+                if (event.target === modal) {
+                    cerrarModal();
+                }
+            }
+
+            function cerrarModal() {
+                document.getElementById("myModal").style.display = "none";
+                tinymce.remove('#tinymceEditor'); // Eliminar la instancia de TinyMCE al cerrar el modal
+            }
         </script>
         <style>
             .form-control, .input-group-text, .status-icon {
-                height: calc(1.5em + .75rem + 2px); /* Ajusta según sea necesario */
-                line-height: calc(1.5em + .75rem + 2px); /* Para centrar verticalmente el contenido */
+                height: calc(1.5em + .75rem + 2px); /* Ajustar según sea necesario */
+                line-height: calc(1.5em + .75rem + 2px); /* centra verticalmente el contenido */
             }
             @media (min-width: 992px) {
                 .form-container {
@@ -1030,6 +1095,92 @@
                     border-bottom: 1px solid #ccc;
                 }
 
+            }
+
+            /* El Modal (oculto por defecto) */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            /* Contenido del Modal */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 10% auto;
+                padding: 20px;
+                border-radius: 8px;
+                border: 1px solid #888;
+                width: 50%; /* Reducir ancho del modal */
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            /* La X (cierre) */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            /* Estilos para la tabla */
+            .styled-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 18px;
+                text-align: left;
+                overflow: hidden;
+                border-radius: 8px;
+            }
+
+            .styled-table thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;
+            }
+
+            .styled-table th,
+            .styled-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .styled-table tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .styled-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .styled-table tbody tr:last-of-type {
+                border-bottom: 2px solid #009879;
+            }
+
+            .styled-table tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            .table-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-align: center;
+                color: #333;
             }
         </style>
 
