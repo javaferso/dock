@@ -58,19 +58,19 @@
                             <label for="nombreInput" class="form-label">
                                 <img src="icons/info_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="Nombre" class="icon-svg mt-2"/>
                             </label>
-                            <input type="text" id="nombreTienda" class="form-control" value="" readonly>
+                            <input type="text" id="nombreTienda" class="form-control" value="" readonly placeholder="Hostname Tienda">
                         </div>
                         <div class="input-group mb-1">
                             <label for="direccionInput" class="form-label">
                                 <img src="icons/near_me_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="Dirección" class="icon-svg"/>
                             </label>
-                            <input type="text" id="direccionInput" class="form-control" value="" readonly>
+                            <input type="text" id="direccionInput" class="form-control" value="" readonly placeholder="Direccion Tienda">
                         </div>
                         <div class="input-group mb-1">
                             <span class="input-group-text">
                                 <img src="icons/dns_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="IP Serv" class="icon-svg"/>
                             </span>
-                            <input type="text" id="iPservidorInput" class="form-control" value="" readonly>
+                            <input type="text" id="iPservidorInput" class="form-control" value="" readonly placeholder="Ip Servidor">
                             <span class="input-group-text">
                                 <button type="button" class="btn status-icon bg-success" id="status-icon-ip"></button>
 
@@ -83,7 +83,7 @@
                             <span class="input-group-text">
                                 <img src="icons/lan_30dp_9B5278_FILL0_wght400_GRAD0_opsz24.svg" alt="P.Enlace" class="icon-svg"/>
                             </span>
-                            <input type="text" id="enlaceInput" class="form-control" value="" readonly>
+                            <input type="text" id="enlaceInput" class="form-control" value="" readonly placeholder="Ip Enlace">
                             <span class="input-group-text">
                                 <button type="button" class="btn status-icon bg-success" id="status-icon-enlace"></button>
                             </span>
@@ -99,7 +99,7 @@
                     <div class="button-section text-center">
                         <!-- El input está como campo oculto -->
                         <input type="hidden" id="ipVirtualInput" value="">
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <button type="button" class="btn btn-outline-dark me-md-2" id="ip_virtual" value="" onclick="setVirtual($('#ipVirtualInput').val())">Serv. Virtual</button>
                             <button type="button" class="btn btn-outline-dark mb-1" id="ipServer" value="" onclick="setServerssh($('#iPservidorInput').val())">SSHServidor</button>
                             <button type="button" class="btn btn-outline-dark mb-1" id="ip_consola" value="" onclick="setConsola($('#iPservidorInput').val())">Geoconsola</button>
@@ -107,7 +107,21 @@
                             <button type="button" class="btn btn-outline-dark mb-1" id="ip_conciliacion" value="" onclick="setConciliacion($('#iPservidorInput').val())">GeoConciliacion</button>
                             <button type="button" class="btn btn-outline-dark mb-1" id="ipFlejeElectronico" value="" onclick="setFlejeElectronico($('#ipFlejeElectronico').val())">Fleje Electronico</button>
                         </div>
-
+                         <div class="input-group mb-1">
+                        
+                            <span class="input-group-text">
+                                <img src="icons/battery-charging.svg" alt="P.Enlace" class="icon-svg"/>
+                            </span>
+                            <input type="text" id="upsInput" class="form-control" value="" readonly placeholder="Ip Ups">
+                            <span class="input-group-text">
+                                <button type="button" class="btn status-icon bg-success" id="status-icon-ups"></button>
+                            </span>
+                            <span class="input-group-text">
+                                <button type="button" class="btn btn-light" id="ping-icon" onclick="solicitarPingUps()">
+                                    <i class="fas fa-sync-alt fa-xs"></i>
+                                </button>
+                            </span>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -223,6 +237,7 @@
                     $('#iPservidorInput').val('');
                     $('#ipVirtualInput').val('');
                     $('#enlaceInput').val('');
+                    $('#upsInput').val('');
                     $('#nombreInput').val('');
                     $('#ipFlejeElectronico').val('');
                     $('#ipConsultaPrecios').val('');
@@ -269,6 +284,7 @@
                         $('#iPservidorInput').val(data.ipAddress);
                         $('#ipVirtualInput').val(data.ipVirtual);
                         $('#enlaceInput').val(data.ipEnlace);
+                        $('#upsInput').val(data.ipUps);
                         $('#nombreInput').val(data.formato);
                         $('#ipOculta').val(data.ipAddress);
                         $('#local').val(data.local);
@@ -277,6 +293,7 @@
                         cargarConsultaPrecios(data.local);
                         updateStatusIcon('#status-icon-ip', data.estadoIp);
                         updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
+                        updateStatusIcon('#status-icon-ups', data.EstadoUps);
 
                         if (ui.item.data.flejeData) {
                             // Manejar los datos de flejeData si existen
@@ -318,6 +335,7 @@
                                         $('#ipVirtualInput').val(data.ipVirtual);
                                         console.log(data.ipVirtual);
                                         $('#enlaceInput').val(data.ipEnlace);
+                                        $('#upsInput').val(data.ipUps);
                                         $('#nombreInput').val(data.formato);
                                         $('#cityInput').val(data.ciudad);
                                         $('#ipOculta').val(data.ipAddress);
@@ -327,6 +345,7 @@
                                         cargarConsultaPrecios(data.local);
                                         updateStatusIcon('#status-icon-ip', data.estadoIp);
                                         updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
+                                        updateStatusIcon('#status-icon-ups', data.EstadoUps);
                                     }
 
                                     if (flejeData) {
@@ -402,6 +421,20 @@
                 $.get('SvDatosServidor', {action: 'pingEnlace', ipEnlace: ipEnlace, local: local}, function (data) {
 
                     updateStatusIcon('#status-icon-enlace', data.estadoEnlace);
+                }).fail(function () {
+                    alert('Error al realizar el ping.');
+                });
+            }
+            function solicitarPingUps() {
+                var ipUps = $('#upsInput').val();
+                var local = $('#localId').val();
+
+                // Inicializar los iconos sin color
+                updateStatusIcon('#status-icon-ups', '');
+
+                $.get('SvDatosServidor', {action: 'pingUps', ipUps: ipUps, local: local}, function (data) {
+
+                    updateStatusIcon('#status-icon-ups', data.EstadoUps);
                 }).fail(function () {
                     alert('Error al realizar el ping.');
                 });

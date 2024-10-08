@@ -51,6 +51,9 @@ public class SvDatosServidor extends HttpServlet {
             case "ping":
                 handlePing(request, response, out);
                 break;
+            case "pingUps":
+                handlePingUps(request, response, out);
+                break;
             case "getLocal":
                 handleGetLocal(request, response, out, controladora, controladoraPersistencia);
                 break;
@@ -77,6 +80,28 @@ public class SvDatosServidor extends HttpServlet {
                 online = InetAddress.getByName(ipEnlace).isReachable(1000);
                 JsonObject responseJson = new JsonObject();
                 responseJson.addProperty("estadoEnlace", online ? "online" : "offline");
+                out.print(new Gson().toJson(responseJson));
+            }
+        } catch (Exception ex) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\":\"Error interno del servidor\"}");
+            Logger.getLogger(SvDatosServidor.class.getName()).log(Level.SEVERE, "No se pudo realizar el ping", ex);
+        } finally {
+            out.flush();
+            out.close();
+        }
+    }
+    private void handlePingUps(HttpServletRequest request, HttpServletResponse response, PrintWriter out) {
+        boolean online = false;
+        String ipUps = request.getParameter("ipUps");
+        try {
+            if (ipUps == null || ipUps.trim().isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\":\"Faltan datos para realizar el ping.\"}");
+            } else {
+                online = InetAddress.getByName(ipUps).isReachable(1000);
+                JsonObject responseJson = new JsonObject();
+                responseJson.addProperty("EstadoUps", online ? "online" : "offline");
                 out.print(new Gson().toJson(responseJson));
             }
         } catch (Exception ex) {
@@ -213,7 +238,6 @@ public class SvDatosServidor extends HttpServlet {
             List<Object[]> estadoIpNagios = controladoraPersistencia.obtenerEstadoNagios(hostnameIp);
             if (!estadoIpNagios.isEmpty()) {
                 for (Object[] registro : estadoIpNagios) {
-                    System.out.println("Estado Nagios IP obtenido " + registro[0] + " Registro: " + registro[2]);
                     String serviceDescription = (String) registro[2];
                     if ("Ping".equals(serviceDescription)) {
                         int returnCode = (int) registro[0];
@@ -227,11 +251,23 @@ public class SvDatosServidor extends HttpServlet {
             List<Object[]> estadoEnlaceNagios = controladoraPersistencia.obtenerEstadoNagios(hostnameEnlace);
             if (!estadoEnlaceNagios.isEmpty()) {
                 for (Object[] registro : estadoEnlaceNagios) {
-                    System.out.println("Estado Nagios Enlace obtenido " + registro[0] + " Registro: " + registro[2]);
                     String serviceDescription = (String) registro[2];
                     if ("Ping".equals(serviceDescription)) {
                         int returnCode = (int) registro[0];
                         servidor.setEstadoEnlace(returnCode == 0 ? "online" : "offline");
+                    }
+                }
+            }
+            
+            //Actualizar estado UPS
+            String hostnameUps = extraerTipoHost(hostnameIp);
+            List<Object[]> estadoUpsNagios = controladoraPersistencia.obtenerEstadoNagios(hostnameUps);
+            if (!estadoUpsNagios.isEmpty()) {
+                for (Object[] registro : estadoUpsNagios) {
+                    String serviceDescription = (String) registro[2];
+                    if ("Ping".equals(serviceDescription)) {
+                        int returnCode = (int) registro[0];
+                        servidor.setEstadoUps(returnCode == 0 ? "online" : "offline");
                     }
                 }
             }
@@ -243,6 +279,12 @@ public class SvDatosServidor extends HttpServlet {
     private String extraerTipo(String hostname) {
         if (hostname.endsWith("SRV")) {
             return hostname.replace("SRV", "ENL").trim();
+        }
+        return hostname; // Devolver el string original si no se puede extraer la marca
+    }
+    private String extraerTipoHost(String hostname) {
+        if (hostname.endsWith("SRV")) {
+            return hostname.replace("SRV", "UPS").trim();
         }
         return hostname; // Devolver el string original si no se puede extraer la marca
     }

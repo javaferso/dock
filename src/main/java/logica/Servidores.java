@@ -87,6 +87,12 @@ public class Servidores implements Serializable {
     @Size(max = 10)
     @Column(name = "host_tipo")
     private String hostTipo;
+    @Size(max = 15)
+    @Column(name = "ip_ups")
+    private String ipUps;
+    @Size(max = 15)
+    @Column(name = "estado_ups")
+    private String EstadoUps;
     @Column(name = "fleje_electronico")
     private Boolean flejeElectronico;
     @Column(name = "updated_at")
@@ -124,7 +130,7 @@ public class Servidores implements Serializable {
         this.id = id;
     }
 
-    public Servidores(String ipAddress, String ipEnlace, String direccion, String ciudad, String ipVirtual, String estadoIp, String estadoEnlace, Boolean flejeElectronico, Date updatedAt, Integer id, String nombreTienda, Date createdAt, Date modified, String formato, String local) {
+    public Servidores(String ipAddress, String ipEnlace, String direccion, String ciudad, String ipVirtual, String estadoIp, String estadoEnlace, String formatoCodigo, String localTxt, String hostname, String hostTipo, String ipUps, String EstadoUps, Boolean flejeElectronico, Date updatedAt, Integer id, String nombreTienda, Date createdAt, Date modified, String formato, String local) {
         this.ipAddress = ipAddress;
         this.ipEnlace = ipEnlace;
         this.direccion = direccion;
@@ -132,6 +138,12 @@ public class Servidores implements Serializable {
         this.ipVirtual = ipVirtual;
         this.estadoIp = estadoIp;
         this.estadoEnlace = estadoEnlace;
+        this.formatoCodigo = formatoCodigo;
+        this.localTxt = localTxt;
+        this.hostname = hostname;
+        this.hostTipo = hostTipo;
+        this.ipUps = ipUps;
+        this.EstadoUps = EstadoUps;
         this.flejeElectronico = flejeElectronico;
         this.updatedAt = updatedAt;
         this.id = id;
@@ -141,6 +153,8 @@ public class Servidores implements Serializable {
         this.formato = formato;
         this.local = local;
     }
+
+    
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -245,6 +259,14 @@ public class Servidores implements Serializable {
         this.id = id;
     }
 
+    public String getEstadoUps() {
+        return EstadoUps;
+    }
+
+    public void setEstadoUps(String EstadoUps) {
+        this.EstadoUps = EstadoUps;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -279,21 +301,6 @@ public class Servidores implements Serializable {
         this.flejeElectronico = flejeElectronico;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
 
     public String getFormatoCodigo() {
         return formatoCodigo;
@@ -311,6 +318,33 @@ public class Servidores implements Serializable {
         this.localTxt = localTxt;
     }
 
+
+    public String getHostTipo() {
+        return hostTipo;
+    }
+
+    public void setHostTipo(String hostTipo) {
+        this.hostTipo = hostTipo;
+    }
+
+   
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
     public String getHostname() {
         return hostname;
     }
@@ -319,12 +353,12 @@ public class Servidores implements Serializable {
         this.hostname = hostname;
     }
 
-    public String getHostTipo() {
-        return hostTipo;
+    public String getIpUps() {
+        return ipUps;
     }
 
-    public void setHostTipo(String hostTipo) {
-        this.hostTipo = hostTipo;
+    public void setIpUps(String ipUps) {
+        this.ipUps = ipUps;
     }
 
 }

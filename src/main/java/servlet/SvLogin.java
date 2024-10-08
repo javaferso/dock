@@ -46,7 +46,7 @@ public class SvLogin extends HttpServlet {
             // Verificar si la contraseña almacenada está hasheada con Bcrypt
             if (storedPassword.length() == 60 && storedPassword.startsWith("$2a$")) {
                 System.out.println("La contraseña está hasheada, usar BCrypt para verificar");
-                System.out.println("Contraseña ingresada: " + password);
+                //System.out.println("Contraseña ingresada: " + password);
 
                 // Depuración adicional para comparar hashes
                 boolean passwordMatches = BCrypt.checkpw(password, storedPassword);
@@ -92,8 +92,8 @@ public class SvLogin extends HttpServlet {
         }
 
         System.out.println("Usuario Conectado: " + user.getNombre());
-        System.out.println("Usuario Rol: " + user.getIdRole());
-        System.out.println("Usuario password: " + user.getPassword());
+        System.out.println("Usuario Rol: " + user.getIdRole().getNameRole());
+        //System.out.println("Usuario password: " + user.getPassword());
     }
 
     private void manejarErrorAutenticacion(HttpSession session, HttpServletResponse response, Integer count) throws IOException {
