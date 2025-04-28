@@ -1,9 +1,9 @@
 DockPOS
 
-DockPOS es un proyecto web desarrollado en Java utilizando JSP, diseñado para facilitar las labores de soporte a POS (Point of Sale) en el área de retail, específicamente para el departamento de TI Operaciones y Formatos. El proyecto ofrece funcionalidades clave como rescate y manejo de logs, transacciones a bases de datos, monitoreo de ventas en caja, y conexiones SSH y VNC.
+DockPOS es un proyecto web desarrollado en Java utilizando JSP, diseñado para facilitar las labores de soporte a POS (Point of Sale) en el área de retail, específicamente para areas de Continuidad Operacional TI. El proyecto ofrece funcionalidades clave como rescate y manejo de logs, transacciones a bases de datos, monitoreo de ventas en caja, y conexiones SSH y VNC.
 Tecnologías Utilizadas
 
-    Java 18: Lenguaje de programación principal del proyecto.
+    Java: Lenguaje de programación principal del proyecto.
     Apache Maven: Herramienta de gestión y construcción del proyecto.
     JSP (JavaServer Pages): Tecnología utilizada para la creación de las páginas web dinámicas.
     PostgreSQL 15.6: Base de datos utilizada para la persistencia de datos.
